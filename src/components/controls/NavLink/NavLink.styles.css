@@ -1,0 +1,7 @@
+.nav-link {
+  font: 1rem / 1.1 var(--font-inter);
+
+  &.-active {
+    color: var(--primary);
+  }
+}

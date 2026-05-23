@@ -1,0 +1,90 @@
+import type { Product } from "./models";
+
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: "1",
+    slug: "vigvam-lisova-feya",
+    name: "Вігвам «Лісова фея»",
+    description: "Затишний вігвам з натуральної бавовни у лісовому стилі. Ідеальний для ігор та відпочинку.",
+    price: 3200,
+    category: "wigwam",
+    badges: ["new"],
+    images: [
+      { src: "https://picsum.photos/seed/vigvam1/600/700", alt: "Вігвам Лісова фея" },
+    ],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: "2",
+    slug: "vigvam-bokho-krem",
+    name: "Вігвам «Бохо крем»",
+    description: "Вігвам у стилі бохо з кремової тканини. Поєднується з будь-яким інтер'єром.",
+    price: 3400,
+    category: "wigwam",
+    badges: ["bestseller"],
+    images: [
+      { src: "https://picsum.photos/seed/vigvam2/600/700", alt: "Вігвам Бохо крем" },
+    ],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: "3",
+    slug: "vigvam-rozhevyi-son",
+    name: "Вігвам «Рожевий сон»",
+    description: "Ніжний рожевий вігвам для маленьких принцес. З мереживними деталями.",
+    price: 3600,
+    salePrice: 2900,
+    category: "wigwam",
+    badges: ["sale"],
+    images: [
+      { src: "https://picsum.photos/seed/vigvam3/600/700", alt: "Вігвам Рожевий сон" },
+    ],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: "4",
+    slug: "nabir-podushok-bokho",
+    name: "Набір подушок «Бохо»",
+    description: "Комплект з 3 подушок у стилі бохо. Ідеально доповнює вігвам.",
+    price: 890,
+    category: "pillows",
+    badges: ["new"],
+    images: [
+      { src: "https://picsum.photos/seed/pillows1/600/700", alt: "Набір подушок Бохо" },
+    ],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: "5",
+    slug: "korzyna-pletena",
+    name: "Корзина плетена",
+    description: "Ручна робота. Натуральний ротанг. Для іграшок або декору поруч з вігвамом.",
+    price: 650,
+    category: "basket",
+    images: [
+      { src: "https://picsum.photos/seed/basket1/600/700", alt: "Корзина плетена" },
+    ],
+    inStock: true,
+    featured: false,
+  },
+  {
+    id: "6",
+    slug: "komplekt-lisova-kazka",
+    name: "Комплект «Лісова казка»",
+    description: "Повний комплект: вігвам + подушки + корзина + килимок в єдиному стилі.",
+    price: 5200,
+    category: "set",
+    badges: ["limited"],
+    images: [
+      { src: "https://picsum.photos/seed/set1/600/700", alt: "Комплект Лісова казка" },
+    ],
+    inStock: true,
+    featured: true,
+  },
+];
+
+export const MOCK_FEATURED_PRODUCTS = MOCK_PRODUCTS.filter((p) => p.featured);

@@ -1,0 +1,167 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-inter), serif;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  border-radius: 0;
+  border: 2px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+  transition:
+    transform 100ms ease,
+    box-shadow 100ms ease,
+    background-color 150ms ease;
+}
+
+/* ─── Sizes ─────────────────────────────────────── */
+
+.button[data-size="sm"] {
+  height: 32px;
+  padding: 0 12px;
+  font-size: var(--font-size-sm);
+}
+
+.button[data-size="md"] {
+  height: 44px;
+  padding: 0 20px;
+  font-size: var(--font-size-base);
+}
+
+.button[data-size="lg"] {
+  height: 56px;
+  padding: 0 32px;
+  font-size: var(--font-size-md);
+}
+
+/* ─── Primary ────────────────────────────────────── */
+
+.button[data-variant="primary"] {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--foreground);
+  box-shadow: 4px 4px 0 0 var(--foreground);
+}
+
+.button[data-variant="primary"]:hover:not(.-disabled, .-loading) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--foreground);
+}
+
+.button[data-variant="primary"]:active:not(.-disabled, .-loading) {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 var(--foreground);
+  transition-duration: 60ms;
+}
+
+/* ─── Secondary ──────────────────────────────────── */
+
+.button[data-variant="secondary"] {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--foreground);
+  box-shadow: 4px 4px 0 0 var(--foreground);
+}
+
+.button[data-variant="secondary"]:hover:not(.-disabled, .-loading) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--foreground);
+}
+
+.button[data-variant="secondary"]:active:not(.-disabled, .-loading) {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 var(--foreground);
+  transition-duration: 60ms;
+}
+
+/* ─── Ghost ──────────────────────────────────────── */
+
+.button[data-variant="ghost"] {
+  background: transparent;
+  color: var(--foreground);
+  border-color: transparent;
+}
+
+.button[data-variant="ghost"]:hover:not(.-disabled, .-loading) {
+  background: var(--background-variant);
+}
+
+.button[data-variant="ghost"]:active:not(.-disabled, .-loading) {
+  background: var(--background-variant);
+  transform: scale(0.97);
+  transition-duration: 60ms;
+}
+
+/* ─── Link ───────────────────────────────────────── */
+
+.button[data-variant="link"] {
+  background: transparent;
+  color: var(--primary);
+  border-color: transparent;
+  padding-inline: 0;
+  height: auto;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.button[data-variant="link"]:hover:not(.-disabled) {
+  text-decoration-thickness: 2px;
+}
+
+/* ─── Boolean modifiers ──────────────────────────── */
+
+.button.-full-width {
+  width: 100%;
+}
+
+.button.-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.button.-loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+/* ─── Inner parts ────────────────────────────────── */
+
+.button_label {
+  transition: opacity 150ms ease;
+}
+
+.button.-loading .button_label {
+  opacity: 0.35;
+}
+
+.button_spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 0.55s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.button.-loading .button_spinner {
+  opacity: 1;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
