@@ -31,7 +31,7 @@ export default function RootLayout({
       <html lang="en" className={`${geistSans.variable} ${inter.variable}`}>
         <body>
           <Header />
-          {children}
+          <main>{children}</main>
           <Footer />
         </body>
       </html>
