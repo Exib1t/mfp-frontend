@@ -1,7 +1,12 @@
 .featured-products {
-  padding: 80px 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  background: var(--background);
+  border-bottom: 2px solid var(--foreground);
+
+  &_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 2rem;
+  }
 
   &_header {
     display: flex;

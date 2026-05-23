@@ -10,21 +10,23 @@ const BASE_CLASS = "featured-products";
 function FeaturedProducts() {
   return (
     <section className={BASE_CLASS}>
-      <div className={`${BASE_CLASS}_header`}>
-        <Typography variant="h2" as="h2">
-          Популярні товари
-        </Typography>
-        <Link href="/products" className={`${BASE_CLASS}_link`}>
-          <Typography variant="body2" color="primary">
-            Весь каталог →
+      <div className={`${BASE_CLASS}_inner`}>
+        <div className={`${BASE_CLASS}_header`}>
+          <Typography variant="h2" as="h2">
+            Популярні товари
           </Typography>
-        </Link>
-      </div>
+          <Link href="/products" className={`${BASE_CLASS}_link`}>
+            <Typography variant="body2" color="primary">
+              Весь каталог →
+            </Typography>
+          </Link>
+        </div>
 
-      <div className={`${BASE_CLASS}_grid`}>
-        {MOCK_FEATURED_PRODUCTS.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        <div className={`${BASE_CLASS}_grid`}>
+          {MOCK_FEATURED_PRODUCTS.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
     </section>
   );

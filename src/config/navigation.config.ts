@@ -12,10 +12,6 @@ export const NAVIGATION_ITEMS = [
     href: "/products",
     title: "Products",
   },
-  {
-    href: "/cart",
-    title: "Cart",
-  },
 ] as const satisfies NavigationItem[];
 
 export const FOOTER_NAV_ITEMS = [

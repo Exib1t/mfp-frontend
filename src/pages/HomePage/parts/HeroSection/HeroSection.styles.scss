@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 20px;
-    padding: 80px 64px;
+    padding: calc(var(--header-height) + 48px) 64px 80px;
     align-self: stretch;
   }
 
@@ -26,7 +26,33 @@
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
-    margin-top: 8px;
+    margin-top: 4px;
+  }
+
+  /* ─── Trust row ──────────────────────────────────── */
+
+  &_trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    list-style: none;
+    margin-top: 4px;
+  }
+
+  &_trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-inter), sans-serif;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-muted);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  &_trust-mark {
+    font-size: 0.55rem;
+    color: var(--primary);
   }
 
   /* ─── Media ──────────────────────────────────────── */
@@ -67,9 +93,7 @@
     min-height: unset;
 
     &_content {
-      padding: 64px 2rem 48px;
-      max-width: unset;
-      margin-left: 0;
+      padding: calc(var(--header-height) + 40px) 2rem 48px;
     }
 
     &_media {

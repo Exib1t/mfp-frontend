@@ -1,6 +1,17 @@
-import Typography from "@/components/controls/Typography/Typography";
+import Link from "next/link";
+import "./Logo.styles.scss";
+
+const BASE_CLASS = "logo";
 
 const Logo = () => {
-  return <Typography variant={"h5"}>My Fairy Place</Typography>;
+  return (
+    <Link href="/" className={BASE_CLASS}>
+      <span className={`${BASE_CLASS}_mark`}>✦</span>
+      <span className={`${BASE_CLASS}_text`}>
+        My Fairy<strong> Place</strong>
+      </span>
+    </Link>
+  );
 };
+
 export default Logo;

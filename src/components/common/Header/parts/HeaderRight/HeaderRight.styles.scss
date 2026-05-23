@@ -1,5 +1,25 @@
 .header-right {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   flex: 1;
+  gap: 8px;
+
+  &_cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--foreground);
+    transition: color 200ms ease;
+
+    &:hover {
+      color: var(--primary);
+    }
+
+    &.-active {
+      color: var(--primary);
+    }
+  }
 }
