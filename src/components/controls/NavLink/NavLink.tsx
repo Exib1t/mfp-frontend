@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { NavigationItem } from "@/config/navigation.config";
 
-import "./NavLink.styles.css";
+import "./NavLink.styles.scss";
 
 const BASE_CLASS = "nav-link";
 

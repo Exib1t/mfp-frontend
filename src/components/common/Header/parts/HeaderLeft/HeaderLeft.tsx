@@ -1,6 +1,6 @@
 import Logo from "@/components/common/Logo/Logo";
 
-import "./HeaderLeft.styles.css";
+import "./HeaderLeft.styles.scss";
 
 const BASE_CLASS = "header-left";
 

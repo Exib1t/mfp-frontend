@@ -1,10 +1,17 @@
-import HeroSection from "@/pages/HomePage/parts/HeroSection/HeroSection";
+import HeroSection from "./parts/HeroSection/HeroSection";
+import FeaturedProducts from "./parts/FeaturedProducts/FeaturedProducts";
+import UspSection from "./parts/UspSection/UspSection";
+import CtaBanner from "./parts/CtaBanner/CtaBanner";
 
-const HomePage = () => {
+function HomePage() {
   return (
     <main>
       <HeroSection />
+      <FeaturedProducts />
+      <UspSection />
+      <CtaBanner />
     </main>
   );
-};
+}
+
 export default HomePage;

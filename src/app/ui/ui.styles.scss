@@ -1,0 +1,85 @@
+.ui-page {
+  padding: 80px 0;
+
+  &_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &_heading {
+    margin-bottom: 4px;
+  }
+}
+
+.ui-section {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &_title {
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--foreground);
+  }
+
+  &_body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.ui-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &_label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+  }
+
+  &_items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+/* Typography rows stack vertically */
+.ui-section:has(.typography[data-variant^="h"]) .ui-row_items,
+.ui-section .ui-row_items:has(.typography[data-variant="subtitle1"]),
+.ui-section .ui-row_items:has(.typography[data-variant="subtitle2"]) {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+/* Truncate demo */
+.ui-truncate-demo {
+  max-width: 300px;
+}
+
+/* Dark bg demo */
+.ui-dark-bg {
+  background: var(--foreground);
+  color: var(--background);
+  padding: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 2px solid var(--foreground);
+}
+
+/* ProductCard grid */
+.ui-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}

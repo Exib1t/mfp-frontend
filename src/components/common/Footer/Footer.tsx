@@ -7,7 +7,7 @@ import Logo from "@/components/common/Logo/Logo";
 import NavLink from "@/components/controls/NavLink/NavLink";
 import { FOOTER_NAV_ITEMS } from "@/config/navigation.config";
 
-import "./Footer.styles.css";
+import "./Footer.styles.scss";
 
 function Footer() {
   return (

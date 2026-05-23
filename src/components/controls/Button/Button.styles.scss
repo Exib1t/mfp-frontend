@@ -1,0 +1,182 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-inter), serif;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  border-radius: 0;
+  border: 2px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+  transition:
+    transform 100ms ease,
+    box-shadow 100ms ease,
+    background-color 150ms ease;
+
+  /* ─── Sizes ─────────────────────────────────────── */
+
+  &[data-size="sm"] {
+    height: 32px;
+    padding: 0 12px;
+    font-size: var(--font-size-sm);
+  }
+
+  &[data-size="md"] {
+    height: 44px;
+    padding: 0 20px;
+    font-size: var(--font-size-base);
+  }
+
+  &[data-size="lg"] {
+    height: 56px;
+    padding: 0 32px;
+    font-size: var(--font-size-md);
+  }
+
+  /* ─── Primary ────────────────────────────────────── */
+
+  &[data-variant="primary"] {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--foreground);
+    box-shadow: 4px 4px 0 0 var(--foreground);
+
+    &:hover:not(.-disabled, .-loading) {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 0 var(--foreground);
+    }
+
+    &:active:not(.-disabled, .-loading) {
+      transform: translate(4px, 4px);
+      box-shadow: 0 0 0 0 var(--foreground);
+      transition-duration: 60ms;
+    }
+  }
+
+  /* ─── Secondary ──────────────────────────────────── */
+
+  &[data-variant="secondary"] {
+    background: var(--background);
+    color: var(--foreground);
+    border-color: var(--foreground);
+    box-shadow: 4px 4px 0 0 var(--foreground);
+
+    &:hover:not(.-disabled, .-loading) {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 0 var(--foreground);
+    }
+
+    &:active:not(.-disabled, .-loading) {
+      transform: translate(4px, 4px);
+      box-shadow: 0 0 0 0 var(--foreground);
+      transition-duration: 60ms;
+    }
+  }
+
+  /* ─── Outline ────────────────────────────────────── */
+
+  &[data-variant="outline"] {
+    background: transparent;
+    color: currentColor;
+    border-color: currentColor;
+    box-shadow: 4px 4px 0 0 currentColor;
+
+    &:hover:not(.-disabled, .-loading) {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 0 currentColor;
+    }
+
+    &:active:not(.-disabled, .-loading) {
+      transform: translate(4px, 4px);
+      box-shadow: 0 0 0 0 currentColor;
+      transition-duration: 60ms;
+    }
+  }
+
+  /* ─── Ghost ──────────────────────────────────────── */
+
+  &[data-variant="ghost"] {
+    background: transparent;
+    color: var(--foreground);
+    border-color: transparent;
+
+    &:hover:not(.-disabled, .-loading) {
+      background: var(--background-variant);
+    }
+
+    &:active:not(.-disabled, .-loading) {
+      background: var(--background-variant);
+      transform: scale(0.97);
+      transition-duration: 60ms;
+    }
+  }
+
+  /* ─── Link ───────────────────────────────────────── */
+
+  &[data-variant="link"] {
+    background: transparent;
+    color: var(--primary);
+    border-color: transparent;
+    padding-inline: 0;
+    height: auto;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+
+    &:hover:not(.-disabled) {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  /* ─── Boolean modifiers ──────────────────────────── */
+
+  &.-full-width {
+    width: 100%;
+  }
+
+  &.-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.-loading {
+    cursor: wait;
+    pointer-events: none;
+  }
+
+  /* ─── Inner parts ────────────────────────────────── */
+
+  &_label {
+    transition: opacity 150ms ease;
+  }
+
+  &.-loading &_label {
+    opacity: 0.35;
+  }
+
+  &_spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: 1.1em;
+    height: 1.1em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: button-spin 0.55s linear infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,7 +1,7 @@
 import NavLink from "@/components/controls/NavLink/NavLink";
 import { NAVIGATION_ITEMS } from "@/config/navigation.config";
 
-import "./NavBar.styles.css";
+import "./NavBar.styles.scss";
 
 const BASE_CLASS = "nav-bar";
 

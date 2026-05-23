@@ -1,9 +1,9 @@
-type IconProps = {
+interface BrandIconProps {
   size?: number;
   className?: string;
-};
+}
 
-export function IconInstagram({ size = 18, className }: IconProps) {
+export function IconInstagram({ size = 18, className }: BrandIconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <rect x="2" y="2" width="20" height="20" rx="5" />
@@ -13,7 +13,7 @@ export function IconInstagram({ size = 18, className }: IconProps) {
   );
 }
 
-export function IconTelegram({ size = 18, className }: IconProps) {
+export function IconTelegram({ size = 18, className }: BrandIconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="M22 2L11 13" />

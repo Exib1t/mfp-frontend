@@ -1,0 +1,141 @@
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--foreground);
+  background: var(--background);
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+
+  &:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 5px 5px 0 0 var(--foreground);
+  }
+
+  &_link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* ─── Image ──────────────────────────────────────── */
+
+  &_image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--background-variant);
+  }
+
+  &_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms ease;
+  }
+
+  &:hover &_image {
+    transform: scale(1.04);
+  }
+
+  &_placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_placeholder-glyph {
+    font-size: 3rem;
+    color: var(--color-muted);
+    opacity: 0.4;
+  }
+
+  /* ─── Badges ─────────────────────────────────────── */
+
+  &_badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* ─── Out of stock overlay ───────────────────────── */
+
+  &.-out-of-stock &_image-wrap::after {
+    content: "Немає в наявності";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-inter), serif;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-muted);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  /* ─── Body ───────────────────────────────────────── */
+
+  &_body {
+    padding: 16px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  &_name {
+    margin: 0;
+  }
+
+  /* ─── Price ──────────────────────────────────────── */
+
+  &_price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  &_price-current {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--foreground);
+
+    &[data-sale="true"] {
+      color: var(--color-error);
+    }
+  }
+
+  &_price-original {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-muted);
+    text-decoration: line-through;
+  }
+
+  /* ─── Footer / CTA ───────────────────────────────── */
+
+  &_footer {
+    padding: 0 16px 16px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 200ms ease,
+      transform 200ms ease;
+  }
+
+  &:hover &_footer {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,4 +1,4 @@
-import "./HeaderRight.styles.css";
+import "./HeaderRight.styles.scss";
 
 const BASE_CLASS = "header-right";
 

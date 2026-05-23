@@ -44,6 +44,16 @@
 <Badge variant="warning">Останні 3</Badge>
 ```
 
+## Implementation
+
+```tsx
+const BASE_CLASS = "badge"; // defined before component function
+
+className={cn(BASE_CLASS, className)}
+```
+
+`BASE_CLASS` constant placed directly before the component function. All `cn()` calls use `BASE_CLASS` as first argument — never a raw string literal.
+
 ## Notes
 
 - Inline element, renders as `<span>`

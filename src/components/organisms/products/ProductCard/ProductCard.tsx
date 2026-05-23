@@ -1,128 +1,119 @@
-import cn from "classnames";
-import type { components } from "@/lib/api/v1";
-import "./ProductCard.styles.css";
+import Image from "next/image";
+import Link from "next/link";
+import Badge from "@/components/controls/Badge/Badge";
+import Button from "@/components/controls/Button/Button";
+import Typography from "@/components/controls/Typography/Typography";
+import type { Product, ProductBadge } from "@/entities/products/models";
+import { cn } from "@/lib/utils/cn";
+import { formatPrice } from "@/lib/utils/formatPrice";
 
-type ProductDto = components["schemas"]["ProductDto"];
+import "./ProductCard.styles.scss";
+
+interface BadgeConfig {
+  label: string;
+  variant: "primary" | "error" | "warning";
+}
+
+function getBadgeConfig(badge: ProductBadge, product: Product): BadgeConfig {
+  if (badge === "sale" && product.salePrice) {
+    const pct = Math.round((1 - product.salePrice / product.price) * 100);
+    return { label: `−${pct}%`, variant: "error" };
+  }
+  const map: Record<ProductBadge, BadgeConfig> = {
+    new: { label: "Новинка", variant: "primary" },
+    sale: { label: "Знижка", variant: "error" },
+    bestseller: { label: "Хіт", variant: "warning" },
+    limited: { label: "Останні", variant: "warning" },
+  };
+  return map[badge];
+}
+
+interface ProductCardProps {
+  product: Product;
+  className?: string;
+}
 
 const BASE_CLASS = "product-card";
 
-const STATUS_LABELS: Record<ProductDto["status"], string> = {
-  in_stock: "В наявності",
-  made_to_order: "Під замовлення",
-  out_of_stock: "Немає в наявності",
-};
-
-const UA_COLOR_MAP: Record<string, string> = {
-  білий: "#f5f0e8",
-  молочний: "#faf0dc",
-  чорний: "#2c2820",
-  синій: "#4a6fa5",
-  "темно-синій": "#1e3a5f",
-  червоний: "#c0392b",
-  "темно-червоний": "#8b1a1a",
-  вишневий: "#7b2029",
-  зелений: "#3d7a5a",
-  жовтий: "#e8b84b",
-  золотий: "#c9960c",
-  рожевий: "#e8a0b4",
-  бежевий: "#d4b896",
-  сірий: "#9a9590",
-  коричневий: "#8b6914",
-  фіолетовий: "#7c5c8a",
-  помаранчевий: "#cc6b1a",
-  терракотовий: "#c06040",
-};
-
-function resolveColor(name: string): string {
-  return UA_COLOR_MAP[name.toLowerCase()] ?? "#c8b49a";
-}
-
-interface Props {
-  product: ProductDto;
-}
-
-const ProductCard = ({ product }: Props) => {
-  const { name, slug, price, sale_price, status, new_category, variants, image_urls } =
+function ProductCard({ product, className }: ProductCardProps) {
+  const { slug, name, price, salePrice, images, badges, inStock, category } =
     product;
-
-  const discount = sale_price ? Math.round((1 - sale_price / price) * 100) : null;
-
-  const uniqueColors = [
-    ...new Set(variants.filter((v) => v.color !== null).map((v) => v.color as string)),
-  ];
-  const visibleColors = uniqueColors.slice(0, 5);
-  const extraColors = uniqueColors.length > 5 ? uniqueColors.length - 5 : 0;
-  const statusMod = status.replace(/_/g, "-");
+  const mainImage = images[0];
 
   return (
-    <article className={cn(BASE_CLASS, { [`${BASE_CLASS}--on-sale`]: !!sale_price })}>
-      <a href={`/products/${slug}`} className={`${BASE_CLASS}__link`}>
-        {/* Image */}
-        <div className={`${BASE_CLASS}__image-wrap`}>
-          {image_urls.length > 0 ? (
-            <img
-              src={image_urls[0]}
-              alt={name}
-              className={`${BASE_CLASS}__image`}
-              loading="lazy"
+    <article
+      className={cn(BASE_CLASS, className, { "-out-of-stock": !inStock })}
+    >
+      <Link href={`/products/${slug}`} className={`${BASE_CLASS}_link`}>
+        <div className={`${BASE_CLASS}_image-wrap`}>
+          {mainImage ? (
+            <Image
+              className={`${BASE_CLASS}_image`}
+              src={mainImage.src}
+              alt={mainImage.alt}
+              fill
+              sizes="(max-width: 560px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           ) : (
-            <div className={`${BASE_CLASS}__placeholder`}>
-              <span className={`${BASE_CLASS}__placeholder-glyph`} aria-hidden="true">
+            <div className={`${BASE_CLASS}_placeholder`}>
+              <span
+                className={`${BASE_CLASS}_placeholder-glyph`}
+                aria-hidden="true"
+              >
                 ✦
               </span>
             </div>
           )}
 
-          {discount !== null && (
-            <div className={`${BASE_CLASS}__ribbon`}>−{discount}%</div>
-          )}
-
-          <div className={cn(`${BASE_CLASS}__badge`, `${BASE_CLASS}__badge--${statusMod}`)}>
-            {STATUS_LABELS[status]}
-          </div>
-        </div>
-
-        {/* Body */}
-        <div className={`${BASE_CLASS}__body`}>
-          <p className={`${BASE_CLASS}__category`}>{new_category.name}</p>
-          <h3 className={`${BASE_CLASS}__name`}>{name}</h3>
-
-          <div className={`${BASE_CLASS}__price-row`}>
-            {sale_price ? (
-              <>
-                <s className={`${BASE_CLASS}__price-was`}>{price} ₴</s>
-                <strong className={`${BASE_CLASS}__price-now`}>{sale_price} ₴</strong>
-              </>
-            ) : (
-              <span className={`${BASE_CLASS}__price`}>{price} ₴</span>
-            )}
-          </div>
-
-          {visibleColors.length > 0 && (
-            <div className={`${BASE_CLASS}__swatches`}>
-              {visibleColors.map((color) => (
-                <span
-                  key={color}
-                  className={`${BASE_CLASS}__swatch`}
-                  style={{ background: resolveColor(color) }}
-                  title={color}
-                />
-              ))}
-              {extraColors > 0 && (
-                <span className={`${BASE_CLASS}__swatch-more`}>+{extraColors}</span>
-              )}
+          {badges && badges.length > 0 && (
+            <div className={`${BASE_CLASS}_badges`}>
+              {badges.map((badge) => {
+                const { label, variant } = getBadgeConfig(badge, product);
+                return (
+                  <Badge key={badge} variant={variant} size="sm">
+                    {label}
+                  </Badge>
+                );
+              })}
             </div>
           )}
         </div>
 
-        {/* CTA */}
-        <div className={`${BASE_CLASS}__footer`}>
-          <span className={`${BASE_CLASS}__cta`}>Детальніше</span>
+        <div className={`${BASE_CLASS}_body`}>
+          <Typography variant="overline" color="muted">
+            {category}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            as="h3"
+            className={`${BASE_CLASS}_name`}
+          >
+            {name}
+          </Typography>
+
+          <div className={`${BASE_CLASS}_price`}>
+            <span
+              className={`${BASE_CLASS}_price-current`}
+              data-sale={!!salePrice}
+            >
+              {formatPrice(salePrice ?? price)}
+            </span>
+            {salePrice && (
+              <span className={`${BASE_CLASS}_price-original`}>
+                {formatPrice(price)}
+              </span>
+            )}
+          </div>
         </div>
-      </a>
+
+        <div className={`${BASE_CLASS}_footer`}>
+          <Button variant="secondary" size="sm" fullWidth as="span">
+            Обрати
+          </Button>
+        </div>
+      </Link>
     </article>
   );
-};
+}
 
 export default ProductCard;

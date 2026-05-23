@@ -2,7 +2,7 @@ import HeaderLeft from "@/components/common/Header/parts/HeaderLeft/HeaderLeft";
 import HeaderRight from "@/components/common/Header/parts/HeaderRight/HeaderRight";
 import NavBar from "@/components/common/Header/parts/NavBar/NavBar";
 
-import "./Header.styles.css";
+import "./Header.styles.scss";
 
 const BASE_CLASS = "header";
 

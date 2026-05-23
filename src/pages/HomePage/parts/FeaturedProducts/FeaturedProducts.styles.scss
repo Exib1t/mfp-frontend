@@ -1,0 +1,33 @@
+.featured-products {
+  padding: 80px 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &_header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--foreground);
+    padding-bottom: 20px;
+  }
+
+  &_link {
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  &_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

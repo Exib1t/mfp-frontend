@@ -1,0 +1,46 @@
+.cta-banner {
+  background: var(--foreground);
+  color: var(--background);
+  border-top: 2px solid var(--foreground);
+
+  &_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  &_text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 560px;
+  }
+
+  &_overline {
+    color: var(--primary);
+  }
+
+  &_title,
+  &_subtitle {
+    color: var(--background);
+  }
+
+  &_btn {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    &_inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &_btn {
+      width: 100%;
+    }
+  }
+}

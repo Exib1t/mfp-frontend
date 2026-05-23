@@ -1,11 +1,4 @@
-import ProductList from "@/components/organisms/products/ProductList/ProductList";
-
 const Page = () => {
-  return (
-    <div>
-      Products
-      <ProductList />
-    </div>
-  );
+  return <div>Products</div>;
 };
 export default Page;

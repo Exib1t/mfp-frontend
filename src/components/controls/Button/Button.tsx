@@ -1,27 +1,29 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-import "./Button.styles.css";
+import "./Button.styles.scss";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "link";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "link" | "outline";
 export type ButtonSize = "sm" | "md" | "lg";
 
-type ButtonOwnProps = {
+interface ButtonBaseProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
   fullWidth?: boolean;
   disabled?: boolean;
-};
+}
 
-type ButtonProps<E extends ElementType> = ButtonOwnProps & {
+type ButtonProps<E extends ElementType> = ButtonBaseProps & {
   as?: E;
   className?: string;
   children?: ReactNode;
 } & Omit<
     ComponentPropsWithoutRef<E>,
-    keyof ButtonOwnProps | "as" | "className" | "children"
+    keyof ButtonBaseProps | "as" | "className" | "children"
   >;
+
+const BASE_CLASS = "button";
 
 function Button<E extends ElementType = "button">({
   variant = "primary",
@@ -39,7 +41,7 @@ function Button<E extends ElementType = "button">({
 
   return (
     <Component
-      className={cn("button", className, {
+      className={cn(BASE_CLASS, className, {
         "-loading": loading,
         "-disabled": isDisabled,
         "-full-width": fullWidth,
@@ -49,8 +51,8 @@ function Button<E extends ElementType = "button">({
       {...rest}
       {...(isDisabled && { disabled: true })}
     >
-      <span className="button_spinner" aria-hidden="true" />
-      <span className="button_label">{children}</span>
+      {loading && <span className={`${BASE_CLASS}_spinner`} aria-hidden="true" />}
+      <span className={`${BASE_CLASS}_label`}>{children}</span>
     </Component>
   );
 }

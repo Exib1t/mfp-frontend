@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-import "./Badge.styles.css";
+import "./Badge.styles.scss";
 
 export type BadgeVariant =
   | "default"
@@ -11,12 +11,14 @@ export type BadgeVariant =
   | "error";
 export type BadgeSize = "sm" | "md";
 
-type BadgeProps = {
+interface BadgeProps {
   variant?: BadgeVariant;
   size?: BadgeSize;
   className?: string;
   children?: ReactNode;
-};
+}
+
+const BASE_CLASS = "badge";
 
 function Badge({
   variant = "default",
@@ -26,7 +28,7 @@ function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={cn("badge", className)}
+      className={cn(BASE_CLASS, className)}
       data-variant={variant}
       data-size={size}
     >

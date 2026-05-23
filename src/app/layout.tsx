@@ -4,7 +4,7 @@ import Providers from "@/app/Providers";
 import Header from "@/components/common/Header/Header";
 import Footer from "@/components/common/Footer/Footer";
 
-import "../assets/styles/main.css";
+import "../assets/styles/main.scss";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

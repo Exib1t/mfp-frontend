@@ -6,7 +6,7 @@
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `variant` | `"primary" \| "secondary" \| "ghost" \| "link"` | `"primary"` | Visual style |
+| `variant` | `"primary" \| "secondary" \| "ghost" \| "link" \| "outline"` | `"primary"` | Visual style |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Size |
 | `as` | `HtmlTag` | `"button"` | Override tag (e.g. `"a"` for link buttons) |
 | `loading` | `boolean` | `false` | Shows spinner, disables interaction |
@@ -24,6 +24,7 @@ All native HTML attributes of rendered element also accepted.
 | `secondary` | Secondary action — "Продовжити покупки" |
 | `ghost` | Tertiary, low emphasis — filters, icon buttons |
 | `link` | Looks like a text link, no background |
+| `outline` | Transparent bg + `currentColor` border — adapts to any background context |
 
 ## Sizes
 
@@ -68,6 +69,16 @@ All native HTML attributes of rendered element also accepted.
 <Button loading>Оформлення...</Button>
 <Button fullWidth>Підтвердити замовлення</Button>
 ```
+
+## Implementation
+
+```tsx
+const BASE_CLASS = "button"; // defined before component function
+
+className={cn(BASE_CLASS, className, { "-loading": loading, "-disabled": isDisabled, "-full-width": fullWidth })}
+```
+
+`BASE_CLASS` constant placed directly before the component function. All `cn()` calls use `BASE_CLASS` as first argument — never a raw string literal.
 
 ## Notes
 

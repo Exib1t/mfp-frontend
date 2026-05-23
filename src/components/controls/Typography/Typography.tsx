@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
-import "./Typography.styles.css";
+import "./Typography.styles.scss";
 
 export type TypographyVariant =
   | "h1"
@@ -46,22 +46,24 @@ const VARIANT_TAG: Record<TypographyVariant, ElementType> = {
   label: "label",
 };
 
-type TypographyOwnProps = {
+interface TypographyBaseProps {
   variant?: TypographyVariant;
   color?: TypographyColor;
   weight?: TypographyWeight;
   align?: TypographyAlign;
   truncate?: boolean;
-};
+}
 
-type TypographyProps<E extends ElementType> = TypographyOwnProps & {
+type TypographyProps<E extends ElementType> = TypographyBaseProps & {
   as?: E;
   className?: string;
   children?: ReactNode;
 } & Omit<
     ComponentPropsWithoutRef<E>,
-    keyof TypographyOwnProps | "as" | "className" | "children"
+    keyof TypographyBaseProps | "as" | "className" | "children"
   >;
+
+const BASE_CLASS = "typography";
 
 function Typography<E extends ElementType = "p">({
   variant = "body1",
@@ -78,7 +80,7 @@ function Typography<E extends ElementType = "p">({
 
   return (
     <Component
-      className={cn("typography", className, { "-truncate": truncate })}
+      className={cn(BASE_CLASS, className, { "-truncate": truncate })}
       data-variant={variant}
       data-color={color}
       data-weight={weight}

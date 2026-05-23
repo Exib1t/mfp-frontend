@@ -95,3 +95,13 @@ Follows [CSS Conventions](../css-conventions.md):
 .typography[data-weight="bold"] { ... }      /* value → data attribute */
 .typography.-truncate { ... }               /* boolean → -modifier class */
 ```
+
+## Implementation
+
+```tsx
+const BASE_CLASS = "typography"; // defined before component function
+
+className={cn(BASE_CLASS, className, { "-truncate": truncate })}
+```
+
+`BASE_CLASS` constant placed directly before the component function. All `cn()` calls use `BASE_CLASS` as first argument — never a raw string literal.
