@@ -1,4 +1,5 @@
-const Page = () => {
-  return <div>Products</div>;
-};
-export default Page;
+import ProductsPage from "@/pages/ProductsPage/ProductsPage";
+
+export default function Page() {
+  return <ProductsPage />;
+}

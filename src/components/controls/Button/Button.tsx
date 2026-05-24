@@ -12,6 +12,7 @@ interface ButtonBaseProps {
   loading?: boolean;
   fullWidth?: boolean;
   disabled?: boolean;
+  isActive?: boolean;
 }
 
 type ButtonProps<E extends ElementType> = ButtonBaseProps & {
@@ -31,6 +32,7 @@ function Button<E extends ElementType = "button">({
   loading = false,
   fullWidth = false,
   disabled = false,
+  isActive = false,
   as,
   className,
   children,
@@ -45,6 +47,7 @@ function Button<E extends ElementType = "button">({
         "-loading": loading,
         "-disabled": isDisabled,
         "-full-width": fullWidth,
+        "-active": isActive,
       })}
       data-variant={variant}
       data-size={size}

@@ -1,0 +1,55 @@
+.products-page {
+  padding: calc(var(--header-height) + 48px) 0 80px;
+
+  &_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── Header ─────────────────────────────────────── */
+
+  &_header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--foreground);
+  }
+
+  /* ─── Filters ────────────────────────────────────── */
+
+  &_filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  /* ─── Grid ───────────────────────────────────────── */
+
+  &_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ─── Empty state ────────────────────────────────── */
+
+  &_empty {
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  /* ─── Responsive ─────────────────────────────────── */
+
+  @media (max-width: 768px) {
+    padding: calc(var(--header-height) + 32px) 0 60px;
+  }
+}
