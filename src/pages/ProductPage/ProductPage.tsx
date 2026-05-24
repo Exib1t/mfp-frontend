@@ -34,25 +34,48 @@ interface ProductPageProps {
 const BASE_CLASS = "product-page";
 
 function ProductPage({ product }: ProductPageProps) {
-  const { name, description, price, salePrice, images, badges, inStock, category } = product;
+  const {
+    name,
+    description,
+    price,
+    salePrice,
+    images,
+    badges,
+    inStock,
+    category,
+  } = product;
   const mainImage = images[0];
 
   return (
     <div className={BASE_CLASS}>
       <nav className={`${BASE_CLASS}_breadcrumb`} aria-label="Breadcrumb">
         <Link href="/" className={`${BASE_CLASS}_breadcrumb-link`}>
-          <Typography variant="caption" color="muted">Home</Typography>
+          <Typography variant="caption" color="muted">
+            Home
+          </Typography>
         </Link>
-        <Typography variant="caption" color="muted" className={`${BASE_CLASS}_breadcrumb-sep`}>
+        <Typography
+          variant="caption"
+          color="muted"
+          className={`${BASE_CLASS}_breadcrumb-sep`}
+        >
           /
         </Typography>
         <Link href="/products" className={`${BASE_CLASS}_breadcrumb-link`}>
-          <Typography variant="caption" color="muted">Products</Typography>
+          <Typography variant="caption" color="muted">
+            Products
+          </Typography>
         </Link>
-        <Typography variant="caption" color="muted" className={`${BASE_CLASS}_breadcrumb-sep`}>
+        <Typography
+          variant="caption"
+          color="muted"
+          className={`${BASE_CLASS}_breadcrumb-sep`}
+        >
           /
         </Typography>
-        <Typography variant="caption" color="foreground">{name}</Typography>
+        <Typography variant="caption" color="foreground">
+          {name}
+        </Typography>
       </nav>
 
       <div className={`${BASE_CLASS}_grid`}>
@@ -97,10 +120,7 @@ function ProductPage({ product }: ProductPageProps) {
           )}
 
           <div className={`${BASE_CLASS}_price-row`}>
-            <span
-              className={`${BASE_CLASS}_price`}
-              data-sale={!!salePrice}
-            >
+            <span className={`${BASE_CLASS}_price`} data-sale={!!salePrice}>
               {formatPrice(salePrice ?? price)}
             </span>
             {salePrice && (
@@ -115,7 +135,11 @@ function ProductPage({ product }: ProductPageProps) {
           </Typography>
 
           {!inStock && (
-            <Typography variant="caption" color="muted" className={`${BASE_CLASS}_stock`}>
+            <Typography
+              variant="caption"
+              color="muted"
+              className={`${BASE_CLASS}_stock`}
+            >
               Немає в наявності
             </Typography>
           )}
@@ -124,7 +148,13 @@ function ProductPage({ product }: ProductPageProps) {
             <Button variant="primary" size="lg" fullWidth disabled={!inStock}>
               {inStock ? "Додати до кошика" : "Немає в наявності"}
             </Button>
-            <Button variant="ghost" size="md" fullWidth as={Link} href="/products">
+            <Button
+              variant="ghost"
+              size="md"
+              fullWidth
+              as={Link}
+              href="/products"
+            >
               ← Назад до каталогу
             </Button>
           </div>

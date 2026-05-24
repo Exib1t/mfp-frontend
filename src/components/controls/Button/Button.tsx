@@ -3,7 +3,12 @@ import { cn } from "@/lib/utils/cn";
 
 import "./Button.styles.scss";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "link" | "outline";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "link"
+  | "outline";
 export type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonBaseProps {
@@ -54,7 +59,9 @@ function Button<E extends ElementType = "button">({
       {...rest}
       {...(isDisabled && { disabled: true })}
     >
-      {loading && <span className={`${BASE_CLASS}_spinner`} aria-hidden="true" />}
+      {loading && (
+        <span className={`${BASE_CLASS}_spinner`} aria-hidden="true" />
+      )}
       <span className={`${BASE_CLASS}_label`}>{children}</span>
     </Component>
   );

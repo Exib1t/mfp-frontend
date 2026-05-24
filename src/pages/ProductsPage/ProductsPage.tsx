@@ -19,13 +19,15 @@ const CATEGORY_LABELS: Record<ProductCategory, string> = {
 };
 
 const AVAILABLE_CATEGORIES = Array.from(
-  new Set(MOCK_PRODUCTS.map((p) => p.category))
+  new Set(MOCK_PRODUCTS.map((p) => p.category)),
 ) as ProductCategory[];
 
 const BASE_CLASS = "products-page";
 
 function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null);
+  const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(
+    null,
+  );
 
   const filtered =
     activeCategory === null
