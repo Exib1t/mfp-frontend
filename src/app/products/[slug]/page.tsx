@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { MOCK_PRODUCTS } from "@/entities/products/mocks";
-import ProductPage from "@/pages/ProductPage/ProductPage";
+import ProductPage from "@/views/ProductPage/ProductPage";
 
 interface Props {
   params: Promise<{ slug: string }>;

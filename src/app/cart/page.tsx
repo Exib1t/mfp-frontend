@@ -1,4 +1,4 @@
-import CartPage from "@/pages/CartPage/CartPage";
+import CartPage from "@/views/CartPage/CartPage";
 
 export default function Page() {
   return <CartPage />;
