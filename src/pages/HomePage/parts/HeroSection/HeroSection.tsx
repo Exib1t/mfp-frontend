@@ -36,7 +36,7 @@ function HeroSection() {
           <Button as={Link} href="/products" size="lg">
             Переглянути каталог
           </Button>
-          <Button as={Link} href="/configure" variant="secondary" size="lg">
+          <Button as={Link} href="/configurator" variant="secondary" size="lg">
             Зібрати вігвам
           </Button>
         </div>
