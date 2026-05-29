@@ -21,7 +21,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={cn(BASE_CLASS, { "-scrolled": scrolled })}>
+    <header className={cn(BASE_CLASS, { "-scrolled": scrolled })} style={{ viewTransitionName: "site-header" }}>
       <HeaderLeft />
       <NavBar />
       <HeaderRight />

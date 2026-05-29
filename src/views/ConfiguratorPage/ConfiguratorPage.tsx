@@ -373,7 +373,7 @@ function ConfiguratorPage() {
             </div>
           </div>
           <div className={`${BASE_CLASS}_sticky-bar-actions`}>
-            <Button variant="ghost" size="md" as={Link} href="/products">
+            <Button variant="ghost" size="md" as={Link} href="/products" transitionTypes={["nav-back"]}>
               <ChevronLeft size={16} strokeWidth={2} />
               До каталогу
             </Button>

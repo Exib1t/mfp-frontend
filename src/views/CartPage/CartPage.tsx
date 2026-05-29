@@ -223,6 +223,7 @@ function CartPage() {
               fullWidth
               as={Link}
               href="/products"
+              transitionTypes={["nav-back"]}
             >
               <ChevronLeft size={16} strokeWidth={2} />
               Продовжити покупки

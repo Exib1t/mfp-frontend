@@ -59,3 +59,75 @@ a {
   scrollbar-width: thin;
   scrollbar-color: rgba(23, 23, 23, 0.2) transparent;
 }
+
+/* ─── View Transitions ───────────────────────────────── */
+
+/* Keyframes */
+@keyframes vt-fade {
+  from { opacity: 0; filter: blur(2px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+@keyframes vt-slide-x {
+  from { translate: var(--vt-slide-offset, 40px) 0; }
+  to   { translate: 0 0; }
+}
+
+/* Page crossfade (default navigation) */
+::view-transition-old(page-content) {
+  animation: 150ms ease-in both vt-fade reverse;
+}
+::view-transition-new(page-content) {
+  animation: 220ms ease-out 150ms both vt-fade;
+}
+
+/* Directional nav-forward */
+::view-transition-old(.nav-forward) {
+  --vt-slide-offset: -40px;
+  animation:
+    150ms ease-in both vt-fade reverse,
+    350ms ease-in-out both vt-slide-x reverse;
+}
+::view-transition-new(.nav-forward) {
+  --vt-slide-offset: 40px;
+  animation:
+    220ms ease-out 150ms both vt-fade,
+    350ms ease-in-out both vt-slide-x;
+}
+
+/* Directional nav-back */
+::view-transition-old(.nav-back) {
+  --vt-slide-offset: 40px;
+  animation:
+    150ms ease-in both vt-fade reverse,
+    350ms ease-in-out both vt-slide-x reverse;
+}
+::view-transition-new(.nav-back) {
+  --vt-slide-offset: -40px;
+  animation:
+    220ms ease-out 150ms both vt-fade,
+    350ms ease-in-out both vt-slide-x;
+}
+
+/* Shared product image morph */
+::view-transition-group(.product-image) {
+  animation-duration: 380ms;
+}
+
+/* Header — фиксированный, не анимируется */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) { display: none; }
+::view-transition-new(site-header) { animation: none; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

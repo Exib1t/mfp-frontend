@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
+import { ViewTransition } from "react";
 import Providers from "@/app/Providers";
 import Header from "@/components/common/Header/Header";
 import Footer from "@/components/common/Footer/Footer";
@@ -31,7 +32,9 @@ export default function RootLayout({
       <html lang="en" className={`${geistSans.variable} ${inter.variable}`}>
         <body>
           <Header />
-          <main>{children}</main>
+          <ViewTransition name="page-content">
+            <main>{children}</main>
+          </ViewTransition>
           <Footer />
         </body>
       </html>

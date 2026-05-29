@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ShoppingBag } from "lucide-react";
+import { ViewTransition } from "react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
@@ -49,10 +50,10 @@ function ProductPage({ product }: ProductPageProps) {
 
   return (
     <div className={BASE_CLASS}>
-      <nav className={`${BASE_CLASS}_breadcrumb`} aria-label="Breadcrumb">
+      <nav className={`${BASE_CLASS}_breadcrumb`} aria-label="Хлібні крихти">
         <Link href="/" className={`${BASE_CLASS}_breadcrumb-link`}>
           <Typography variant="caption" color="muted">
-            Home
+            Головна
           </Typography>
         </Link>
         <Typography
@@ -64,7 +65,7 @@ function ProductPage({ product }: ProductPageProps) {
         </Typography>
         <Link href="/products" className={`${BASE_CLASS}_breadcrumb-link`}>
           <Typography variant="caption" color="muted">
-            Products
+            Каталог
           </Typography>
         </Link>
         <Typography
@@ -80,22 +81,24 @@ function ProductPage({ product }: ProductPageProps) {
       </nav>
 
       <div className={`${BASE_CLASS}_grid`}>
-        <div className={`${BASE_CLASS}_image-wrap`}>
-          {mainImage ? (
-            <Image
-              className={`${BASE_CLASS}_image`}
-              src={mainImage.src}
-              alt={mainImage.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-          ) : (
-            <div className={`${BASE_CLASS}_placeholder`}>
-              <span aria-hidden="true">✦</span>
-            </div>
-          )}
-        </div>
+        <ViewTransition name={`product-image-${product.slug}`} share="product-image">
+          <div className={`${BASE_CLASS}_image-wrap`}>
+            {mainImage ? (
+              <Image
+                className={`${BASE_CLASS}_image`}
+                src={mainImage.src}
+                alt={mainImage.alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            ) : (
+              <div className={`${BASE_CLASS}_placeholder`}>
+                <span aria-hidden="true">✦</span>
+              </div>
+            )}
+          </div>
+        </ViewTransition>
 
         <div className={`${BASE_CLASS}_info`}>
           <div>
@@ -156,6 +159,7 @@ function ProductPage({ product }: ProductPageProps) {
               fullWidth
               as={Link}
               href="/products"
+              transitionTypes={["nav-back"]}
             >
               <ChevronLeft size={16} strokeWidth={2} />
               Назад до каталогу

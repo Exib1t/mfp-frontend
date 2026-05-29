@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Wand2 } from "lucide-react";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 
@@ -56,6 +57,7 @@ function ConfiguratorSection() {
           </ul>
 
           <Button as={Link} href="/configurator" size="lg">
+            <Wand2 size={18} strokeWidth={2} />
             Зібрати свій вігвам
           </Button>
         </div>

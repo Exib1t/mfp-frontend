@@ -6,6 +6,7 @@
   gap: 8px;
 
   &_cart {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,5 +22,22 @@
     &.-active {
       color: var(--primary);
     }
+  }
+
+  &_cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: var(--font-weight-semibold);
+    line-height: 16px;
+    text-align: center;
+    pointer-events: none;
   }
 }

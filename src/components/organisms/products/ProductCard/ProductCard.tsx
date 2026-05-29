@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
+import { ViewTransition } from "react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
@@ -46,33 +47,35 @@ function ProductCard({ product, className }: ProductCardProps) {
 
   return (
     <article className={cn(BASE_CLASS, className, { "-out-of-stock": !inStock })}>
-      <Link href={href} className={`${BASE_CLASS}_media-link`} tabIndex={-1}>
-        <div className={`${BASE_CLASS}_image-wrap`}>
-          {mainImage ? (
-            <Image
-              className={`${BASE_CLASS}_image`}
-              src={mainImage.src}
-              alt={mainImage.alt}
-              fill
-              sizes="(max-width: 560px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            />
-          ) : (
-            <div className={`${BASE_CLASS}_placeholder`}>
-              <span className={`${BASE_CLASS}_placeholder-glyph`} aria-hidden="true">✦</span>
-            </div>
-          )}
+      <Link href={href} className={`${BASE_CLASS}_media-link`} tabIndex={-1} transitionTypes={["nav-forward"]}>
+        <ViewTransition name={`product-image-${slug}`} share="product-image">
+          <div className={`${BASE_CLASS}_image-wrap`}>
+            {mainImage ? (
+              <Image
+                className={`${BASE_CLASS}_image`}
+                src={mainImage.src}
+                alt={mainImage.alt}
+                fill
+                sizes="(max-width: 560px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              />
+            ) : (
+              <div className={`${BASE_CLASS}_placeholder`}>
+                <span className={`${BASE_CLASS}_placeholder-glyph`} aria-hidden="true">✦</span>
+              </div>
+            )}
 
-          {badges && badges.length > 0 && (
-            <div className={`${BASE_CLASS}_badges`}>
-              {badges.map((badge) => {
-                const { label, variant } = getBadgeConfig(badge, product);
-                return (
-                  <Badge key={badge} variant={variant} size="sm">{label}</Badge>
-                );
-              })}
-            </div>
-          )}
-        </div>
+            {badges && badges.length > 0 && (
+              <div className={`${BASE_CLASS}_badges`}>
+                {badges.map((badge) => {
+                  const { label, variant } = getBadgeConfig(badge, product);
+                  return (
+                    <Badge key={badge} variant={variant} size="sm">{label}</Badge>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </ViewTransition>
       </Link>
 
       <div className={`${BASE_CLASS}_body`}>
