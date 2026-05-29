@@ -1,5 +1,5 @@
 .configurator {
-  padding: calc(var(--header-height) + 48px) 0 80px;
+  padding: calc(var(--header-height) + 48px) 0 160px;
 
   &_inner {
     max-width: 1280px;
@@ -28,7 +28,7 @@
   }
 
   /* ─────────────────────────────────────────────────── */
-  /* PREVIEW                                             */
+  /* PREVIEW (sticky)                                    */
   /* ─────────────────────────────────────────────────── */
 
   &_preview {
@@ -36,7 +36,6 @@
     top: calc(var(--header-height) + 24px);
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
 
   &_preview-image-wrap {
@@ -94,10 +93,7 @@
 
   &_preview-summary {
     border: 2px solid var(--foreground);
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    padding: 16px 20px;
     background: var(--background);
   }
 
@@ -105,14 +101,8 @@
     display: block;
   }
 
-  &_preview-price-row {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-  }
-
   /* ─────────────────────────────────────────────────── */
-  /* OPTIONS                                             */
+  /* OPTIONS (scrolls)                                   */
   /* ─────────────────────────────────────────────────── */
 
   &_options {
@@ -241,7 +231,6 @@
     &.-active {
       transform: translate(4px, 4px);
       box-shadow: 0 0 0 0 var(--foreground);
-      outline: 0;
 
       .configurator_fabric-card-info {
         background: var(--foreground);
@@ -417,11 +406,69 @@
     }
   }
 
+  /* ─── Sticky bar ─────────────────────────────────── */
+
+  &_sticky-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--foreground);
+    border-top: 2px solid var(--foreground);
+  }
+
+  &_sticky-bar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  &_sticky-bar-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &_sticky-bar-summary {
+    display: block;
+    color: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &_sticky-bar-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+
+    * {
+      color: var(--background);
+    }
+  }
+
+  &_sticky-bar-base {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  &_sticky-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
   /* ─── Responsive ─────────────────────────────────── */
 
   @media (max-width: 1100px) {
     &_layout {
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 320px 1fr;
       gap: 40px;
     }
   }
@@ -441,7 +488,7 @@
   }
 
   @media (max-width: 560px) {
-    padding: calc(var(--header-height) + 24px) 0 60px;
+    padding: calc(var(--header-height) + 24px) 0 160px;
 
     &_size-grid,
     &_fabric-grid {
@@ -450,6 +497,17 @@
 
     &_addon-grid {
       grid-template-columns: 1fr;
+    }
+
+    &_sticky-bar-inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 12px 1.5rem;
+    }
+
+    &_sticky-bar-actions {
+      flex-direction: column-reverse;
     }
   }
 }
