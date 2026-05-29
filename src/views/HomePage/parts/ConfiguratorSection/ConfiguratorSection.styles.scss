@@ -1,0 +1,135 @@
+.configurator-section {
+  background: var(--background);
+  border-bottom: 2px solid var(--foreground);
+
+  &_inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &_title {
+    margin-top: -8px;
+  }
+
+  &_desc {
+    max-width: 420px;
+  }
+
+  &_features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &_feature {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  &_feature-mark {
+    color: var(--primary);
+    font-size: var(--font-size-xs);
+    flex-shrink: 0;
+  }
+
+  &_feature-label {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+
+  &_visual {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &_visual-inner {
+    border: 2px solid var(--foreground);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  &_visual-label {
+    margin-bottom: -8px;
+  }
+
+  &_swatches {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  &_swatch {
+    aspect-ratio: 1;
+    border: 2px solid var(--foreground);
+    cursor: default;
+  }
+
+  &_sizes {
+    display: flex;
+    gap: 8px;
+  }
+
+  &_size-badge {
+    border: 2px solid var(--foreground);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_combo-count {
+    margin-top: 8px;
+    padding-top: 24px;
+    border-top: 2px solid var(--foreground);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  @media (max-width: 900px) {
+    &_inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    &_visual {
+      justify-content: flex-start;
+    }
+
+    &_visual-inner {
+      max-width: 100%;
+    }
+
+    &_swatches {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    &_inner {
+      padding: 60px 1.5rem;
+    }
+  }
+}

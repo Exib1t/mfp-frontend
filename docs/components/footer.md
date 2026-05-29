@@ -23,12 +23,13 @@ Global footer. Present on every page. Navigation, contacts, social links, copyri
 - Short tagline (1–2 lines)
 
 ### Column 2 — Navigation
-Links:
-- Каталог → `/products`
-- Про нас → `/about`
-- Доставка і оплата → `/delivery`
-- Блог → `/blog`
-- Контакти → `/contacts`
+Links from `FOOTER_NAV_ITEMS` in `navigation.config.ts`. Each item has an icon key — rendered via `NavLink`.
+
+- Каталог → `/products` (icon: `layout-grid`)
+- Про нас → `/about` (icon: `info`)
+- Доставка і оплата → `/delivery` (icon: `truck`)
+- Блог → `/blog` (icon: `book-open`)
+- Контакти → `/contacts` (icon: `mail`)
 
 ### Column 3 — Contacts & Social
 - Phone (tel: link)

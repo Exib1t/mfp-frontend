@@ -1,32 +1,57 @@
 .hero-section {
-  min-height: 100svh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: var(--background-variant);
+  position: relative;
+  overflow: hidden;
+  min-height: max(100svh, 900px);
   border-bottom: 2px solid var(--foreground);
 
+  /* ─── Full-screen image ──────────────────────────── */
+
+  &_media {
+    position: absolute;
+    inset: 0;
+  }
+
+  &_image {
+    object-fit: cover;
+  }
+
+  &_badge {
+    position: absolute;
+    right: 32px;
+    bottom: 32px;
+    padding: 10px 20px;
+    color: #fff;
+    border: 2px solid var(--foreground);
+    background: var(--primary);
+  }
+
+  /* ─── Blur overlay content ───────────────────────── */
+
   &_content {
+    position: absolute;
+    top: calc(var(--header-height) + 64px);
+    left: 64px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+
+    max-width: 500px;
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    background: color-mix(in srgb, var(--background-variant) 72%, transparent);
     gap: 20px;
-    padding: calc(var(--header-height) + 48px) 64px 80px;
-    align-self: stretch;
+    backdrop-filter: blur(4px);
   }
 
   &_title {
     margin: 0;
   }
 
-  &_subtitle {
-    max-width: 480px;
-  }
-
   &_actions {
     display: flex;
-    gap: 16px;
     flex-wrap: wrap;
     margin-top: 4px;
+    gap: 16px;
   }
 
   /* ─── Trust row ──────────────────────────────────── */
@@ -34,20 +59,20 @@
   &_trust {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 20px;
-    list-style: none;
     margin-top: 4px;
+    list-style: none;
+    gap: 4px 20px;
   }
 
   &_trust-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
     font-family: var(--font-inter), sans-serif;
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
-    color: var(--color-muted);
+    display: flex;
+    align-items: center;
     letter-spacing: var(--letter-spacing-wide);
+    color: var(--foreground);
+    gap: 6px;
   }
 
   &_trust-mark {
@@ -55,52 +80,20 @@
     color: var(--primary);
   }
 
-  /* ─── Media ──────────────────────────────────────── */
-
-  &_media {
-    display: flex;
-    align-items: stretch;
-    border-left: 2px solid var(--foreground);
-  }
-
-  &_image-wrap {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  &_image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  &_image-badge {
-    position: absolute;
-    bottom: 32px;
-    left: -2px;
-    background: var(--primary);
-    color: #fff;
-    padding: 10px 20px;
-    border: 2px solid var(--foreground);
-  }
-
   /* ─── Responsive ─────────────────────────────────── */
 
   @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    min-height: unset;
-
     &_content {
-      padding: calc(var(--header-height) + 40px) 2rem 48px;
+      top: calc(var(--header-height) + 24px);
+      right: 16px;
+      left: 16px;
+      max-width: none;
+      padding: 28px 24px;
     }
 
-    &_media {
-      border-left: none;
-      border-top: 2px solid var(--foreground);
-      height: 60vw;
-      max-height: 480px;
+    &_badge {
+      right: 16px;
+      bottom: 20px;
     }
   }
 }

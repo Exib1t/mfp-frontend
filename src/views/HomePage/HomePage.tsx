@@ -1,4 +1,5 @@
 import CtaBanner from "./parts/CtaBanner/CtaBanner";
+import ConfiguratorSection from "./parts/ConfiguratorSection/ConfiguratorSection";
 import FeaturedProducts from "./parts/FeaturedProducts/FeaturedProducts";
 import HeroSection from "./parts/HeroSection/HeroSection";
 import StatsSection from "./parts/StatsSection/StatsSection";
@@ -8,6 +9,7 @@ function HomePage() {
   return (
     <>
       <HeroSection />
+      <ConfiguratorSection />
       <StatsSection />
       <FeaturedProducts />
       <UspSection />

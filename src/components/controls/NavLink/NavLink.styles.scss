@@ -7,6 +7,20 @@
   text-decoration: none;
   position: relative;
   padding-bottom: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &_icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 220ms ease;
+  }
+
+  &:hover &_icon,
+  &.-active &_icon {
+    opacity: 1;
+  }
 
   &::after {
     content: "";

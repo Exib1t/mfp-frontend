@@ -12,14 +12,14 @@ function CtaBanner() {
       <div className={`${BASE_CLASS}_inner`}>
         <div className={`${BASE_CLASS}_text`}>
           <Typography variant="overline" className={`${BASE_CLASS}_overline`}>
-            Конфігуратор вігваму
+            Handmade · Україна
           </Typography>
           <Typography variant="h2" as="h2" className={`${BASE_CLASS}_title`}>
-            Зберіть свій унікальний вігвам
+            Знайдіть вігвам своєї мрії
           </Typography>
           <Typography variant="body1" className={`${BASE_CLASS}_subtitle`}>
-            Обирайте тканину, подушки, прапорці та аксесуари — і побачте
-            результат одразу.
+            Готові вироби, подушки та аксесуари ручної роботи — все в одному
+            каталозі.
           </Typography>
         </div>
         <Button
@@ -29,7 +29,7 @@ function CtaBanner() {
           variant="outline"
           className={`${BASE_CLASS}_btn`}
         >
-          Перейти до каталогу
+          Переглянути каталог
         </Button>
       </div>
     </section>
