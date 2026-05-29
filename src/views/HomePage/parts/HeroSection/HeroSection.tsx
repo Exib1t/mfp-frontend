@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Wand2 } from "lucide-react";
 import heroImage from "@/assets/images/hero.png";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
@@ -44,6 +45,7 @@ function HeroSection() {
         <div className={`${BASE_CLASS}_actions`}>
           <Button as={Link} href="/products" size="lg" fullWidth>
             Переглянути каталог
+            <ArrowRight size={18} strokeWidth={2} />
           </Button>
           <Button
             as={Link}
@@ -52,6 +54,7 @@ function HeroSection() {
             size="lg"
             fullWidth
           >
+            <Wand2 size={18} strokeWidth={2} />
             Зібрати вігвам
           </Button>
         </div>

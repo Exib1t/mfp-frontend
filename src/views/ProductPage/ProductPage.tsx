@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronLeft, ShoppingBag } from "lucide-react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
@@ -146,6 +147,7 @@ function ProductPage({ product }: ProductPageProps) {
 
           <div className={`${BASE_CLASS}_actions`}>
             <Button variant="primary" size="lg" fullWidth disabled={!inStock}>
+              {inStock && <ShoppingBag size={18} strokeWidth={2} />}
               {inStock ? "Додати до кошика" : "Немає в наявності"}
             </Button>
             <Button
@@ -155,7 +157,8 @@ function ProductPage({ product }: ProductPageProps) {
               as={Link}
               href="/products"
             >
-              ← Назад до каталогу
+              <ChevronLeft size={16} strokeWidth={2} />
+              Назад до каталогу
             </Button>
           </div>
         </div>

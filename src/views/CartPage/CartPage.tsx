@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronLeft, CreditCard, Minus, Plus, X } from "lucide-react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
@@ -133,7 +134,7 @@ function CartPage() {
                           className={`${BASE_CLASS}_qty-btn`}
                           aria-label="Зменшити"
                         >
-                          −
+                          <Minus size={14} strokeWidth={2} />
                         </button>
                         <span className={`${BASE_CLASS}_qty-value`}>
                           {quantity}
@@ -143,7 +144,7 @@ function CartPage() {
                           className={`${BASE_CLASS}_qty-btn`}
                           aria-label="Збільшити"
                         >
-                          +
+                          <Plus size={14} strokeWidth={2} />
                         </button>
                       </div>
 
@@ -168,7 +169,7 @@ function CartPage() {
                     className={`${BASE_CLASS}_item-remove`}
                     aria-label="Видалити"
                   >
-                    ✕
+                    <X size={16} strokeWidth={2} />
                   </button>
                 </div>
               );
@@ -213,6 +214,7 @@ function CartPage() {
             </div>
 
             <Button variant="primary" size="lg" fullWidth>
+              <CreditCard size={18} strokeWidth={2} />
               Оформити замовлення
             </Button>
             <Button
@@ -222,7 +224,8 @@ function CartPage() {
               as={Link}
               href="/products"
             >
-              ← Продовжити покупки
+              <ChevronLeft size={16} strokeWidth={2} />
+              Продовжити покупки
             </Button>
           </aside>
         </div>

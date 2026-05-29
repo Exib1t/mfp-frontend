@@ -38,23 +38,39 @@
     padding: 0 32px;
   }
 
+  /* ─── Shadow scale by size ───────────────────────── */
+  /* unitless numbers, used in calc(var() * 1px)       */
+  /* sm: 2  md/lg: 4                                   */
+
+  --_s: 4;   /* shadow base */
+  --_sh: 6;  /* shadow hover */
+  --_sf: 4;  /* shift on active */
+  --_ho: -2; /* hover offset */
+
+  &[data-size="sm"] {
+    --_s: 2;
+    --_sh: 3;
+    --_sf: 2;
+    --_ho: -1;
+  }
+
   /* ─── Primary ────────────────────────────────────── */
 
   &[data-variant="primary"] {
     color: #fff;
     border-color: var(--foreground);
     background: var(--primary);
-    box-shadow: 4px 4px 0 0 var(--foreground);
+    box-shadow: calc(var(--_s) * 1px) calc(var(--_s) * 1px) 0 0 var(--foreground);
 
     &:hover:not(.-disabled, .-loading, .-active) {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 0 var(--foreground);
+      transform: translate(calc(var(--_ho) * 1px), calc(var(--_ho) * 1px));
+      box-shadow: calc(var(--_sh) * 1px) calc(var(--_sh) * 1px) 0 0 var(--foreground);
     }
 
     &:active:not(.-disabled, .-loading),
     &.-active {
       transition-duration: 60ms;
-      transform: translate(4px, 4px);
+      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
       box-shadow: 0 0 0 0 var(--foreground);
     }
   }
@@ -65,17 +81,17 @@
     color: var(--foreground);
     border-color: var(--foreground);
     background: var(--background);
-    box-shadow: 4px 4px 0 0 var(--foreground);
+    box-shadow: calc(var(--_s) * 1px) calc(var(--_s) * 1px) 0 0 var(--foreground);
 
     &:hover:not(.-disabled, .-loading, .-active) {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 0 var(--foreground);
+      transform: translate(calc(var(--_ho) * 1px), calc(var(--_ho) * 1px));
+      box-shadow: calc(var(--_sh) * 1px) calc(var(--_sh) * 1px) 0 0 var(--foreground);
     }
 
     &:active:not(.-disabled, .-loading),
     &.-active {
       transition-duration: 60ms;
-      transform: translate(4px, 4px);
+      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
       box-shadow: 0 0 0 0 var(--foreground);
     }
   }
@@ -86,21 +102,21 @@
     color: currentColor;
     border-color: currentColor;
     background: transparent;
-    box-shadow: 4px 4px 0 0 currentColor;
+    box-shadow: calc(var(--_s) * 1px) calc(var(--_s) * 1px) 0 0 currentColor;
 
     &:hover:not(.-disabled, .-loading, .-active) {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 0 currentColor;
+      transform: translate(calc(var(--_ho) * 1px), calc(var(--_ho) * 1px));
+      box-shadow: calc(var(--_sh) * 1px) calc(var(--_sh) * 1px) 0 0 currentColor;
     }
 
     &:active:not(.-disabled, .-loading) {
       transition-duration: 60ms;
-      transform: translate(4px, 4px);
+      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
       box-shadow: 0 0 0 0 currentColor;
     }
 
     &.-active {
-      transform: translate(4px, 4px);
+      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
       color: var(--background);
       border-color: var(--foreground);
       background: var(--foreground);
@@ -168,6 +184,9 @@
   /* ─── Inner parts ────────────────────────────────── */
 
   &_label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     transition: opacity 150ms ease;
   }
 

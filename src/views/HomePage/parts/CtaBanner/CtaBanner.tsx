@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 
@@ -30,6 +31,7 @@ function CtaBanner() {
           className={`${BASE_CLASS}_btn`}
         >
           Переглянути каталог
+          <ArrowRight size={18} strokeWidth={2} />
         </Button>
       </div>
     </section>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Check, ChevronLeft, ShoppingBag } from "lucide-react";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import { cn } from "@/lib/utils/cn";
@@ -301,7 +302,7 @@ function ConfiguratorPage() {
                       onClick={() => toggleAddon(addon.id)}
                     >
                       <div className={cn(`${BASE_CLASS}_addon-check`, { "-checked": isSelected })}>
-                        {isSelected && <span aria-hidden="true">✓</span>}
+                        {isSelected && <Check size={12} strokeWidth={2.5} aria-hidden="true" />}
                       </div>
                       <div className={`${BASE_CLASS}_addon-info`}>
                         <Typography variant="subtitle2" as="span">{addon.label}</Typography>
@@ -373,9 +374,11 @@ function ConfiguratorPage() {
           </div>
           <div className={`${BASE_CLASS}_sticky-bar-actions`}>
             <Button variant="ghost" size="md" as={Link} href="/products">
-              ← До каталогу
+              <ChevronLeft size={16} strokeWidth={2} />
+              До каталогу
             </Button>
             <Button variant="primary" size="lg">
+              <ShoppingBag size={18} strokeWidth={2} />
               Додати до кошика
             </Button>
           </div>
