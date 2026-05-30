@@ -4,6 +4,7 @@ import { ChevronLeft, CreditCard, Minus, Plus, X } from "lucide-react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
+import { CATEGORY_LABELS } from "@/entities/products/labels";
 import { MOCK_PRODUCTS } from "@/entities/products/mocks";
 import type { Product } from "@/entities/products/models";
 import { formatPrice } from "@/lib/utils/formatPrice";
@@ -85,7 +86,7 @@ function CartPage() {
                   <div className={`${BASE_CLASS}_item-body`}>
                     <div className={`${BASE_CLASS}_item-meta`}>
                       <Typography variant="overline" color="muted">
-                        {category}
+                        {CATEGORY_LABELS[category]}
                       </Typography>
                       {badges && badges.length > 0 && (
                         <div className={`${BASE_CLASS}_item-badges`}>

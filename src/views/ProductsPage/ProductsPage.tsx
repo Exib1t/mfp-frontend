@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { RotateCcw } from "lucide-react";
+import React, { useState } from "react";
+import { RotateCcw, SlidersHorizontal, X } from "lucide-react";
 import Button from "@/components/controls/Button/Button";
 import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
@@ -35,6 +35,7 @@ function ProductsPage() {
   const [priceMin, setPriceMin] = useState(PRICE_MIN_BOUND);
   const [priceMax, setPriceMax] = useState(PRICE_MAX_BOUND);
   const [sort, setSort] = useState<SortKey>("default");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const hasFilters = activeCategory !== null || priceMin !== PRICE_MIN_BOUND || priceMax !== PRICE_MAX_BOUND;
 
@@ -43,6 +44,10 @@ function ProductsPage() {
     setPriceMin(PRICE_MIN_BOUND);
     setPriceMax(PRICE_MAX_BOUND);
   };
+
+  const range = PRICE_MAX_BOUND - PRICE_MIN_BOUND;
+  const minPct = ((priceMin - PRICE_MIN_BOUND) / range) * 100;
+  const maxPct = ((priceMax - PRICE_MIN_BOUND) / range) * 100;
 
   const filtered = MOCK_PRODUCTS.filter((p) => {
     const effectivePrice = p.salePrice ?? p.price;
@@ -64,11 +69,37 @@ function ProductsPage() {
       <div className={`${BASE_CLASS}_inner`}>
         <div className={`${BASE_CLASS}_header`}>
           <Typography variant="h1" as="h1">Каталог</Typography>
+          <button
+            type="button"
+            className={`${BASE_CLASS}_filter-toggle`}
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Відкрити фільтри"
+          >
+            <SlidersHorizontal size={18} strokeWidth={1.75} />
+            Фільтри
+            {hasFilters && <span className={`${BASE_CLASS}_filter-toggle-dot`} aria-hidden="true" />}
+          </button>
         </div>
+
+        {sidebarOpen && (
+          <div
+            className={`${BASE_CLASS}_backdrop`}
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
 
         <div className={`${BASE_CLASS}_layout`}>
           {/* ─── Sidebar ─── */}
-          <aside className={`${BASE_CLASS}_sidebar`}>
+          <aside className={`${BASE_CLASS}_sidebar`} data-open={sidebarOpen}>
+            <button
+              type="button"
+              className={`${BASE_CLASS}_sidebar-close`}
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Закрити фільтри"
+            >
+              <X size={18} strokeWidth={2} />
+            </button>
             <div className={`${BASE_CLASS}_sidebar-section`}>
               <Typography variant="overline" color="muted" className={`${BASE_CLASS}_sidebar-title`}>
                 Категорія
@@ -108,26 +139,40 @@ function ProductsPage() {
               <Typography variant="overline" color="muted" className={`${BASE_CLASS}_sidebar-title`}>
                 Ціна, ₴
               </Typography>
-              <div className={`${BASE_CLASS}_price-inputs`}>
+              <div
+                className={`${BASE_CLASS}_range-wrap`}
+                style={{ "--min-pct": `${minPct}%`, "--max-pct": `${maxPct}%` } as React.CSSProperties}
+              >
                 <input
-                  type="number"
-                  className={`${BASE_CLASS}_price-input`}
+                  type="range"
+                  className={`${BASE_CLASS}_range-input`}
                   value={priceMin}
                   min={PRICE_MIN_BOUND}
-                  max={priceMax}
-                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                  max={PRICE_MAX_BOUND}
+                  step={50}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (v < priceMax) setPriceMin(v);
+                  }}
                   aria-label="Мінімальна ціна"
                 />
-                <span className={`${BASE_CLASS}_price-sep`}>—</span>
                 <input
-                  type="number"
-                  className={`${BASE_CLASS}_price-input`}
+                  type="range"
+                  className={`${BASE_CLASS}_range-input`}
                   value={priceMax}
-                  min={priceMin}
+                  min={PRICE_MIN_BOUND}
                   max={PRICE_MAX_BOUND}
-                  onChange={(e) => setPriceMax(Number(e.target.value))}
+                  step={50}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (v > priceMin) setPriceMax(v);
+                  }}
                   aria-label="Максимальна ціна"
                 />
+              </div>
+              <div className={`${BASE_CLASS}_price-vals`}>
+                <span className={`${BASE_CLASS}_price-val`}>{priceMin.toLocaleString("uk-UA")} ₴</span>
+                <span className={`${BASE_CLASS}_price-val`}>{priceMax.toLocaleString("uk-UA")} ₴</span>
               </div>
             </div>
 

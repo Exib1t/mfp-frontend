@@ -158,6 +158,7 @@ function ConfiguratorPage() {
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
                 key={selectedColor.imageSeed}
+                loading="eager"
               />
               <div
                 className={`${BASE_CLASS}_preview-overlay`}

@@ -11,6 +11,8 @@ export const MOCK_PRODUCTS: Product[] = [
     badges: ["new"],
     images: [
       { src: "https://picsum.photos/seed/vigvam1/600/700", alt: "Вігвам Лісова фея" },
+      { src: "https://picsum.photos/seed/vigvam1b/600/700", alt: "Вігвам Лісова фея — вид збоку" },
+      { src: "https://picsum.photos/seed/vigvam1c/600/700", alt: "Вігвам Лісова фея — деталь" },
     ],
     inStock: true,
     featured: true,
@@ -25,6 +27,7 @@ export const MOCK_PRODUCTS: Product[] = [
     badges: ["bestseller"],
     images: [
       { src: "https://picsum.photos/seed/vigvam2/600/700", alt: "Вігвам Бохо крем" },
+      { src: "https://picsum.photos/seed/vigvam2b/600/700", alt: "Вігвам Бохо крем — інтер'єр" },
     ],
     inStock: true,
     featured: true,
@@ -81,6 +84,8 @@ export const MOCK_PRODUCTS: Product[] = [
     badges: ["limited"],
     images: [
       { src: "https://picsum.photos/seed/set1/600/700", alt: "Комплект Лісова казка" },
+      { src: "https://picsum.photos/seed/set1b/600/700", alt: "Комплект Лісова казка — вміст" },
+      { src: "https://picsum.photos/seed/set1c/600/700", alt: "Комплект Лісова казка — деталі" },
     ],
     inStock: true,
     featured: true,

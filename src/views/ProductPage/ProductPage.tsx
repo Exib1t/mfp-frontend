@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ShoppingBag } from "lucide-react";
-import { ViewTransition } from "react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
+import ProductGallery from "@/components/organisms/products/ProductGallery/ProductGallery";
 import Typography from "@/components/controls/Typography/Typography";
+import { CATEGORY_LABELS } from "@/entities/products/labels";
 import type { Product, ProductBadge } from "@/entities/products/models";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
@@ -46,7 +46,6 @@ function ProductPage({ product }: ProductPageProps) {
     inStock,
     category,
   } = product;
-  const mainImage = images[0];
 
   return (
     <div className={BASE_CLASS}>
@@ -81,29 +80,12 @@ function ProductPage({ product }: ProductPageProps) {
       </nav>
 
       <div className={`${BASE_CLASS}_grid`}>
-        <ViewTransition name={`product-image-${product.slug}`} share="product-image">
-          <div className={`${BASE_CLASS}_image-wrap`}>
-            {mainImage ? (
-              <Image
-                className={`${BASE_CLASS}_image`}
-                src={mainImage.src}
-                alt={mainImage.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-            ) : (
-              <div className={`${BASE_CLASS}_placeholder`}>
-                <span aria-hidden="true">✦</span>
-              </div>
-            )}
-          </div>
-        </ViewTransition>
+        <ProductGallery images={images} slug={product.slug} />
 
         <div className={`${BASE_CLASS}_info`}>
           <div>
             <Typography variant="overline" color="muted">
-              {category}
+              {CATEGORY_LABELS[category]}
             </Typography>
             <Typography variant="h2" as="h1" className={`${BASE_CLASS}_name`}>
               {name}
