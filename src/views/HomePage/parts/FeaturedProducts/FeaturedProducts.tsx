@@ -1,13 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import Typography from "@/components/controls/Typography/Typography";
 import ProductCard from "@/components/organisms/products/ProductCard/ProductCard";
-import { MOCK_FEATURED_PRODUCTS } from "@/entities/products/mocks";
+import { useProducts } from "@/entities/products/api";
 
 import "./FeaturedProducts.styles.scss";
 
 const BASE_CLASS = "featured-products";
+const SKELETON_KEYS = ["s1", "s2", "s3", "s4"];
 
 function FeaturedProducts() {
+  const { data: products, isLoading, isError } = useProducts({ limit: 4 });
+
   return (
     <section className={BASE_CLASS}>
       <div className={`${BASE_CLASS}_inner`}>
@@ -22,11 +27,23 @@ function FeaturedProducts() {
           </Link>
         </div>
 
-        <div className={`${BASE_CLASS}_grid`}>
-          {MOCK_FEATURED_PRODUCTS.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isError ? (
+          <Typography variant="body1" color="muted">
+            Не вдалося завантажити товари.
+          </Typography>
+        ) : isLoading ? (
+          <div className={`${BASE_CLASS}_grid`}>
+            {SKELETON_KEYS.map((key) => (
+              <div key={key} className={`${BASE_CLASS}_skeleton`} />
+            ))}
+          </div>
+        ) : (
+          <div className={`${BASE_CLASS}_grid`}>
+            {products?.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

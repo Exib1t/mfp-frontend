@@ -1,0 +1,78 @@
+.toaster {
+  position: fixed;
+  top: calc(var(--header-height) + 16px);
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(360px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 2px solid var(--foreground);
+  background: var(--background);
+  box-shadow: 4px 4px 0 0 var(--foreground);
+  pointer-events: auto;
+  animation: toast-in 180ms ease;
+
+  &_message {
+    font-family: var(--font-inter), sans-serif;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+    line-height: var(--line-height-snug);
+  }
+
+  &_close {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding: 2px;
+    border: none;
+    background: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 120ms ease;
+
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+
+  /* Variant accent: a thick left border in the variant color. */
+  &[data-variant="success"] {
+    border-left-width: 6px;
+    border-left-color: var(--color-success);
+  }
+
+  &[data-variant="error"] {
+    border-left-width: 6px;
+    border-left-color: var(--color-error);
+  }
+
+  &[data-variant="info"] {
+    border-left-width: 6px;
+    border-left-color: var(--primary);
+  }
+
+  @media (max-width: 560px) {
+    box-shadow: 3px 3px 0 0 var(--foreground);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

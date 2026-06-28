@@ -97,7 +97,12 @@ function Select<T extends string>({
             >
               {opt.label}
               {opt.value === value && (
-                <span className={`${BASE_CLASS}_option-check`} aria-hidden="true">✓</span>
+                <span
+                  className={`${BASE_CLASS}_option-check`}
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
               )}
             </li>
           ))}

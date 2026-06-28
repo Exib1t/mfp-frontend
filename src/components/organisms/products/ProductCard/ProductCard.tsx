@@ -1,37 +1,26 @@
 "use client";
 
+import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
 import { ViewTransition } from "react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
+import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
-import { CATEGORY_LABELS } from "@/entities/products/labels";
-import type { Product, ProductBadge } from "@/entities/products/models";
+import { useCart } from "@/entities/cart/CartContext";
+import {
+  getDiscountPercent,
+  getEffectivePrice,
+  getFirstAvailableVariant,
+  getMainImageUrl,
+  isProductAvailableToBuy,
+} from "@/entities/products/helpers";
+import type { Product } from "@/entities/products/types";
 import { cn } from "@/lib/utils/cn";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
 import "./ProductCard.styles.scss";
-
-interface BadgeConfig {
-  label: string;
-  variant: "primary" | "error" | "warning";
-}
-
-function getBadgeConfig(badge: ProductBadge, product: Product): BadgeConfig {
-  if (badge === "sale" && product.salePrice) {
-    const pct = Math.round((1 - product.salePrice / product.price) * 100);
-    return { label: `−${pct}%`, variant: "error" };
-  }
-  const map: Record<ProductBadge, BadgeConfig> = {
-    new: { label: "Новинка", variant: "primary" },
-    sale: { label: "Знижка", variant: "error" },
-    bestseller: { label: "Хіт", variant: "warning" },
-    limited: { label: "Останні", variant: "warning" },
-  };
-  return map[badge];
-}
 
 interface ProductCardProps {
   product: Product;
@@ -41,37 +30,68 @@ interface ProductCardProps {
 const BASE_CLASS = "product-card";
 
 function ProductCard({ product, className }: ProductCardProps) {
-  const { slug, name, price, salePrice, images, badges, inStock, category } = product;
-  const mainImage = images[0];
+  const { addItem } = useCart();
+  const { toast } = useToast();
+  const { slug, name, price, sale_price, new_category } = product;
+
+  const mainImage = getMainImageUrl(product);
+  const discount = getDiscountPercent(product);
+  const inStock = isProductAvailableToBuy(product);
+  const firstVariant = getFirstAvailableVariant(product);
+  const canBuy = inStock && firstVariant !== null;
   const href = `/products/${slug}`;
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (firstVariant) {
+      addItem(product, firstVariant);
+      toast(`«${name}» додано в кошик`, "success");
+    }
+  };
+
   return (
-    <article className={cn(BASE_CLASS, className, { "-out-of-stock": !inStock })}>
-      <Link href={href} className={`${BASE_CLASS}_media-link`} tabIndex={-1} transitionTypes={["nav-forward"]}>
+    <article
+      className={cn(BASE_CLASS, className, { "-out-of-stock": !inStock })}
+    >
+      <Link
+        href={href}
+        className={`${BASE_CLASS}_media-link`}
+        tabIndex={-1}
+        transitionTypes={["nav-forward"]}
+      >
         <ViewTransition name={`product-image-${slug}`} share="product-image">
           <div className={`${BASE_CLASS}_image-wrap`}>
             {mainImage ? (
               <Image
                 className={`${BASE_CLASS}_image`}
-                src={mainImage.src}
-                alt={mainImage.alt}
+                src={mainImage}
+                alt={name}
                 fill
                 sizes="(max-width: 560px) 100vw, (max-width: 1024px) 50vw, 25vw"
               />
             ) : (
               <div className={`${BASE_CLASS}_placeholder`}>
-                <span className={`${BASE_CLASS}_placeholder-glyph`} aria-hidden="true">✦</span>
+                <span
+                  className={`${BASE_CLASS}_placeholder-glyph`}
+                  aria-hidden="true"
+                >
+                  ✦
+                </span>
               </div>
             )}
 
-            {badges && badges.length > 0 && (
+            {(discount !== null || product.status === "made_to_order") && (
               <div className={`${BASE_CLASS}_badges`}>
-                {badges.map((badge) => {
-                  const { label, variant } = getBadgeConfig(badge, product);
-                  return (
-                    <Badge key={badge} variant={variant} size="sm">{label}</Badge>
-                  );
-                })}
+                {discount !== null && (
+                  <Badge variant="error" size="sm">
+                    −{discount}%
+                  </Badge>
+                )}
+                {product.status === "made_to_order" && (
+                  <Badge variant="warning" size="sm">
+                    Під замовлення
+                  </Badge>
+                )}
               </div>
             )}
           </div>
@@ -81,17 +101,26 @@ function ProductCard({ product, className }: ProductCardProps) {
       <div className={`${BASE_CLASS}_body`}>
         <Link href={href} className={`${BASE_CLASS}_body-link`}>
           <Typography variant="overline" color="muted">
-            {CATEGORY_LABELS[category]}
+            {new_category.name}
           </Typography>
-          <Typography variant="subtitle1" as="h3" className={`${BASE_CLASS}_name`}>
+          <Typography
+            variant="subtitle1"
+            as="h3"
+            className={`${BASE_CLASS}_name`}
+          >
             {name}
           </Typography>
           <div className={`${BASE_CLASS}_price`}>
-            <span className={`${BASE_CLASS}_price-current`} data-sale={!!salePrice}>
-              {formatPrice(salePrice ?? price)}
+            <span
+              className={`${BASE_CLASS}_price-current`}
+              data-sale={sale_price !== null}
+            >
+              {formatPrice(getEffectivePrice(product))}
             </span>
-            {salePrice && (
-              <span className={`${BASE_CLASS}_price-original`}>{formatPrice(price)}</span>
+            {sale_price !== null && (
+              <span className={`${BASE_CLASS}_price-original`}>
+                {formatPrice(price)}
+              </span>
             )}
           </div>
         </Link>
@@ -102,13 +131,11 @@ function ProductCard({ product, className }: ProductCardProps) {
           variant="primary"
           size="sm"
           fullWidth
-          onClick={(e: React.MouseEvent) => {
-            e.preventDefault();
-            // TODO: add to cart
-          }}
+          disabled={!canBuy}
+          onClick={handleAddToCart}
         >
           <ShoppingBag size={14} strokeWidth={2} />
-          В кошик
+          {canBuy ? "В кошик" : "Немає в наявності"}
         </Button>
       </div>
     </article>

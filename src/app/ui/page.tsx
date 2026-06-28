@@ -3,14 +3,58 @@ import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import ProductCard from "@/components/organisms/products/ProductCard/ProductCard";
-import { MOCK_PRODUCTS } from "@/entities/products/mocks";
+import type { Product } from "@/entities/products/types";
 import "./ui.styles.scss";
+
+// Backend-shaped samples for the showcase (no network).
+const SAMPLE_PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: "Сукня вишита «Калина»",
+    slug: "suknya-vyshyta-kalyna",
+    description: "Ніжна вишита сукня з натурального льону.",
+    price: 1200,
+    sale_price: null,
+    status: "in_stock",
+    new_category: { id: 1, name: "Одяг", slug: "odyag" },
+    variants: [
+      { id: 1, color: "Білий", size: "M", child_name: null, stock: 5 },
+    ],
+    image_urls: [],
+    images: [],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    name: "Вишиванка «Дуб»",
+    slug: "vyshyvanka-dub",
+    description: "Класична вишиванка з орнаментом «Дуб».",
+    price: 1800,
+    sale_price: 1600,
+    status: "made_to_order",
+    new_category: { id: 1, name: "Одяг", slug: "odyag" },
+    variants: [
+      { id: 2, color: "Синій", size: "L", child_name: null, stock: 3 },
+    ],
+    image_urls: [],
+    images: [],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
 
 const SECTION_CLASS = "ui-section";
 const ROW_CLASS = "ui-row";
 const PAGE_CLASS = "ui-page";
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className={SECTION_CLASS}>
       <Typography variant="h3" as="h2" className={`${SECTION_CLASS}_title`}>
@@ -21,11 +65,21 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function Row({ label, children }: { label?: string; children: React.ReactNode }) {
+function Row({
+  label,
+  children,
+}: {
+  label?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className={ROW_CLASS}>
       {label && (
-        <Typography variant="caption" color="muted" className={`${ROW_CLASS}_label`}>
+        <Typography
+          variant="caption"
+          color="muted"
+          className={`${ROW_CLASS}_label`}
+        >
           {label}
         </Typography>
       )}
@@ -54,31 +108,60 @@ export default function UiPage() {
             <Typography variant="h4">h4 — Заголовок</Typography>
             <Typography variant="h5">h5 — Заголовок</Typography>
             <Typography variant="h6">h6 — Заголовок</Typography>
-            <Typography variant="subtitle1">subtitle1 — Підзаголовок</Typography>
-            <Typography variant="subtitle2">subtitle2 — Підзаголовок</Typography>
-            <Typography variant="body1">body1 — Основний текст параграфу</Typography>
-            <Typography variant="body2">body2 — Допоміжний текст параграфу</Typography>
+            <Typography variant="subtitle1">
+              subtitle1 — Підзаголовок
+            </Typography>
+            <Typography variant="subtitle2">
+              subtitle2 — Підзаголовок
+            </Typography>
+            <Typography variant="body1">
+              body1 — Основний текст параграфу
+            </Typography>
+            <Typography variant="body2">
+              body2 — Допоміжний текст параграфу
+            </Typography>
             <Typography variant="caption">caption — Підпис</Typography>
             <Typography variant="overline">overline — Надпис</Typography>
             <Typography variant="label">label — Лейбл форми</Typography>
           </Row>
           <Row label="colors">
-            <Typography variant="body1" color="foreground">foreground</Typography>
-            <Typography variant="body1" color="primary">primary</Typography>
-            <Typography variant="body1" color="muted">muted</Typography>
-            <Typography variant="body1" color="error">error</Typography>
-            <Typography variant="body1" color="success">success</Typography>
-            <Typography variant="body1" color="warning">warning</Typography>
+            <Typography variant="body1" color="foreground">
+              foreground
+            </Typography>
+            <Typography variant="body1" color="primary">
+              primary
+            </Typography>
+            <Typography variant="body1" color="muted">
+              muted
+            </Typography>
+            <Typography variant="body1" color="error">
+              error
+            </Typography>
+            <Typography variant="body1" color="success">
+              success
+            </Typography>
+            <Typography variant="body1" color="warning">
+              warning
+            </Typography>
           </Row>
           <Row label="weights">
-            <Typography variant="body1" weight="regular">regular 400</Typography>
-            <Typography variant="body1" weight="medium">medium 500</Typography>
-            <Typography variant="body1" weight="semibold">semibold 600</Typography>
-            <Typography variant="body1" weight="bold">bold 700</Typography>
+            <Typography variant="body1" weight="regular">
+              regular 400
+            </Typography>
+            <Typography variant="body1" weight="medium">
+              medium 500
+            </Typography>
+            <Typography variant="body1" weight="semibold">
+              semibold 600
+            </Typography>
+            <Typography variant="body1" weight="bold">
+              bold 700
+            </Typography>
           </Row>
           <Row label="truncate">
             <Typography variant="body1" truncate className="ui-truncate-demo">
-              Дуже довгий текст який буде обрізаний через overflow hidden і white-space nowrap і text-overflow ellipsis
+              Дуже довгий текст який буде обрізаний через overflow hidden і
+              white-space nowrap і text-overflow ellipsis
             </Typography>
           </Row>
         </Section>
@@ -103,8 +186,12 @@ export default function UiPage() {
             <Button fullWidth>Full width</Button>
           </Row>
           <Row label="as link">
-            <Button as={Link} href="/products" variant="primary">До каталогу</Button>
-            <Button as={Link} href="/products" variant="secondary">До каталогу</Button>
+            <Button as={Link} href="/products" variant="primary">
+              До каталогу
+            </Button>
+            <Button as={Link} href="/products" variant="secondary">
+              До каталогу
+            </Button>
           </Row>
           <Row label="on dark bg">
             <div className="ui-dark-bg">
@@ -132,7 +219,7 @@ export default function UiPage() {
         {/* ─── ProductCard ─── */}
         <Section title="ProductCard">
           <div className="ui-product-grid">
-            {MOCK_PRODUCTS.map((product) => (
+            {SAMPLE_PRODUCTS.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

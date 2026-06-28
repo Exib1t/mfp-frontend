@@ -39,7 +39,9 @@ const NavLink = ({ item }: NavLinkProps) => {
 
   return (
     <Link href={item.href} className={cn(BASE_CLASS, { "-active": isActive })}>
-      {Icon && <Icon className={`${BASE_CLASS}_icon`} size={16} strokeWidth={1.75} />}
+      {Icon && (
+        <Icon className={`${BASE_CLASS}_icon`} size={16} strokeWidth={1.75} />
+      )}
       {item.title}
     </Link>
   );

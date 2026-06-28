@@ -1,40 +1,135 @@
+"use client";
+
+import {
+  ChevronLeft,
+  CreditCard,
+  Minus,
+  Plus,
+  ShoppingBag,
+  X,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, CreditCard, Minus, Plus, X } from "lucide-react";
-import Badge from "@/components/controls/Badge/Badge";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Button from "@/components/controls/Button/Button";
+import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
-import { CATEGORY_LABELS } from "@/entities/products/labels";
-import { MOCK_PRODUCTS } from "@/entities/products/mocks";
-import type { Product } from "@/entities/products/models";
+import { useCart } from "@/entities/cart/CartContext";
+import { useCreateOrder } from "@/entities/orders/api";
+import type { PaymentMethod } from "@/entities/orders/types";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
 import "./CartPage.styles.scss";
 
-interface MockCartItem {
-  product: Product;
-  quantity: number;
-}
-
-const MOCK_CART: MockCartItem[] = [
-  { product: MOCK_PRODUCTS[0] as Product, quantity: 1 },
-  { product: MOCK_PRODUCTS[2] as Product, quantity: 2 },
-  { product: MOCK_PRODUCTS[3] as Product, quantity: 1 },
-];
-
 const BASE_CLASS = "cart-page";
 
+const PAYMENT_OPTIONS: { value: PaymentMethod; label: string }[] = [
+  { value: "cash_on_delivery", label: "Оплата при отриманні" },
+  { value: "online", label: "Оплата онлайн" },
+];
+
+function pluralItems(count: number): string {
+  if (count === 1) return "товар";
+  if (count < 5) return "товари";
+  return "товарів";
+}
+
 function CartPage() {
-  const subtotal = MOCK_CART.reduce((sum, { product, quantity }) => {
-    return sum + (product.salePrice ?? product.price) * quantity;
-  }, 0);
+  const router = useRouter();
+  const {
+    items,
+    totalCount,
+    subtotal,
+    originalTotal,
+    discount,
+    isReady,
+    setQuantity,
+    removeItem,
+    clear,
+  } = useCart();
+  const { toast } = useToast();
+  const createOrder = useCreateOrder();
 
-  const originalTotal = MOCK_CART.reduce((sum, { product, quantity }) => {
-    return sum + product.price * quantity;
-  }, 0);
+  const [form, setForm] = useState({
+    guest_name: "",
+    guest_email: "",
+    guest_phone: "",
+    address: "",
+    payment_method: "cash_on_delivery" as PaymentMethod,
+    notes: "",
+  });
 
-  const discount = originalTotal - subtotal;
-  const itemCount = MOCK_CART.reduce((sum, { quantity }) => sum + quantity, 0);
+  const setField =
+    (field: keyof typeof form) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) =>
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  const isFormValid =
+    form.guest_name.trim().length > 0 &&
+    /.+@.+\..+/.test(form.guest_email) &&
+    form.guest_phone.trim().length >= 10 &&
+    form.address.trim().length > 0;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid || items.length === 0) return;
+
+    createOrder.mutate(
+      {
+        body: {
+          guest_name: form.guest_name.trim(),
+          guest_email: form.guest_email.trim(),
+          guest_phone: form.guest_phone.trim(),
+          address: form.address.trim(),
+          payment_method: form.payment_method,
+          notes: form.notes.trim() || undefined,
+          items: items.map((item) => ({
+            variant_id: item.variantId,
+            quantity: item.quantity,
+          })),
+        },
+      },
+      {
+        onSuccess: (res) => {
+          clear();
+          router.push(`/orders/${res.data.id}`);
+        },
+        onError: () => {
+          toast(
+            "Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.",
+            "error",
+          );
+        },
+      },
+    );
+  };
+
+  // Empty cart (only once hydrated, to avoid a flash on first render).
+  if (isReady && items.length === 0) {
+    return (
+      <div className={BASE_CLASS}>
+        <div className={`${BASE_CLASS}_inner`}>
+          <div className={`${BASE_CLASS}_empty`}>
+            <ShoppingBag size={48} strokeWidth={1.5} />
+            <Typography variant="h3" as="h1">
+              Кошик порожній
+            </Typography>
+            <Typography variant="body1" color="muted">
+              Додайте товари з каталогу, щоб оформити замовлення.
+            </Typography>
+            <Button variant="primary" size="md" as={Link} href="/products">
+              До каталогу
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={BASE_CLASS}>
@@ -44,79 +139,47 @@ function CartPage() {
             Кошик
           </Typography>
           <Typography variant="body2" color="muted">
-            {itemCount}{" "}
-            {itemCount === 1 ? "товар" : itemCount < 5 ? "товари" : "товарів"}
+            {totalCount} {pluralItems(totalCount)}
           </Typography>
         </div>
 
         <div className={`${BASE_CLASS}_layout`}>
           {/* ─── Items list ─── */}
           <div className={`${BASE_CLASS}_items`}>
-            {MOCK_CART.map(({ product, quantity }) => {
-              const {
-                id,
-                slug,
-                name,
-                price,
-                salePrice,
-                images,
-                category,
-                badges,
-              } = product;
-              const image = images[0];
-              const activePrice = salePrice ?? price;
+            {items.map((item) => {
+              const lineTotal = item.unitPrice * item.quantity;
+              const hasDiscount = item.unitPrice < item.basePrice;
 
               return (
-                <div key={id} className={`${BASE_CLASS}_item`}>
+                <div key={item.variantId} className={`${BASE_CLASS}_item`}>
                   <Link
-                    href={`/products/${slug}`}
+                    href={`/products/${item.slug}`}
                     className={`${BASE_CLASS}_item-image-wrap`}
                   >
-                    {image && (
+                    {item.image ? (
                       <Image
                         className={`${BASE_CLASS}_item-image`}
-                        src={image.src}
-                        alt={image.alt}
+                        src={item.image}
+                        alt={item.name}
                         fill
                         sizes="120px"
                       />
+                    ) : (
+                      <span
+                        className={`${BASE_CLASS}_item-glyph`}
+                        aria-hidden="true"
+                      >
+                        ✦
+                      </span>
                     )}
                   </Link>
 
                   <div className={`${BASE_CLASS}_item-body`}>
-                    <div className={`${BASE_CLASS}_item-meta`}>
-                      <Typography variant="overline" color="muted">
-                        {CATEGORY_LABELS[category]}
-                      </Typography>
-                      {badges && badges.length > 0 && (
-                        <div className={`${BASE_CLASS}_item-badges`}>
-                          {badges.slice(0, 1).map((b) => (
-                            <Badge
-                              key={b}
-                              variant={
-                                b === "sale"
-                                  ? "error"
-                                  : b === "new"
-                                    ? "primary"
-                                    : "warning"
-                              }
-                              size="sm"
-                            >
-                              {b === "new"
-                                ? "Новинка"
-                                : b === "bestseller"
-                                  ? "Хіт"
-                                  : b === "limited"
-                                    ? "Останні"
-                                    : "Знижка"}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
+                    <Typography variant="overline" color="muted">
+                      {item.variantLabel}
+                    </Typography>
                     <Link
-                      href={`/products/${slug}`}
+                      href={`/products/${item.slug}`}
                       className={`${BASE_CLASS}_item-name-link`}
                     >
                       <Typography
@@ -124,7 +187,7 @@ function CartPage() {
                         as="h3"
                         className={`${BASE_CLASS}_item-name`}
                       >
-                        {name}
+                        {item.name}
                       </Typography>
                     </Link>
 
@@ -134,16 +197,24 @@ function CartPage() {
                           type="button"
                           className={`${BASE_CLASS}_qty-btn`}
                           aria-label="Зменшити"
+                          disabled={item.quantity <= 1}
+                          onClick={() =>
+                            setQuantity(item.variantId, item.quantity - 1)
+                          }
                         >
                           <Minus size={14} strokeWidth={2} />
                         </button>
                         <span className={`${BASE_CLASS}_qty-value`}>
-                          {quantity}
+                          {item.quantity}
                         </span>
                         <button
                           type="button"
                           className={`${BASE_CLASS}_qty-btn`}
                           aria-label="Збільшити"
+                          disabled={item.quantity >= item.maxStock}
+                          onClick={() =>
+                            setQuantity(item.variantId, item.quantity + 1)
+                          }
                         >
                           <Plus size={14} strokeWidth={2} />
                         </button>
@@ -152,13 +223,13 @@ function CartPage() {
                       <div className={`${BASE_CLASS}_item-price-wrap`}>
                         <span
                           className={`${BASE_CLASS}_item-price`}
-                          data-sale={!!salePrice}
+                          data-sale={hasDiscount}
                         >
-                          {formatPrice(activePrice * quantity)}
+                          {formatPrice(lineTotal)}
                         </span>
-                        {salePrice && (
+                        {hasDiscount && (
                           <span className={`${BASE_CLASS}_item-price-original`}>
-                            {formatPrice(price * quantity)}
+                            {formatPrice(item.basePrice * item.quantity)}
                           </span>
                         )}
                       </div>
@@ -169,6 +240,7 @@ function CartPage() {
                     type="button"
                     className={`${BASE_CLASS}_item-remove`}
                     aria-label="Видалити"
+                    onClick={() => removeItem(item.variantId)}
                   >
                     <X size={16} strokeWidth={2} />
                   </button>
@@ -177,20 +249,20 @@ function CartPage() {
             })}
           </div>
 
-          {/* ─── Summary ─── */}
+          {/* ─── Summary + checkout ─── */}
           <aside className={`${BASE_CLASS}_summary`}>
             <Typography
               variant="h4"
               as="h2"
               className={`${BASE_CLASS}_summary-title`}
             >
-              Підсумок
+              Оформлення
             </Typography>
 
             <div className={`${BASE_CLASS}_summary-rows`}>
               <div className={`${BASE_CLASS}_summary-row`}>
                 <Typography variant="body2" color="muted">
-                  Товари ({itemCount})
+                  Товари ({totalCount})
                 </Typography>
                 <Typography variant="body2">
                   {formatPrice(originalTotal)}
@@ -214,10 +286,69 @@ function CartPage() {
               </div>
             </div>
 
-            <Button variant="primary" size="lg" fullWidth>
-              <CreditCard size={18} strokeWidth={2} />
-              Оформити замовлення
-            </Button>
+            <form className={`${BASE_CLASS}_form`} onSubmit={handleSubmit}>
+              <input
+                className={`${BASE_CLASS}_input`}
+                placeholder="Ім'я та прізвище *"
+                value={form.guest_name}
+                onChange={setField("guest_name")}
+                required
+              />
+              <input
+                type="email"
+                className={`${BASE_CLASS}_input`}
+                placeholder="Email *"
+                value={form.guest_email}
+                onChange={setField("guest_email")}
+                required
+              />
+              <input
+                type="tel"
+                className={`${BASE_CLASS}_input`}
+                placeholder="Телефон * (+380…)"
+                value={form.guest_phone}
+                onChange={setField("guest_phone")}
+                required
+              />
+              <input
+                className={`${BASE_CLASS}_input`}
+                placeholder="Адреса доставки *"
+                value={form.address}
+                onChange={setField("address")}
+                required
+              />
+              <select
+                className={`${BASE_CLASS}_input`}
+                value={form.payment_method}
+                onChange={setField("payment_method")}
+              >
+                {PAYMENT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <textarea
+                className={`${BASE_CLASS}_textarea`}
+                placeholder="Коментар до замовлення"
+                rows={2}
+                value={form.notes}
+                onChange={setField("notes")}
+              />
+
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                fullWidth
+                disabled={!isFormValid}
+                loading={createOrder.isPending}
+              >
+                <CreditCard size={18} strokeWidth={2} />
+                Підтвердити замовлення
+              </Button>
+            </form>
+
             <Button
               variant="ghost"
               size="md"

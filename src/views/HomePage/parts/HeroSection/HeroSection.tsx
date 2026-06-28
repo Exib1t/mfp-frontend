@@ -1,6 +1,6 @@
+import { ArrowRight, Wand2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Wand2 } from "lucide-react";
 import heroImage from "@/assets/images/hero.png";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
@@ -35,10 +35,7 @@ function HeroSection() {
         <Typography variant="h1" as="h1" className={`${BASE_CLASS}_title`}>
           Чарівний простір для вашої дитини
         </Typography>
-        <Typography
-          variant="body1"
-          className={`${BASE_CLASS}_subtitle`}
-        >
+        <Typography variant="body1" className={`${BASE_CLASS}_subtitle`}>
           Вігвами, подушки та аксесуари ручної роботи. Кожен виріб створений з
           любов&apos;ю та увагою до деталей.
         </Typography>

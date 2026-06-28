@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
 import { RotateCcw, SlidersHorizontal, X } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 import Button from "@/components/controls/Button/Button";
 import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
 import ProductCard from "@/components/organisms/products/ProductCard/ProductCard";
-import { CATEGORY_LABELS } from "@/entities/products/labels";
-import { MOCK_PRODUCTS } from "@/entities/products/mocks";
-import type { ProductCategory } from "@/entities/products/models";
+import { useCategories } from "@/entities/categories/api";
+import { useProducts } from "@/entities/products/api";
+import { getEffectivePrice } from "@/entities/products/helpers";
 
 import "./ProductsPage.styles.scss";
 
@@ -20,45 +21,54 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "price-desc", label: "Ціна: від дорогих" },
 ];
 
-const ALL_CATEGORIES = Array.from(
-  new Set(MOCK_PRODUCTS.map((p) => p.category)),
-) as ProductCategory[];
-
-const PRICES = MOCK_PRODUCTS.map((p) => p.salePrice ?? p.price);
-const PRICE_MIN_BOUND = Math.min(...PRICES);
-const PRICE_MAX_BOUND = Math.max(...PRICES);
-
 const BASE_CLASS = "products-page";
+const SKELETON_KEYS = ["s1", "s2", "s3", "s4", "s5", "s6"];
 
 function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(null);
-  const [priceMin, setPriceMin] = useState(PRICE_MIN_BOUND);
-  const [priceMax, setPriceMax] = useState(PRICE_MAX_BOUND);
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+  } = useProducts({ limit: 100 });
+  const { data: categories = [] } = useCategories();
+
+  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
+  const [priceMin, setPriceMin] = useState<number | null>(null);
+  const [priceMax, setPriceMax] = useState<number | null>(null);
   const [sort, setSort] = useState<SortKey>("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const hasFilters = activeCategory !== null || priceMin !== PRICE_MIN_BOUND || priceMax !== PRICE_MAX_BOUND;
+  const prices = products.map(getEffectivePrice);
+  const boundMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
+  const boundMax = prices.length ? Math.ceil(Math.max(...prices)) : 0;
+  const range = boundMax - boundMin;
+
+  const effMin = priceMin ?? boundMin;
+  const effMax = priceMax ?? boundMax;
+
+  const hasFilters =
+    activeCategoryId !== null || priceMin !== null || priceMax !== null;
 
   const resetFilters = () => {
-    setActiveCategory(null);
-    setPriceMin(PRICE_MIN_BOUND);
-    setPriceMax(PRICE_MAX_BOUND);
+    setActiveCategoryId(null);
+    setPriceMin(null);
+    setPriceMax(null);
   };
 
-  const range = PRICE_MAX_BOUND - PRICE_MIN_BOUND;
-  const minPct = ((priceMin - PRICE_MIN_BOUND) / range) * 100;
-  const maxPct = ((priceMax - PRICE_MIN_BOUND) / range) * 100;
+  const minPct = range > 0 ? ((effMin - boundMin) / range) * 100 : 0;
+  const maxPct = range > 0 ? ((effMax - boundMin) / range) * 100 : 100;
 
-  const filtered = MOCK_PRODUCTS.filter((p) => {
-    const effectivePrice = p.salePrice ?? p.price;
-    if (activeCategory && p.category !== activeCategory) return false;
-    if (effectivePrice < priceMin || effectivePrice > priceMax) return false;
+  const filtered = products.filter((p) => {
+    const effectivePrice = getEffectivePrice(p);
+    if (activeCategoryId !== null && p.new_category.id !== activeCategoryId)
+      return false;
+    if (effectivePrice < effMin || effectivePrice > effMax) return false;
     return true;
   });
 
   const sorted = [...filtered].sort((a, b) => {
-    const pa = a.salePrice ?? a.price;
-    const pb = b.salePrice ?? b.price;
+    const pa = getEffectivePrice(a);
+    const pb = getEffectivePrice(b);
     if (sort === "price-asc") return pa - pb;
     if (sort === "price-desc") return pb - pa;
     return 0;
@@ -68,7 +78,9 @@ function ProductsPage() {
     <div className={BASE_CLASS}>
       <div className={`${BASE_CLASS}_inner`}>
         <div className={`${BASE_CLASS}_header`}>
-          <Typography variant="h1" as="h1">Каталог</Typography>
+          <Typography variant="h1" as="h1">
+            Каталог
+          </Typography>
           <button
             type="button"
             className={`${BASE_CLASS}_filter-toggle`}
@@ -77,7 +89,12 @@ function ProductsPage() {
           >
             <SlidersHorizontal size={18} strokeWidth={1.75} />
             Фільтри
-            {hasFilters && <span className={`${BASE_CLASS}_filter-toggle-dot`} aria-hidden="true" />}
+            {hasFilters && (
+              <span
+                className={`${BASE_CLASS}_filter-toggle-dot`}
+                aria-hidden="true"
+              />
+            )}
           </button>
         </div>
 
@@ -101,7 +118,11 @@ function ProductsPage() {
               <X size={18} strokeWidth={2} />
             </button>
             <div className={`${BASE_CLASS}_sidebar-section`}>
-              <Typography variant="overline" color="muted" className={`${BASE_CLASS}_sidebar-title`}>
+              <Typography
+                variant="overline"
+                color="muted"
+                className={`${BASE_CLASS}_sidebar-title`}
+              >
                 Категорія
               </Typography>
               <ul className={`${BASE_CLASS}_cat-list`}>
@@ -109,25 +130,31 @@ function ProductsPage() {
                   <button
                     type="button"
                     className={`${BASE_CLASS}_cat-item`}
-                    data-active={activeCategory === null}
-                    onClick={() => setActiveCategory(null)}
+                    data-active={activeCategoryId === null}
+                    onClick={() => setActiveCategoryId(null)}
                   >
                     <span>Усі</span>
-                    <span className={`${BASE_CLASS}_cat-count`}>{MOCK_PRODUCTS.length}</span>
+                    <span className={`${BASE_CLASS}_cat-count`}>
+                      {products.length}
+                    </span>
                   </button>
                 </li>
-                {ALL_CATEGORIES.map((cat) => {
-                  const count = MOCK_PRODUCTS.filter((p) => p.category === cat).length;
+                {categories.map((cat) => {
+                  const count = products.filter(
+                    (p) => p.new_category.id === cat.id,
+                  ).length;
                   return (
-                    <li key={cat}>
+                    <li key={cat.id}>
                       <button
                         type="button"
                         className={`${BASE_CLASS}_cat-item`}
-                        data-active={activeCategory === cat}
-                        onClick={() => setActiveCategory(cat)}
+                        data-active={activeCategoryId === cat.id}
+                        onClick={() => setActiveCategoryId(cat.id)}
                       >
-                        <span>{CATEGORY_LABELS[cat]}</span>
-                        <span className={`${BASE_CLASS}_cat-count`}>{count}</span>
+                        <span>{cat.name}</span>
+                        <span className={`${BASE_CLASS}_cat-count`}>
+                          {count}
+                        </span>
                       </button>
                     </li>
                   );
@@ -136,43 +163,58 @@ function ProductsPage() {
             </div>
 
             <div className={`${BASE_CLASS}_sidebar-section`}>
-              <Typography variant="overline" color="muted" className={`${BASE_CLASS}_sidebar-title`}>
+              <Typography
+                variant="overline"
+                color="muted"
+                className={`${BASE_CLASS}_sidebar-title`}
+              >
                 Ціна, ₴
               </Typography>
               <div
                 className={`${BASE_CLASS}_range-wrap`}
-                style={{ "--min-pct": `${minPct}%`, "--max-pct": `${maxPct}%` } as React.CSSProperties}
+                style={
+                  {
+                    "--min-pct": `${minPct}%`,
+                    "--max-pct": `${maxPct}%`,
+                  } as React.CSSProperties
+                }
               >
                 <input
                   type="range"
                   className={`${BASE_CLASS}_range-input`}
-                  value={priceMin}
-                  min={PRICE_MIN_BOUND}
-                  max={PRICE_MAX_BOUND}
+                  value={effMin}
+                  min={boundMin}
+                  max={boundMax}
                   step={50}
+                  disabled={range === 0}
                   onChange={(e) => {
                     const v = Number(e.target.value);
-                    if (v < priceMax) setPriceMin(v);
+                    if (v < effMax) setPriceMin(v);
                   }}
                   aria-label="Мінімальна ціна"
                 />
                 <input
                   type="range"
                   className={`${BASE_CLASS}_range-input`}
-                  value={priceMax}
-                  min={PRICE_MIN_BOUND}
-                  max={PRICE_MAX_BOUND}
+                  value={effMax}
+                  min={boundMin}
+                  max={boundMax}
                   step={50}
+                  disabled={range === 0}
                   onChange={(e) => {
                     const v = Number(e.target.value);
-                    if (v > priceMin) setPriceMax(v);
+                    if (v > effMin) setPriceMax(v);
                   }}
                   aria-label="Максимальна ціна"
                 />
               </div>
               <div className={`${BASE_CLASS}_price-vals`}>
-                <span className={`${BASE_CLASS}_price-val`}>{priceMin.toLocaleString("uk-UA")} ₴</span>
-                <span className={`${BASE_CLASS}_price-val`}>{priceMax.toLocaleString("uk-UA")} ₴</span>
+                <span className={`${BASE_CLASS}_price-val`}>
+                  {effMin.toLocaleString("uk-UA")} ₴
+                </span>
+                <span className={`${BASE_CLASS}_price-val`}>
+                  {effMax.toLocaleString("uk-UA")} ₴
+                </span>
               </div>
             </div>
 
@@ -200,9 +242,23 @@ function ProductsPage() {
               />
             </div>
 
-            {sorted.length === 0 ? (
+            {isError ? (
               <div className={`${BASE_CLASS}_empty`}>
-                <Typography variant="body1" color="muted">Немає товарів за вибраними фільтрами</Typography>
+                <Typography variant="body1" color="muted">
+                  Не вдалося завантажити каталог. Спробуйте оновити сторінку.
+                </Typography>
+              </div>
+            ) : isLoading ? (
+              <div className={`${BASE_CLASS}_grid`}>
+                {SKELETON_KEYS.map((key) => (
+                  <div key={key} className={`${BASE_CLASS}_skeleton`} />
+                ))}
+              </div>
+            ) : sorted.length === 0 ? (
+              <div className={`${BASE_CLASS}_empty`}>
+                <Typography variant="body1" color="muted">
+                  Немає товарів за вибраними фільтрами
+                </Typography>
               </div>
             ) : (
               <div className={`${BASE_CLASS}_grid`}>

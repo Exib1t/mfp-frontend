@@ -1,51 +1,98 @@
+"use client";
+
+import { ChevronLeft, Minus, Plus, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { ChevronLeft, ShoppingBag } from "lucide-react";
+import { useState } from "react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
-import ProductGallery from "@/components/organisms/products/ProductGallery/ProductGallery";
+import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
-import { CATEGORY_LABELS } from "@/entities/products/labels";
-import type { Product, ProductBadge } from "@/entities/products/models";
+import ProductGallery from "@/components/organisms/products/ProductGallery/ProductGallery";
+import ProductReviews from "@/components/organisms/products/ProductReviews/ProductReviews";
+import { useCart } from "@/entities/cart/CartContext";
+import { useProduct } from "@/entities/products/api";
+import {
+  getDiscountPercent,
+  getEffectivePrice,
+  getFirstAvailableVariant,
+  getVariantLabel,
+  isProductAvailableToBuy,
+  PRODUCT_STATUS_LABELS,
+} from "@/entities/products/helpers";
+import type { Product } from "@/entities/products/types";
+import { cn } from "@/lib/utils/cn";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
 import "./ProductPage.styles.scss";
 
-interface BadgeConfig {
-  label: string;
-  variant: "primary" | "error" | "warning";
-}
-
-function getBadgeConfig(badge: ProductBadge, product: Product): BadgeConfig {
-  if (badge === "sale" && product.salePrice) {
-    const pct = Math.round((1 - product.salePrice / product.price) * 100);
-    return { label: `−${pct}%`, variant: "error" };
-  }
-  const map: Record<ProductBadge, BadgeConfig> = {
-    new: { label: "Новинка", variant: "primary" },
-    sale: { label: "Знижка", variant: "error" },
-    bestseller: { label: "Хіт", variant: "warning" },
-    limited: { label: "Останні", variant: "warning" },
-  };
-  return map[badge];
-}
-
 interface ProductPageProps {
-  product: Product;
+  slug: string;
 }
 
 const BASE_CLASS = "product-page";
 
-function ProductPage({ product }: ProductPageProps) {
-  const {
-    name,
-    description,
-    price,
-    salePrice,
-    images,
-    badges,
-    inStock,
-    category,
-  } = product;
+function ProductPage({ slug }: ProductPageProps) {
+  const { data: product, isLoading, isError } = useProduct(slug);
+
+  if (isLoading) {
+    return (
+      <div className={BASE_CLASS}>
+        <div className={`${BASE_CLASS}_grid`}>
+          <div className={`${BASE_CLASS}_image-skeleton`} />
+          <div className={`${BASE_CLASS}_info-skeleton`} />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !product) {
+    return (
+      <div className={BASE_CLASS}>
+        <div className={`${BASE_CLASS}_not-found`}>
+          <Typography variant="h3" as="h1">
+            Товар не знайдено
+          </Typography>
+          <Button variant="primary" size="md" as={Link} href="/products">
+            До каталогу
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return <ProductPageContent product={product} />;
+}
+
+function ProductPageContent({ product }: { product: Product }) {
+  const { addItem } = useCart();
+  const { toast } = useToast();
+
+  const images = product.image_urls.length
+    ? product.image_urls
+    : product.images.map((img) => img.url);
+  const discount = getDiscountPercent(product);
+
+  const [selectedVariantId, setSelectedVariantId] = useState<number | null>(
+    getFirstAvailableVariant(product)?.id ?? product.variants[0]?.id ?? null,
+  );
+  const [quantity, setQuantity] = useState(1);
+
+  const selectedVariant =
+    product.variants.find((v) => v.id === selectedVariantId) ?? null;
+  const variantStock = selectedVariant?.stock ?? 0;
+  const canBuy = isProductAvailableToBuy(product) && variantStock > 0;
+
+  const handleSelectVariant = (variantId: number) => {
+    setSelectedVariantId(variantId);
+    setQuantity(1);
+  };
+
+  const handleAddToCart = () => {
+    if (selectedVariant && canBuy) {
+      addItem(product, selectedVariant, quantity);
+      toast(`«${product.name}» додано в кошик`, "success");
+    }
+  };
 
   return (
     <div className={BASE_CLASS}>
@@ -75,65 +122,131 @@ function ProductPage({ product }: ProductPageProps) {
           /
         </Typography>
         <Typography variant="caption" color="foreground">
-          {name}
+          {product.name}
         </Typography>
       </nav>
 
       <div className={`${BASE_CLASS}_grid`}>
-        <ProductGallery images={images} slug={product.slug} />
+        <ProductGallery
+          images={images}
+          name={product.name}
+          slug={product.slug}
+        />
 
         <div className={`${BASE_CLASS}_info`}>
           <div>
             <Typography variant="overline" color="muted">
-              {CATEGORY_LABELS[category]}
+              {product.new_category.name}
             </Typography>
             <Typography variant="h2" as="h1" className={`${BASE_CLASS}_name`}>
-              {name}
+              {product.name}
             </Typography>
           </div>
 
-          {badges && badges.length > 0 && (
+          {(discount !== null || product.status !== "in_stock") && (
             <div className={`${BASE_CLASS}_badges`}>
-              {badges.map((badge) => {
-                const { label, variant } = getBadgeConfig(badge, product);
-                return (
-                  <Badge key={badge} variant={variant} size="sm">
-                    {label}
-                  </Badge>
-                );
-              })}
+              {discount !== null && (
+                <Badge variant="error" size="sm">
+                  −{discount}%
+                </Badge>
+              )}
+              {product.status !== "in_stock" && (
+                <Badge variant="warning" size="sm">
+                  {PRODUCT_STATUS_LABELS[product.status]}
+                </Badge>
+              )}
             </div>
           )}
 
           <div className={`${BASE_CLASS}_price-row`}>
-            <span className={`${BASE_CLASS}_price`} data-sale={!!salePrice}>
-              {formatPrice(salePrice ?? price)}
+            <span
+              className={`${BASE_CLASS}_price`}
+              data-sale={product.sale_price !== null}
+            >
+              {formatPrice(getEffectivePrice(product))}
             </span>
-            {salePrice && (
+            {product.sale_price !== null && (
               <span className={`${BASE_CLASS}_price-original`}>
-                {formatPrice(price)}
+                {formatPrice(product.price)}
               </span>
             )}
           </div>
 
-          <Typography variant="body1" className={`${BASE_CLASS}_description`}>
-            {description}
-          </Typography>
-
-          {!inStock && (
-            <Typography
-              variant="caption"
-              color="muted"
-              className={`${BASE_CLASS}_stock`}
-            >
-              Немає в наявності
+          {product.description && (
+            <Typography variant="body1" className={`${BASE_CLASS}_description`}>
+              {product.description}
             </Typography>
           )}
 
+          {product.variants.length > 0 && (
+            <div className={`${BASE_CLASS}_variants`}>
+              <Typography variant="overline" color="muted">
+                Варіант
+              </Typography>
+              <div className={`${BASE_CLASS}_variant-list`}>
+                {product.variants.map((variant) => (
+                  <button
+                    key={variant.id}
+                    type="button"
+                    className={cn(`${BASE_CLASS}_variant`, {
+                      "-active": variant.id === selectedVariantId,
+                      "-disabled": variant.stock === 0,
+                    })}
+                    disabled={variant.stock === 0}
+                    onClick={() => handleSelectVariant(variant.id)}
+                  >
+                    {getVariantLabel(variant)}
+                    {variant.stock === 0 && " — немає"}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {canBuy && (
+            <div className={`${BASE_CLASS}_qty`}>
+              <Typography variant="overline" color="muted">
+                Кількість
+              </Typography>
+              <div className={`${BASE_CLASS}_qty-control`}>
+                <button
+                  type="button"
+                  className={`${BASE_CLASS}_qty-btn`}
+                  aria-label="Зменшити"
+                  disabled={quantity <= 1}
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                >
+                  <Minus size={16} strokeWidth={2} />
+                </button>
+                <span className={`${BASE_CLASS}_qty-value`}>{quantity}</span>
+                <button
+                  type="button"
+                  className={`${BASE_CLASS}_qty-btn`}
+                  aria-label="Збільшити"
+                  disabled={quantity >= variantStock}
+                  onClick={() =>
+                    setQuantity((q) => Math.min(variantStock, q + 1))
+                  }
+                >
+                  <Plus size={16} strokeWidth={2} />
+                </button>
+                <Typography variant="caption" color="muted">
+                  В наявності: {variantStock}
+                </Typography>
+              </div>
+            </div>
+          )}
+
           <div className={`${BASE_CLASS}_actions`}>
-            <Button variant="primary" size="lg" fullWidth disabled={!inStock}>
-              {inStock && <ShoppingBag size={18} strokeWidth={2} />}
-              {inStock ? "Додати до кошика" : "Немає в наявності"}
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
+              disabled={!canBuy}
+              onClick={handleAddToCart}
+            >
+              {canBuy && <ShoppingBag size={18} strokeWidth={2} />}
+              {canBuy ? "Додати до кошика" : "Немає в наявності"}
             </Button>
             <Button
               variant="ghost"
@@ -149,6 +262,8 @@ function ProductPage({ product }: ProductPageProps) {
           </div>
         </div>
       </div>
+
+      <ProductReviews productId={product.id} />
     </div>
   );
 }

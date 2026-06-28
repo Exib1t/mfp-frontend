@@ -1,78 +1,63 @@
 # Product — Data Model
 
-**File:** `src/entities/products/models.ts`  
-**Mocks:** `src/entities/products/mocks.ts`  
-**Queries:** `src/entities/products/queries.ts`
+Types are **generated from the backend OpenAPI schema** — never hand-write them.
 
-## Type
+- Generated types: `src/lib/api/v1.d.ts` (via `npm run generate`)
+- Domain aliases: `src/entities/products/types.ts`
+- Helpers: `src/entities/products/helpers.ts`
+- Query hooks: `src/entities/products/api.ts`
+
+## Type (from `ProductDto`)
 
 ```ts
-type ProductCategory = "wigwam" | "pillows" | "basket" | "rug" | "set" | "accessory";
-type ProductBadge    = "new" | "sale" | "bestseller" | "limited";
+type ProductStatus = "in_stock" | "made_to_order" | "out_of_stock";
 
-type ProductImage = {
-  src: string;
-  alt: string;
-};
+interface ProductVariant {
+  id: number;
+  color: string | null;
+  size: string | null;
+  child_name: string | null;
+  stock: number;
+}
 
-type Product = {
-  id:          string;
-  slug:        string;           // URL: /products/[slug]
-  name:        string;
-  description: string;
-  price:       number;           // UAH, base price
-  salePrice?:  number;           // if set → shown instead of price, price struck-through
-  category:    ProductCategory;
-  badges?:     ProductBadge[];   // shown on card: "Новинка", "−20%", etc.
-  images:      ProductImage[];   // [0] = main/cover image
-  inStock:     boolean;
-  featured?:   boolean;          // shown on Home → featured products section
-};
+interface Product {
+  id: number;
+  name: string;
+  slug: string;                 // URL: /products/[slug]
+  description: string | null;
+  price: number;                // base price (UAH)
+  sale_price: number | null;    // when set → shown as main, price struck-through
+  status: ProductStatus;
+  new_category: { id: number; name: string; slug: string };
+  variants: ProductVariant[];   // cart items reference variant id
+  image_urls: string[];         // [0] = cover
+  images: { id: number; url: string }[];
+  created_at: string;
+  updated_at: string;
+}
 ```
 
 ## Categories
 
+Dynamic, fetched from `GET /categories` (`CategoryDto`). No hard-coded enum.
+
+## Status → label
+
 | Value | Label UA |
 |---|---|
-| `wigwam` | Вігвами |
-| `pillows` | Подушки |
-| `basket` | Корзини |
-| `rug` | Килимки |
-| `set` | Комплекти |
-| `accessory` | Аксесуари |
+| `in_stock` | В наявності |
+| `made_to_order` | Під замовлення |
+| `out_of_stock` | Немає в наявності |
 
-## Badges
+## Display rules
 
-| Value | Displayed as | Color |
-|---|---|---|
-| `new` | Новинка | primary |
-| `sale` | Знижка | error |
-| `bestseller` | Хіт | warning |
-| `limited` | Останні | warning |
+- `sale_price` present → main price = `sale_price`, `price` struck-through.
+- Discount badge `−N%` computed from `price` / `sale_price` (`getDiscountPercent`).
+- Buyable when `status !== "out_of_stock"` **and** a variant has `stock > 0`.
+- Currency: `₴`, format `1 200 ₴` (`formatPrice`).
 
-## Price display rules
+## API contract
 
-- `salePrice` present → show `salePrice` as main, `price` struck-through
-- Badge `"sale"` → auto-compute label `"−N%"` from `price` / `salePrice`
-- Currency: `UAH` / `₴`, format: `1 200 ₴`
-
-## Mock data
-
-6 products for development:
-
-| # | Name | Category | Badges | Featured |
-|---|---|---|---|---|
-| 1 | Вігвам "Лісова фея" | wigwam | new | ✓ |
-| 2 | Вігвам "Бохо крем" | wigwam | bestseller | ✓ |
-| 3 | Вігвам "Рожевий сон" | wigwam | sale | ✓ |
-| 4 | Набір подушок "Бохо" | pillows | new | ✓ |
-| 5 | Корзина плетена | basket | — | — |
-| 6 | Комплект "Лісова казка" | set | limited | ✓ |
-
-Images: placeholder via `https://picsum.photos/seed/[id]/600/700`
-
-## Notes
-
-- `id` = nanoid or simple string for mocks
-- Future: type extended with `options` for configurator (see `docs/features/configurator.md`)
-- API contract: `GET /products` returns `Product[]`, `GET /products/[slug]` returns `Product`
+- `GET /products?page&limit&category_id&status` → `Product[]` (envelope `{ data, timestamp }`)
+- `GET /products/{slug}` → `Product`
+- Order references variants: `POST /orders { items: [{ variant_id, quantity }] }`

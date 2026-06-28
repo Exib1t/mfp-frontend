@@ -1,21 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { ViewTransition } from "react";
+import { useState, ViewTransition } from "react";
 import { cn } from "@/lib/utils/cn";
-import type { ProductImage } from "@/entities/products/models";
 
 import "./ProductGallery.styles.scss";
 
 interface ProductGalleryProps {
-  images: ProductImage[];
+  images: string[];
+  name: string;
   slug: string;
 }
 
 const BASE_CLASS = "product-gallery";
 
-function ProductGallery({ images, slug }: ProductGalleryProps) {
+function ProductGallery({ images, name, slug }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = images[activeIndex];
 
@@ -33,8 +32,8 @@ function ProductGallery({ images, slug }: ProductGalleryProps) {
         <div className={`${BASE_CLASS}_main`}>
           <Image
             className={`${BASE_CLASS}_main-image`}
-            src={activeImage.src}
-            alt={activeImage.alt}
+            src={activeImage}
+            alt={name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
@@ -43,20 +42,21 @@ function ProductGallery({ images, slug }: ProductGalleryProps) {
       </ViewTransition>
 
       {images.length > 1 && (
-        <div className={`${BASE_CLASS}_thumbs`} role="list" aria-label="Фото товару">
+        <div className={`${BASE_CLASS}_thumbs`}>
           {images.map((img, idx) => (
             <button
-              key={idx}
+              key={img}
               type="button"
-              role="listitem"
-              className={cn(`${BASE_CLASS}_thumb`, { "-active": idx === activeIndex })}
+              className={cn(`${BASE_CLASS}_thumb`, {
+                "-active": idx === activeIndex,
+              })}
               onClick={() => setActiveIndex(idx)}
               aria-label={`Фото ${idx + 1}`}
               aria-current={idx === activeIndex}
             >
               <Image
-                src={img.src}
-                alt={img.alt}
+                src={img}
+                alt={`${name} — фото ${idx + 1}`}
                 fill
                 sizes="80px"
                 className={`${BASE_CLASS}_thumb-image`}

@@ -262,6 +262,14 @@
     gap: 24px;
   }
 
+  &_skeleton {
+    aspect-ratio: 3 / 4;
+    border: 2px solid var(--foreground);
+    background: var(--background-variant);
+    opacity: 0.5;
+    animation: products-pulse 1.2s ease-in-out infinite;
+  }
+
   /* ─── Empty state ────────────────────────────────── */
 
   &_empty {
@@ -336,5 +344,15 @@
     &_grid {
       grid-template-columns: 1fr;
     }
+  }
+}
+
+@keyframes products-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.65;
   }
 }

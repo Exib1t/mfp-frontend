@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Wand2 } from "lucide-react";
+import Link from "next/link";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 
@@ -37,7 +37,11 @@ function ConfiguratorSection() {
           <Typography variant="h2" as="h2" className={`${BASE_CLASS}_title`}>
             Зберіть свій вігвам
           </Typography>
-          <Typography variant="body1" color="muted" className={`${BASE_CLASS}_desc`}>
+          <Typography
+            variant="body1"
+            color="muted"
+            className={`${BASE_CLASS}_desc`}
+          >
             Оберіть розмір, тканину, кольори та аксесуари — і отримайте вігвам,
             який підходить саме вашій дитині.
           </Typography>
@@ -45,7 +49,10 @@ function ConfiguratorSection() {
           <ul className={`${BASE_CLASS}_features`}>
             {FEATURES.map(({ label, detail }) => (
               <li key={label} className={`${BASE_CLASS}_feature`}>
-                <span className={`${BASE_CLASS}_feature-mark`} aria-hidden="true">
+                <span
+                  className={`${BASE_CLASS}_feature-mark`}
+                  aria-hidden="true"
+                >
                   ✦
                 </span>
                 <span className={`${BASE_CLASS}_feature-label`}>{label}</span>
@@ -64,7 +71,11 @@ function ConfiguratorSection() {
 
         <div className={`${BASE_CLASS}_visual`}>
           <div className={`${BASE_CLASS}_visual-inner`}>
-            <Typography variant="overline" color="muted" className={`${BASE_CLASS}_visual-label`}>
+            <Typography
+              variant="overline"
+              color="muted"
+              className={`${BASE_CLASS}_visual-label`}
+            >
               Колір
             </Typography>
             <div className={`${BASE_CLASS}_swatches`}>
@@ -78,7 +89,11 @@ function ConfiguratorSection() {
               ))}
             </div>
 
-            <Typography variant="overline" color="muted" className={`${BASE_CLASS}_visual-label`}>
+            <Typography
+              variant="overline"
+              color="muted"
+              className={`${BASE_CLASS}_visual-label`}
+            >
               Розмір
             </Typography>
             <div className={`${BASE_CLASS}_sizes`}>

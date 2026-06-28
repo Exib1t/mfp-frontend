@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-import { MOCK_PRODUCTS } from "@/entities/products/mocks";
 import ProductPage from "@/views/ProductPage/ProductPage";
 
 interface Props {
@@ -8,9 +6,5 @@ interface Props {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  const product = MOCK_PRODUCTS.find((p) => p.slug === slug);
-
-  if (!product) notFound();
-
-  return <ProductPage product={product} />;
+  return <ProductPage slug={slug} />;
 }

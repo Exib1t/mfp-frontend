@@ -16,10 +16,19 @@ function StatsSection() {
       <ul className={`${BASE_CLASS}_list`}>
         {STATS.map(({ value, label }) => (
           <li key={label} className={`${BASE_CLASS}_item`}>
-            <Typography variant="h3" as="span" color="primary" className={`${BASE_CLASS}_value`}>
+            <Typography
+              variant="h3"
+              as="span"
+              color="primary"
+              className={`${BASE_CLASS}_value`}
+            >
               {value}
             </Typography>
-            <Typography variant="body2" color="muted" className={`${BASE_CLASS}_label`}>
+            <Typography
+              variant="body2"
+              color="muted"
+              className={`${BASE_CLASS}_label`}
+            >
               {label}
             </Typography>
           </li>
