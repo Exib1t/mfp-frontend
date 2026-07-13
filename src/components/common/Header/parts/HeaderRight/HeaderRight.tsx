@@ -4,6 +4,7 @@ import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/entities/cart/CartContext";
+import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { cn } from "@/lib/utils/cn";
 import "./HeaderRight.styles.scss";
 
@@ -12,7 +13,9 @@ const BASE_CLASS = "header-right";
 const HeaderRight = () => {
   const pathname = usePathname();
   const isCartActive = pathname === "/cart";
-  const { totalCount: count } = useCart();
+  const { totalCount } = useCart();
+  const { item: configuratorItem } = useConfiguratorCart();
+  const count = totalCount + (configuratorItem ? 1 : 0);
 
   return (
     <div className={BASE_CLASS}>

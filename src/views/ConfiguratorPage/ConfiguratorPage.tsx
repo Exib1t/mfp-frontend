@@ -3,9 +3,12 @@
 import { Check, ChevronLeft, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/controls/Button/Button";
+import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
+import { BASE_PRICE, NAME_PRICE, useConfiguratorOptions } from "@/entities/configurator/api";
+import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { cn } from "@/lib/utils/cn";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
@@ -13,202 +16,133 @@ import "./ConfiguratorPage.styles.scss";
 
 /* ─── Types ──────────────────────────────────────────── */
 
-type SizeId = "s" | "m" | "l";
-type FabricId = "cotton" | "linen" | "velvet";
-type ColorId = "cream" | "sage" | "pink" | "navy" | "terracotta" | "sand";
-type AddonId = "pillows" | "rug" | "garland" | "basket" | "flags" | "window";
-
-interface SizeOption {
-  id: SizeId;
-  label: string;
-  description: string;
-  dimensions: string;
-  priceAdd: number;
-}
-
-interface FabricOption {
-  id: FabricId;
-  label: string;
-  description: string;
-  priceAdd: number;
-  imageSeed: string;
-}
-
-interface ColorOption {
-  id: ColorId;
-  label: string;
-  hex: string;
-  imageSeed: string;
-}
-
-interface AddonOption {
-  id: AddonId;
-  label: string;
-  description: string;
-  price: number;
-}
-
 interface ConfigState {
-  size: SizeId;
-  fabric: FabricId;
-  color: ColorId;
-  addons: Set<AddonId>;
+  size: string;
+  fabric: string;
+  color: string;
+  addons: Set<string>;
   name: string;
 }
 
-/* ─── Mock data ──────────────────────────────────────── */
+const DEFAULT_CONFIG: ConfigState = {
+  size: "m",
+  fabric: "cotton",
+  color: "cream",
+  addons: new Set(),
+  name: "",
+};
 
-const BASE_PRICE = 2800;
-const NAME_PRICE = 150;
+const STORAGE_KEY = "mfp-configurator";
 
-const SIZES: SizeOption[] = [
-  {
-    id: "s",
-    label: "S",
-    description: "для 1 дитини",
-    dimensions: "110×110×150 см",
-    priceAdd: 0,
-  },
-  {
-    id: "m",
-    label: "M",
-    description: "для 2 дітей",
-    dimensions: "140×140×170 см",
-    priceAdd: 400,
-  },
-  {
-    id: "l",
-    label: "L",
-    description: "просторий",
-    dimensions: "160×160×190 см",
-    priceAdd: 800,
-  },
-];
-
-const FABRICS: FabricOption[] = [
-  {
-    id: "cotton",
-    label: "Бавовна",
-    description: "М'яка, дихаюча, легка у догляді",
-    priceAdd: 0,
-    imageSeed: "fabric-cotton",
-  },
-  {
-    id: "linen",
-    label: "Льон",
-    description: "Натуральна текстура, міцна",
-    priceAdd: 200,
-    imageSeed: "fabric-linen",
-  },
-  {
-    id: "velvet",
-    label: "Оксамит",
-    description: "Розкішна, ніжна на дотик",
-    priceAdd: 500,
-    imageSeed: "fabric-velvet",
-  },
-];
-
-const COLORS: ColorOption[] = [
-  { id: "cream", label: "Кремовий", hex: "#F5EFE0", imageSeed: "vigvam1" },
-  { id: "sage", label: "Шавлія", hex: "#8FAF8B", imageSeed: "vigvam-sage" },
-  { id: "pink", label: "Пудра", hex: "#E8C4C4", imageSeed: "vigvam3" },
-  {
-    id: "navy",
-    label: "Темно-синій",
-    hex: "#2C3E6B",
-    imageSeed: "vigvam-navy",
-  },
-  { id: "terracotta", label: "Теракота", hex: "#C4714A", imageSeed: "vigvam2" },
-  { id: "sand", label: "Пісок", hex: "#D4B896", imageSeed: "vigvam-sand" },
-];
-
-const ADDONS: AddonOption[] = [
-  {
-    id: "pillows",
-    label: "Подушки",
-    description: "Набір 3 подушок в стилі вігваму",
-    price: 350,
-  },
-  {
-    id: "rug",
-    label: "Килимок",
-    description: "М'який килимок всередину",
-    price: 290,
-  },
-  {
-    id: "garland",
-    label: "Гірлянда",
-    description: "Декоративна LED гірлянда",
-    price: 150,
-  },
-  {
-    id: "basket",
-    label: "Корзина",
-    description: "Плетена корзина для іграшок",
-    price: 250,
-  },
-  {
-    id: "flags",
-    label: "Прапорці",
-    description: "Паперові або тканинні прапорці",
-    price: 120,
-  },
-  {
-    id: "window",
-    label: "Вікно",
-    description: "Оглядове вікно з сітки",
-    price: 180,
-  },
-];
+function loadConfig(): ConfigState {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_CONFIG;
+    const parsed = JSON.parse(raw) as Omit<ConfigState, "addons"> & {
+      addons: string[];
+    };
+    return { ...parsed, addons: new Set(parsed.addons ?? []) };
+  } catch {
+    return DEFAULT_CONFIG;
+  }
+}
 
 /* ─── Component ──────────────────────────────────────── */
 
 const BASE_CLASS = "configurator";
 
 function ConfiguratorPage() {
-  const [config, setConfig] = useState<ConfigState>({
-    size: "m",
-    fabric: "cotton",
-    color: "cream",
-    addons: new Set(),
-    name: "",
-  });
+  const { data: options = [], isLoading } = useConfiguratorOptions();
+  const { setItem: setConfiguratorCartItem } = useConfiguratorCart();
+  const { toast } = useToast();
 
-  const selectedSize = SIZES.find((s) => s.id === config.size)!;
-  const selectedFabric = FABRICS.find((f) => f.id === config.fabric)!;
-  const selectedColor = COLORS.find((c) => c.id === config.color)!;
+  const [config, setConfig] = useState<ConfigState>(DEFAULT_CONFIG);
+  const [configReady, setConfigReady] = useState(false);
+
+  // Hydrate from localStorage after mount to avoid SSR mismatch.
+  useEffect(() => {
+    setConfig(loadConfig());
+    setConfigReady(true);
+  }, []);
+
+  // Persist to localStorage on every change.
+  useEffect(() => {
+    if (!configReady) return;
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ ...config, addons: [...config.addons] }),
+    );
+  }, [config, configReady]);
+
+  const sizes = options.filter((o) => o.type === "size");
+  const fabrics = options.filter((o) => o.type === "fabric");
+  const colors = options.filter((o) => o.type === "color");
+  const addons = options.filter((o) => o.type === "addon");
+
+  const selectedSize = sizes.find((s) => s.value === config.size);
+  const selectedFabric = fabrics.find((f) => f.value === config.fabric);
+  const selectedColor = colors.find((c) => c.value === config.color);
 
   const addonsTotal = [...config.addons].reduce(
-    (sum, id) => sum + (ADDONS.find((a) => a.id === id)?.price ?? 0),
+    (sum, id) =>
+      sum + (addons.find((a) => a.value === id)?.price_modifier ?? 0),
     0,
   );
   const namePrice = config.name.trim() ? NAME_PRICE : 0;
   const total =
     BASE_PRICE +
-    selectedSize.priceAdd +
-    selectedFabric.priceAdd +
+    (selectedSize?.price_modifier ?? 0) +
+    (selectedFabric?.price_modifier ?? 0) +
     addonsTotal +
     namePrice;
 
-  const toggleAddon = (id: AddonId) => {
+  const toggleAddon = (id: string) => {
     setConfig((prev) => {
-      const addons = new Set(prev.addons);
-      if (addons.has(id)) addons.delete(id);
-      else addons.add(id);
-      return { ...prev, addons };
+      const next = new Set(prev.addons);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return { ...prev, addons: next };
     });
   };
 
   const configSummary = [
-    selectedSize.label,
-    selectedFabric.label,
-    selectedColor.label,
+    selectedSize?.label,
+    selectedFabric?.label,
+    selectedColor?.label,
     config.addons.size > 0 ? `+${config.addons.size} опц.` : null,
     config.name.trim() ? `«${config.name.trim()}»` : null,
   ]
     .filter(Boolean)
     .join(" · ");
+
+  const handleAddToCart = () => {
+    if (!selectedSize || !selectedFabric || !selectedColor) return;
+
+    const selectedAddons = addons
+      .filter((a) => config.addons.has(a.value))
+      .map((a) => ({ id: a.value, label: a.label, price: a.price_modifier }));
+
+    setConfiguratorCartItem({
+      sizeId: selectedSize.value,
+      sizeLabel: selectedSize.label,
+      sizeDescription: selectedSize.description ?? "",
+      fabricId: selectedFabric.value,
+      fabricLabel: selectedFabric.label,
+      colorId: selectedColor.value,
+      colorLabel: selectedColor.label,
+      colorHex: selectedColor.hex ?? "",
+      addons: selectedAddons,
+      childName: config.name.trim(),
+      basePrice: BASE_PRICE,
+      sizePrice: selectedSize.price_modifier,
+      fabricPrice: selectedFabric.price_modifier,
+      addonsTotal,
+      namePrice,
+      total,
+    });
+
+    toast("Вігвам додано до кошика!", "success");
+  };
 
   return (
     <div className={BASE_CLASS}>
@@ -226,23 +160,27 @@ function ConfiguratorPage() {
           {/* ─── Preview (sticky) ─── */}
           <div className={`${BASE_CLASS}_preview`}>
             <div className={`${BASE_CLASS}_preview-image-wrap`}>
-              <Image
-                className={`${BASE_CLASS}_preview-image`}
-                src={`https://picsum.photos/seed/${selectedColor.imageSeed}/600/700`}
-                alt="Превью вігваму"
-                fill
-                sizes="(max-width: 768px) 100vw, 40vw"
-                key={selectedColor.imageSeed}
-                loading="eager"
-              />
+              {selectedColor?.image_url && (
+                <Image
+                  className={`${BASE_CLASS}_preview-image`}
+                  src={selectedColor.image_url}
+                  alt="Превью вігваму"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  key={selectedColor.value}
+                  loading="eager"
+                />
+              )}
               <div
                 className={`${BASE_CLASS}_preview-overlay`}
-                style={{ backgroundColor: selectedColor.hex }}
+                style={{
+                  backgroundColor: selectedColor?.hex ?? "transparent",
+                }}
               />
               {config.addons.size > 0 && (
                 <div className={`${BASE_CLASS}_preview-addon-tags`}>
                   {[...config.addons].map((id) => {
-                    const addon = ADDONS.find((a) => a.id === id);
+                    const addon = addons.find((a) => a.value === id);
                     return addon ? (
                       <span
                         key={id}
@@ -290,15 +228,17 @@ function ConfiguratorPage() {
                   Розмір
                 </Typography>
               </div>
-              <div className={`${BASE_CLASS}_size-grid`}>
-                {SIZES.map((size) => (
+              <div className={cn(`${BASE_CLASS}_size-grid`, { "-loading": isLoading })}>
+                {sizes.map((size) => (
                   <button
                     type="button"
                     key={size.id}
                     className={cn(`${BASE_CLASS}_size-card`, {
-                      "-active": config.size === size.id,
+                      "-active": config.size === size.value,
                     })}
-                    onClick={() => setConfig((p) => ({ ...p, size: size.id }))}
+                    onClick={() =>
+                      setConfig((p) => ({ ...p, size: size.value }))
+                    }
                   >
                     <span className={`${BASE_CLASS}_size-card-label`}>
                       {size.label}
@@ -309,9 +249,9 @@ function ConfiguratorPage() {
                     <span className={`${BASE_CLASS}_size-card-dims`}>
                       {size.dimensions}
                     </span>
-                    {size.priceAdd > 0 && (
+                    {size.price_modifier > 0 && (
                       <span className={`${BASE_CLASS}_size-card-price`}>
-                        +{formatPrice(size.priceAdd)}
+                        +{formatPrice(size.price_modifier)}
                       </span>
                     )}
                   </button>
@@ -334,25 +274,27 @@ function ConfiguratorPage() {
                 </Typography>
               </div>
               <div className={`${BASE_CLASS}_fabric-grid`}>
-                {FABRICS.map((fabric) => (
+                {fabrics.map((fabric) => (
                   <button
                     type="button"
                     key={fabric.id}
                     className={cn(`${BASE_CLASS}_fabric-card`, {
-                      "-active": config.fabric === fabric.id,
+                      "-active": config.fabric === fabric.value,
                     })}
                     onClick={() =>
-                      setConfig((p) => ({ ...p, fabric: fabric.id }))
+                      setConfig((p) => ({ ...p, fabric: fabric.value }))
                     }
                   >
                     <div className={`${BASE_CLASS}_fabric-card-img-wrap`}>
-                      <Image
-                        src={`https://picsum.photos/seed/${fabric.imageSeed}/200/120`}
-                        alt={fabric.label}
-                        fill
-                        sizes="160px"
-                        className={`${BASE_CLASS}_fabric-card-img`}
-                      />
+                      {fabric.image_url && (
+                        <Image
+                          src={fabric.image_url}
+                          alt={fabric.label}
+                          fill
+                          sizes="160px"
+                          className={`${BASE_CLASS}_fabric-card-img`}
+                        />
+                      )}
                     </div>
                     <div className={`${BASE_CLASS}_fabric-card-info`}>
                       <Typography variant="subtitle2" as="span">
@@ -361,9 +303,9 @@ function ConfiguratorPage() {
                       <Typography variant="caption" color="muted">
                         {fabric.description}
                       </Typography>
-                      {fabric.priceAdd > 0 && (
+                      {fabric.price_modifier > 0 && (
                         <Typography variant="caption" color="primary">
-                          +{formatPrice(fabric.priceAdd)}
+                          +{formatPrice(fabric.price_modifier)}
                         </Typography>
                       )}
                     </div>
@@ -385,21 +327,21 @@ function ConfiguratorPage() {
                 <Typography variant="h4" as="h2">
                   Колір&nbsp;
                   <Typography variant="body1" as="span" color="muted">
-                    — {selectedColor.label}
+                    {selectedColor ? `— ${selectedColor.label}` : ""}
                   </Typography>
                 </Typography>
               </div>
               <div className={`${BASE_CLASS}_color-grid`}>
-                {COLORS.map((color) => (
+                {colors.map((color) => (
                   <button
                     type="button"
                     key={color.id}
                     className={cn(`${BASE_CLASS}_color-swatch`, {
-                      "-active": config.color === color.id,
+                      "-active": config.color === color.value,
                     })}
-                    style={{ backgroundColor: color.hex }}
+                    style={{ backgroundColor: color.hex ?? "transparent" }}
                     onClick={() =>
-                      setConfig((p) => ({ ...p, color: color.id }))
+                      setConfig((p) => ({ ...p, color: color.value }))
                     }
                     aria-label={color.label}
                     title={color.label}
@@ -423,8 +365,8 @@ function ConfiguratorPage() {
                 </Typography>
               </div>
               <div className={`${BASE_CLASS}_addon-grid`}>
-                {ADDONS.map((addon) => {
-                  const isSelected = config.addons.has(addon.id);
+                {addons.map((addon) => {
+                  const isSelected = config.addons.has(addon.value);
                   return (
                     <button
                       type="button"
@@ -432,7 +374,7 @@ function ConfiguratorPage() {
                       className={cn(`${BASE_CLASS}_addon-card`, {
                         "-active": isSelected,
                       })}
-                      onClick={() => toggleAddon(addon.id)}
+                      onClick={() => toggleAddon(addon.value)}
                     >
                       <div
                         className={cn(`${BASE_CLASS}_addon-check`, {
@@ -460,7 +402,7 @@ function ConfiguratorPage() {
                         color="primary"
                         className={`${BASE_CLASS}_addon-price`}
                       >
-                        +{formatPrice(addon.price)}
+                        +{formatPrice(addon.price_modifier)}
                       </Typography>
                     </button>
                   );
@@ -530,8 +472,8 @@ function ConfiguratorPage() {
               <Typography variant="h4" as="p">
                 {formatPrice(total)}
               </Typography>
-              {(selectedSize.priceAdd > 0 ||
-                selectedFabric.priceAdd > 0 ||
+              {((selectedSize?.price_modifier ?? 0) > 0 ||
+                (selectedFabric?.price_modifier ?? 0) > 0 ||
                 addonsTotal > 0 ||
                 namePrice > 0) && (
                 <Typography
@@ -554,7 +496,12 @@ function ConfiguratorPage() {
               <ChevronLeft size={16} strokeWidth={2} />
               До каталогу
             </Button>
-            <Button variant="primary" size="lg">
+            <Button
+              variant="primary"
+              size="lg"
+              disabled={isLoading || !selectedSize || !selectedFabric || !selectedColor}
+              onClick={handleAddToCart}
+            >
               <ShoppingBag size={18} strokeWidth={2} />
               Додати до кошика
             </Button>

@@ -5,6 +5,7 @@ import {
   CreditCard,
   Minus,
   Plus,
+  Settings2,
   ShoppingBag,
   X,
 } from "lucide-react";
@@ -16,6 +17,7 @@ import Button from "@/components/controls/Button/Button";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
+import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { useCreateOrder } from "@/entities/orders/api";
 import type { PaymentMethod } from "@/entities/orders/types";
 import { formatPrice } from "@/lib/utils/formatPrice";
@@ -35,6 +37,29 @@ function pluralItems(count: number): string {
   return "товарів";
 }
 
+function buildConfiguratorNotes(
+  configuratorItem: NonNullable<
+    ReturnType<typeof useConfiguratorCart>["item"]
+  >,
+): string {
+  const lines = [
+    "=== Кастомний вігвам ===",
+    `Розмір: ${configuratorItem.sizeLabel} (${configuratorItem.sizeDescription})`,
+    `Тканина: ${configuratorItem.fabricLabel}`,
+    `Колір: ${configuratorItem.colorLabel}`,
+  ];
+  if (configuratorItem.addons.length > 0) {
+    lines.push(
+      `Аксесуари: ${configuratorItem.addons.map((a) => a.label).join(", ")}`,
+    );
+  }
+  if (configuratorItem.childName) {
+    lines.push(`Ім'я для вишивки: ${configuratorItem.childName}`);
+  }
+  lines.push(`Сума: ${formatPrice(configuratorItem.total)}`);
+  return lines.join("\n");
+}
+
 function CartPage() {
   const router = useRouter();
   const {
@@ -48,6 +73,8 @@ function CartPage() {
     removeItem,
     clear,
   } = useCart();
+  const { item: configuratorItem, clear: clearConfigurator } =
+    useConfiguratorCart();
   const { toast } = useToast();
   const createOrder = useCreateOrder();
 
@@ -75,9 +102,21 @@ function CartPage() {
     form.guest_phone.trim().length >= 10 &&
     form.address.trim().length > 0;
 
+  const hasAnyItems = items.length > 0 || !!configuratorItem;
+
+  const grandTotal = subtotal + (configuratorItem?.total ?? 0);
+  const grandOriginalTotal = originalTotal + (configuratorItem?.total ?? 0);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid || items.length === 0) return;
+    if (!isFormValid || !hasAnyItems) return;
+
+    const configuratorNotes = configuratorItem
+      ? buildConfiguratorNotes(configuratorItem)
+      : null;
+    const combinedNotes = [configuratorNotes, form.notes.trim()]
+      .filter(Boolean)
+      .join("\n\n");
 
     createOrder.mutate(
       {
@@ -87,7 +126,7 @@ function CartPage() {
           guest_phone: form.guest_phone.trim(),
           address: form.address.trim(),
           payment_method: form.payment_method,
-          notes: form.notes.trim() || undefined,
+          notes: combinedNotes || undefined,
           items: items.map((item) => ({
             variant_id: item.variantId,
             quantity: item.quantity,
@@ -97,6 +136,7 @@ function CartPage() {
       {
         onSuccess: (res) => {
           clear();
+          clearConfigurator();
           router.push(`/orders/${res.data.id}`);
         },
         onError: () => {
@@ -110,7 +150,7 @@ function CartPage() {
   };
 
   // Empty cart (only once hydrated, to avoid a flash on first render).
-  if (isReady && items.length === 0) {
+  if (isReady && !hasAnyItems) {
     return (
       <div className={BASE_CLASS}>
         <div className={`${BASE_CLASS}_inner`}>
@@ -131,6 +171,8 @@ function CartPage() {
     );
   }
 
+  const totalItemCount = totalCount + (configuratorItem ? 1 : 0);
+
   return (
     <div className={BASE_CLASS}>
       <div className={`${BASE_CLASS}_inner`}>
@@ -139,13 +181,84 @@ function CartPage() {
             Кошик
           </Typography>
           <Typography variant="body2" color="muted">
-            {totalCount} {pluralItems(totalCount)}
+            {totalItemCount} {pluralItems(totalItemCount)}
           </Typography>
         </div>
 
         <div className={`${BASE_CLASS}_layout`}>
           {/* ─── Items list ─── */}
           <div className={`${BASE_CLASS}_items`}>
+            {/* Configurator item */}
+            {configuratorItem && (
+              <div className={`${BASE_CLASS}_item`}>
+                <div className={`${BASE_CLASS}_item-image-wrap`}>
+                  <span
+                    className={`${BASE_CLASS}_item-glyph`}
+                    aria-hidden="true"
+                    style={{
+                      backgroundColor: configuratorItem.colorHex || undefined,
+                    }}
+                  >
+                    <Settings2
+                      size={28}
+                      strokeWidth={1.5}
+                      style={{ color: "white", opacity: 0.8 }}
+                    />
+                  </span>
+                </div>
+
+                <div className={`${BASE_CLASS}_item-body`}>
+                  <Typography variant="overline" color="muted">
+                    Кастомний вігвам
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    as="h3"
+                    className={`${BASE_CLASS}_item-name`}
+                  >
+                    Вігвам «{configuratorItem.sizeLabel} ·{" "}
+                    {configuratorItem.fabricLabel} ·{" "}
+                    {configuratorItem.colorLabel}»
+                  </Typography>
+
+                  <div className={`${BASE_CLASS}_configurator-details`}>
+                    {configuratorItem.addons.length > 0 && (
+                      <Typography variant="caption" color="muted">
+                        Аксесуари:{" "}
+                        {configuratorItem.addons.map((a) => a.label).join(", ")}
+                      </Typography>
+                    )}
+                    {configuratorItem.childName && (
+                      <Typography variant="caption" color="muted">
+                        Ім'я для вишивки: «{configuratorItem.childName}»
+                      </Typography>
+                    )}
+                  </div>
+
+                  <div className={`${BASE_CLASS}_item-footer`}>
+                    <Typography variant="caption" color="muted">
+                      1 шт. · кастомне виготовлення
+                    </Typography>
+                    <div className={`${BASE_CLASS}_item-price-wrap`}>
+                      <span className={`${BASE_CLASS}_item-price`}>
+                        {formatPrice(configuratorItem.total)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className={`${BASE_CLASS}_item-remove`}
+                  aria-label="Видалити"
+                  onClick={clearConfigurator}
+                >
+                  <X size={16} strokeWidth={2} />
+                </button>
+              </div>
+            )}
+
+            {/* Regular items */}
             {items.map((item) => {
               const lineTotal = item.unitPrice * item.quantity;
               const hasDiscount = item.unitPrice < item.basePrice;
@@ -260,14 +373,26 @@ function CartPage() {
             </Typography>
 
             <div className={`${BASE_CLASS}_summary-rows`}>
-              <div className={`${BASE_CLASS}_summary-row`}>
-                <Typography variant="body2" color="muted">
-                  Товари ({totalCount})
-                </Typography>
-                <Typography variant="body2">
-                  {formatPrice(originalTotal)}
-                </Typography>
-              </div>
+              {items.length > 0 && (
+                <div className={`${BASE_CLASS}_summary-row`}>
+                  <Typography variant="body2" color="muted">
+                    Товари ({totalCount})
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatPrice(originalTotal)}
+                  </Typography>
+                </div>
+              )}
+              {configuratorItem && (
+                <div className={`${BASE_CLASS}_summary-row`}>
+                  <Typography variant="body2" color="muted">
+                    Вігвам (кастомний)
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatPrice(configuratorItem.total)}
+                  </Typography>
+                </div>
+              )}
               {discount > 0 && (
                 <div className={`${BASE_CLASS}_summary-row`}>
                   <Typography variant="body2" color="muted">
@@ -281,7 +406,7 @@ function CartPage() {
               <div className={`${BASE_CLASS}_summary-row -total`}>
                 <Typography variant="subtitle1">Разом</Typography>
                 <Typography variant="subtitle1">
-                  {formatPrice(subtotal)}
+                  {formatPrice(grandTotal)}
                 </Typography>
               </div>
             </div>
