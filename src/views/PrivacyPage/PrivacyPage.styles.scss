@@ -1,0 +1,11 @@
+.privacy-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  &_section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

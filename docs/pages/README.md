@@ -7,10 +7,10 @@
 | `/` | [Home](./home.md) | 🔲 planned |
 | `/products` | [Catalog](./catalog.md) | 🔲 planned |
 | `/products/[slug]` | [Product Detail](./product-detail.md) | 🔲 planned |
-| `/about` | [About](./about.md) | 🔲 planned |
-| `/delivery` | [Delivery & Payment](./delivery.md) | 🔲 planned |
-| `/contacts` | [Contacts](./contacts.md) | 🔲 planned |
-| `/blog` | [Blog / Inspiration](./blog.md) | 🔲 planned |
+| `/about` | [About](./about.md) | ✔️ done (placeholder copy) |
+| `/delivery` | [Delivery & Payment](./delivery.md) | ✔️ done (placeholder copy) |
+| `/contacts` | [Contacts](./contacts.md) | ✔️ done (no contact form — no backend endpoint) |
+| `/blog` | [Blog / Inspiration](./blog.md) | ✔️ done ("coming soon", no CMS) |
 | `/blog/[slug]` | [Blog Post](./blog-post.md) | 🔲 planned |
 | `/cart` | [Cart](./cart.md) | 🔲 planned |
 | `/checkout` | [Checkout](./checkout.md) | 🔲 planned |

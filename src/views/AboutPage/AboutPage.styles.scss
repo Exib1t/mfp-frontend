@@ -1,0 +1,25 @@
+.about-page {
+  &_values {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  &_value {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    border: 2px solid var(--foreground);
+  }
+
+  &_cta {
+    display: flex;
+  }
+
+  @media (max-width: 560px) {
+    &_values {
+      grid-template-columns: 1fr;
+    }
+  }
+}

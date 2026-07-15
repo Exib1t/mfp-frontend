@@ -1,0 +1,9 @@
+.blog-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  text-align: center;
+  color: var(--color-muted);
+}

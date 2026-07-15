@@ -1,0 +1,19 @@
+.contacts-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &_link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+}
