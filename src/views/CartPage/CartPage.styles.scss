@@ -67,17 +67,6 @@
     min-width: 0;
   }
 
-  &_item-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  &_item-badges {
-    display: flex;
-    gap: 4px;
-  }
-
   &_item-name-link {
     text-decoration: none;
     color: inherit;
@@ -97,47 +86,6 @@
     justify-content: space-between;
     gap: 16px;
     margin-top: 8px;
-  }
-
-  /* ─── Qty controls ───────────────────────────────── */
-
-  &_item-qty {
-    display: flex;
-    align-items: center;
-    border: 2px solid var(--foreground);
-  }
-
-  &_qty-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-md);
-    font-family: var(--font-inter), serif;
-    color: var(--foreground);
-    transition: background-color 120ms ease;
-
-    &:hover {
-      background: var(--background-variant);
-    }
-  }
-
-  &_qty-value {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 32px;
-    font-family: var(--font-inter), serif;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    border-left: 2px solid var(--foreground);
-    border-right: 2px solid var(--foreground);
-    user-select: none;
   }
 
   /* ─── Item price ─────────────────────────────────── */
@@ -170,14 +118,7 @@
   /* ─── Remove btn ─────────────────────────────────── */
 
   &_item-remove {
-    background: transparent;
-    border: none;
-    cursor: pointer;
     color: var(--color-muted);
-    font-size: var(--font-size-sm);
-    padding: 4px;
-    line-height: 1;
-    transition: color 150ms ease;
     margin-top: 2px;
 
     &:hover {
@@ -241,26 +182,6 @@
     padding-top: 8px;
   }
 
-  &_input,
-  &_textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 2px solid var(--foreground);
-    background: var(--background);
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-sm);
-    color: var(--foreground);
-
-    &:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-  }
-
-  &_textarea {
-    resize: vertical;
-  }
-
   /* ─── Configurator item ─────────────────────────────── */
 
   &_configurator-details {
@@ -268,18 +189,6 @@
     flex-direction: column;
     gap: 2px;
     margin-top: 2px;
-  }
-
-  /* ─── Empty state ────────────────────────────────── */
-
-  &_empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 80px 0;
-    text-align: center;
-    color: var(--color-muted);
   }
 
   /* ─── Responsive ─────────────────────────────────── */

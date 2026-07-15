@@ -20,8 +20,8 @@ const Providers = ({ children }: PropsWithChildren) => {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <CartProvider>
-            <ConfiguratorCartProvider>{children}</ConfiguratorCartProvider>
-          </CartProvider>
+          <ConfiguratorCartProvider>{children}</ConfiguratorCartProvider>
+        </CartProvider>
       </ToastProvider>
     </QueryClientProvider>
   );

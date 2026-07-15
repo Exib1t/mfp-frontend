@@ -20,7 +20,7 @@ function HeroSection() {
           src={heroImage}
           alt="Дитячий вігвам"
           fill
-          priority
+          loading="eager"
           sizes="100vw"
         />
         <div className={`${BASE_CLASS}_badge`}>

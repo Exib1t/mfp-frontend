@@ -1,0 +1,39 @@
+.rating-stars {
+  display: inline-flex;
+  gap: 2px;
+
+  &_star {
+    color: var(--color-muted);
+    opacity: 0.4;
+
+    &.-filled {
+      color: var(--color-warning);
+      fill: var(--color-warning);
+      opacity: 1;
+    }
+  }
+
+  &.-interactive {
+    gap: 4px;
+  }
+
+  &_btn {
+    display: inline-flex;
+    padding: 2px;
+    border: none;
+    background: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 120ms ease;
+
+    &.-active {
+      color: var(--color-warning);
+      opacity: 1;
+
+      svg {
+        fill: var(--color-warning);
+      }
+    }
+  }
+}

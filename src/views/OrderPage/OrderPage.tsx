@@ -39,7 +39,7 @@ function OrderPage({ orderId }: OrderPageProps) {
           <Typography variant="h3" as="h1">
             Замовлення не знайдено
           </Typography>
-          <Button variant="primary" size="md" as={Link} href="/">
+          <Button as={Link} href="/">
             На головну
           </Button>
         </div>
@@ -116,7 +116,7 @@ function OrderPage({ orderId }: OrderPageProps) {
           </div>
         </div>
 
-        <Button variant="primary" size="lg" as={Link} href="/products">
+        <Button size="lg" as={Link} href="/products">
           Повернутись до каталогу
         </Button>
       </div>

@@ -1,0 +1,18 @@
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--foreground);
+  background: var(--background);
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-sm);
+  color: var(--foreground);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  &:is(textarea) {
+    resize: vertical;
+  }
+}

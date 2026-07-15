@@ -1,0 +1,48 @@
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: var(--foreground);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ─── Sizes ─────────────────────────────────────── */
+
+  &[data-size="sm"] {
+    width: 28px;
+    height: 28px;
+  }
+
+  &[data-size="md"] {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* ─── Variants ───────────────────────────────────── */
+
+  &[data-variant="ghost"] {
+    &:hover:not(:disabled) {
+      background: var(--background-variant);
+    }
+  }
+
+  &[data-variant="outline"] {
+    border: 2px solid var(--foreground);
+    background: var(--background);
+
+    &:hover:not(:disabled) {
+      background: var(--background-variant);
+    }
+  }
+}

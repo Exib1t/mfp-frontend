@@ -36,7 +36,7 @@ function ProductGallery({ images, name, slug }: ProductGalleryProps) {
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            loading="eager"
           />
         </div>
       </ViewTransition>

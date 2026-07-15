@@ -128,7 +128,6 @@ function ProductCard({ product, className }: ProductCardProps) {
 
       <div className={`${BASE_CLASS}_footer`}>
         <Button
-          variant="primary"
           size="sm"
           fullWidth
           disabled={!canBuy}

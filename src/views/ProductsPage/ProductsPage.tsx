@@ -1,15 +1,14 @@
 "use client";
 
-import { RotateCcw, SlidersHorizontal, X } from "lucide-react";
-import type React from "react";
+import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
-import Button from "@/components/controls/Button/Button";
 import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
-import ProductCard from "@/components/organisms/products/ProductCard/ProductCard";
 import { useCategories } from "@/entities/categories/api";
 import { useProducts } from "@/entities/products/api";
 import { getEffectivePrice } from "@/entities/products/helpers";
+import FilterSidebar from "./parts/FilterSidebar/FilterSidebar";
+import ProductGrid from "./parts/ProductGrid/ProductGrid";
 
 import "./ProductsPage.styles.scss";
 
@@ -22,7 +21,6 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
 ];
 
 const BASE_CLASS = "products-page";
-const SKELETON_KEYS = ["s1", "s2", "s3", "s4", "s5", "s6"];
 
 function ProductsPage() {
   const {
@@ -41,7 +39,6 @@ function ProductsPage() {
   const prices = products.map(getEffectivePrice);
   const boundMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
   const boundMax = prices.length ? Math.ceil(Math.max(...prices)) : 0;
-  const range = boundMax - boundMin;
 
   const effMin = priceMin ?? boundMin;
   const effMax = priceMax ?? boundMax;
@@ -55,15 +52,11 @@ function ProductsPage() {
     setPriceMax(null);
   };
 
-  const minPct = range > 0 ? ((effMin - boundMin) / range) * 100 : 0;
-  const maxPct = range > 0 ? ((effMax - boundMin) / range) * 100 : 100;
-
   const filtered = products.filter((p) => {
     const effectivePrice = getEffectivePrice(p);
     if (activeCategoryId !== null && p.new_category.id !== activeCategoryId)
       return false;
-    if (effectivePrice < effMin || effectivePrice > effMax) return false;
-    return true;
+    return !(effectivePrice < effMin || effectivePrice > effMax);
   });
 
   const sorted = [...filtered].sort((a, b) => {
@@ -107,126 +100,23 @@ function ProductsPage() {
         )}
 
         <div className={`${BASE_CLASS}_layout`}>
-          {/* ─── Sidebar ─── */}
-          <aside className={`${BASE_CLASS}_sidebar`} data-open={sidebarOpen}>
-            <button
-              type="button"
-              className={`${BASE_CLASS}_sidebar-close`}
-              onClick={() => setSidebarOpen(false)}
-              aria-label="Закрити фільтри"
-            >
-              <X size={18} strokeWidth={2} />
-            </button>
-            <div className={`${BASE_CLASS}_sidebar-section`}>
-              <Typography
-                variant="overline"
-                color="muted"
-                className={`${BASE_CLASS}_sidebar-title`}
-              >
-                Категорія
-              </Typography>
-              <ul className={`${BASE_CLASS}_cat-list`}>
-                <li>
-                  <button
-                    type="button"
-                    className={`${BASE_CLASS}_cat-item`}
-                    data-active={activeCategoryId === null}
-                    onClick={() => setActiveCategoryId(null)}
-                  >
-                    <span>Усі</span>
-                    <span className={`${BASE_CLASS}_cat-count`}>
-                      {products.length}
-                    </span>
-                  </button>
-                </li>
-                {categories.map((cat) => {
-                  const count = products.filter(
-                    (p) => p.new_category.id === cat.id,
-                  ).length;
-                  return (
-                    <li key={cat.id}>
-                      <button
-                        type="button"
-                        className={`${BASE_CLASS}_cat-item`}
-                        data-active={activeCategoryId === cat.id}
-                        onClick={() => setActiveCategoryId(cat.id)}
-                      >
-                        <span>{cat.name}</span>
-                        <span className={`${BASE_CLASS}_cat-count`}>
-                          {count}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+          <FilterSidebar
+            categories={categories}
+            products={products}
+            activeCategoryId={activeCategoryId}
+            onSelectCategory={setActiveCategoryId}
+            boundMin={boundMin}
+            boundMax={boundMax}
+            effMin={effMin}
+            effMax={effMax}
+            onPriceMinChange={setPriceMin}
+            onPriceMaxChange={setPriceMax}
+            hasFilters={hasFilters}
+            onReset={resetFilters}
+            open={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
 
-            <div className={`${BASE_CLASS}_sidebar-section`}>
-              <Typography
-                variant="overline"
-                color="muted"
-                className={`${BASE_CLASS}_sidebar-title`}
-              >
-                Ціна, ₴
-              </Typography>
-              <div
-                className={`${BASE_CLASS}_range-wrap`}
-                style={
-                  {
-                    "--min-pct": `${minPct}%`,
-                    "--max-pct": `${maxPct}%`,
-                  } as React.CSSProperties
-                }
-              >
-                <input
-                  type="range"
-                  className={`${BASE_CLASS}_range-input`}
-                  value={effMin}
-                  min={boundMin}
-                  max={boundMax}
-                  step={50}
-                  disabled={range === 0}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-                    if (v < effMax) setPriceMin(v);
-                  }}
-                  aria-label="Мінімальна ціна"
-                />
-                <input
-                  type="range"
-                  className={`${BASE_CLASS}_range-input`}
-                  value={effMax}
-                  min={boundMin}
-                  max={boundMax}
-                  step={50}
-                  disabled={range === 0}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-                    if (v > effMin) setPriceMax(v);
-                  }}
-                  aria-label="Максимальна ціна"
-                />
-              </div>
-              <div className={`${BASE_CLASS}_price-vals`}>
-                <span className={`${BASE_CLASS}_price-val`}>
-                  {effMin.toLocaleString("uk-UA")} ₴
-                </span>
-                <span className={`${BASE_CLASS}_price-val`}>
-                  {effMax.toLocaleString("uk-UA")} ₴
-                </span>
-              </div>
-            </div>
-
-            {hasFilters && (
-              <Button variant="ghost" size="sm" onClick={resetFilters}>
-                <RotateCcw size={14} strokeWidth={2} />
-                Скинути фільтри
-              </Button>
-            )}
-          </aside>
-
-          {/* ─── Main ─── */}
           <div className={`${BASE_CLASS}_main`}>
             <div className={`${BASE_CLASS}_toolbar`}>
               <Typography variant="body2" color="muted">
@@ -242,31 +132,11 @@ function ProductsPage() {
               />
             </div>
 
-            {isError ? (
-              <div className={`${BASE_CLASS}_empty`}>
-                <Typography variant="body1" color="muted">
-                  Не вдалося завантажити каталог. Спробуйте оновити сторінку.
-                </Typography>
-              </div>
-            ) : isLoading ? (
-              <div className={`${BASE_CLASS}_grid`}>
-                {SKELETON_KEYS.map((key) => (
-                  <div key={key} className={`${BASE_CLASS}_skeleton`} />
-                ))}
-              </div>
-            ) : sorted.length === 0 ? (
-              <div className={`${BASE_CLASS}_empty`}>
-                <Typography variant="body1" color="muted">
-                  Немає товарів за вибраними фільтрами
-                </Typography>
-              </div>
-            ) : (
-              <div className={`${BASE_CLASS}_grid`}>
-                {sorted.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            )}
+            <ProductGrid
+              products={sorted}
+              isLoading={isLoading}
+              isError={isError}
+            />
           </div>
         </div>
       </div>
