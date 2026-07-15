@@ -37,13 +37,14 @@ function ProductCard({ product, className }: ProductCardProps) {
   const mainImage = getMainImageUrl(product);
   const discount = getDiscountPercent(product);
   const inStock = isProductAvailableToBuy(product);
+  const hasVariants = product.variants.length > 0;
   const firstVariant = getFirstAvailableVariant(product);
-  const canBuy = inStock && firstVariant !== null;
+  const canBuy = inStock && (hasVariants ? firstVariant !== null : product.stock > 0);
   const href = `/products/${slug}`;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (firstVariant) {
+    if (canBuy) {
       addItem(product, firstVariant);
       toast(`«${name}» додано в кошик`, "success");
     }

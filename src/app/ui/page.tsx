@@ -15,6 +15,7 @@ const SAMPLE_PRODUCTS: Product[] = [
     description: "Ніжна вишита сукня з натурального льону.",
     price: 1200,
     sale_price: null,
+    stock: 0,
     status: "in_stock",
     new_category: { id: 1, name: "Одяг", slug: "odyag" },
     variants: [
@@ -32,6 +33,7 @@ const SAMPLE_PRODUCTS: Product[] = [
     description: "Класична вишиванка з орнаментом «Дуб».",
     price: 1800,
     sale_price: 1600,
+    stock: 0,
     status: "made_to_order",
     new_category: { id: 1, name: "Одяг", slug: "odyag" },
     variants: [

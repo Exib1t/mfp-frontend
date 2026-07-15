@@ -9,12 +9,13 @@ import {
   useState,
 } from "react";
 import {
+  DEFAULT_VARIANT_LABEL,
   getEffectivePrice,
   getMainImageUrl,
   getVariantLabel,
 } from "@/entities/products/helpers";
 import type { Product, ProductVariant } from "@/entities/products/types";
-import type { CartItem } from "./types";
+import { getCartItemKey, type CartItem } from "./types";
 
 const STORAGE_KEY = "mfp-cart";
 
@@ -27,11 +28,11 @@ interface CartContextValue {
   isReady: boolean;
   addItem: (
     product: Product,
-    variant: ProductVariant,
+    variant: ProductVariant | null,
     quantity?: number,
   ) => void;
-  removeItem: (variantId: number) => void;
-  setQuantity: (variantId: number, quantity: number) => void;
+  removeItem: (key: string) => void;
+  setQuantity: (key: string, quantity: number) => void;
   clear: () => void;
 }
 
@@ -83,10 +84,15 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 
       addItem(product, variant, quantity = 1) {
         setItems((prev) => {
-          const existing = prev.find((i) => i.variantId === variant.id);
+          const maxStock = variant ? variant.stock : product.stock;
+          const newKey = getCartItemKey({
+            variantId: variant?.id ?? null,
+            productId: product.id,
+          });
+          const existing = prev.find((i) => getCartItemKey(i) === newKey);
           if (existing) {
             return prev.map((i) =>
-              i.variantId === variant.id
+              getCartItemKey(i) === newKey
                 ? {
                     ...i,
                     quantity: clampQuantity(i.quantity + quantity, i.maxStock),
@@ -95,29 +101,29 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             );
           }
           const newItem: CartItem = {
-            variantId: variant.id,
+            variantId: variant?.id ?? null,
             productId: product.id,
             slug: product.slug,
             name: product.name,
             image: getMainImageUrl(product),
-            variantLabel: getVariantLabel(variant),
+            variantLabel: variant ? getVariantLabel(variant) : DEFAULT_VARIANT_LABEL,
             unitPrice: getEffectivePrice(product),
             basePrice: product.price,
-            quantity: clampQuantity(quantity, variant.stock),
-            maxStock: variant.stock,
+            quantity: clampQuantity(quantity, maxStock),
+            maxStock,
           };
           return [...prev, newItem];
         });
       },
 
-      removeItem(variantId) {
-        setItems((prev) => prev.filter((i) => i.variantId !== variantId));
+      removeItem(key) {
+        setItems((prev) => prev.filter((i) => getCartItemKey(i) !== key));
       },
 
-      setQuantity(variantId, quantity) {
+      setQuantity(key, quantity) {
         setItems((prev) =>
           prev.map((i) =>
-            i.variantId === variantId
+            getCartItemKey(i) === key
               ? { ...i, quantity: clampQuantity(quantity, i.maxStock) }
               : i,
           ),

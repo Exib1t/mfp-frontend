@@ -8,6 +8,7 @@ import EmptyState from "@/components/controls/EmptyState/EmptyState";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
+import { getCartItemKey } from "@/entities/cart/types";
 import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { useCreateOrder } from "@/entities/orders/api";
 import { formatPrice } from "@/lib/utils/formatPrice";
@@ -90,10 +91,11 @@ function CartPage() {
           address: values.address,
           payment_method: values.payment_method,
           notes: combinedNotes || undefined,
-          items: items.map((item) => ({
-            variant_id: item.variantId,
-            quantity: item.quantity,
-          })),
+          items: items.map((item) =>
+            item.variantId != null
+              ? { variant_id: item.variantId, quantity: item.quantity }
+              : { product_id: item.productId, quantity: item.quantity },
+          ),
         },
       },
       {
@@ -158,10 +160,10 @@ function CartPage() {
 
             {items.map((item) => (
               <CartItemRow
-                key={item.variantId}
+                key={getCartItemKey(item)}
                 item={item}
-                onQuantityChange={(qty) => setQuantity(item.variantId, qty)}
-                onRemove={() => removeItem(item.variantId)}
+                onQuantityChange={(qty) => setQuantity(getCartItemKey(item), qty)}
+                onRemove={() => removeItem(getCartItemKey(item))}
               />
             ))}
           </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import { useOrder } from "@/entities/orders/api";
-import { getVariantLabel } from "@/entities/products/helpers";
+import { DEFAULT_VARIANT_LABEL, getVariantLabel } from "@/entities/products/helpers";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
 import "./OrderPage.styles.scss";
@@ -74,7 +74,9 @@ function OrderPage({ orderId }: OrderPageProps) {
               <div key={item.id} className={`${BASE_CLASS}_item`}>
                 <div className={`${BASE_CLASS}_item-info`}>
                   <Typography variant="body2">
-                    {getVariantLabel(item.variant)}
+                    {item.variant
+                      ? getVariantLabel(item.variant)
+                      : (item.product?.name ?? DEFAULT_VARIANT_LABEL)}
                   </Typography>
                   <Typography variant="caption" color="muted">
                     × {item.quantity}

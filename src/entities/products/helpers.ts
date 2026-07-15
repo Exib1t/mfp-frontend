@@ -6,6 +6,8 @@ export const PRODUCT_STATUS_LABELS: Record<ProductStatus, string> = {
   out_of_stock: "Немає в наявності",
 };
 
+export const DEFAULT_VARIANT_LABEL = "Стандарт";
+
 /** Storefront treats anything that isn't explicitly out of stock as buyable. */
 export function isProductAvailableToBuy(product: Product): boolean {
   return product.status !== "out_of_stock";
@@ -34,7 +36,7 @@ export function getVariantLabel(
   const parts = [variant.color, variant.size, variant.child_name].filter(
     (p): p is string => Boolean(p),
   );
-  return parts.length > 0 ? parts.join(" · ") : "Стандарт";
+  return parts.length > 0 ? parts.join(" · ") : DEFAULT_VARIANT_LABEL;
 }
 
 /** First variant that is in stock, or null. */
@@ -42,4 +44,12 @@ export function getFirstAvailableVariant(
   product: Product,
 ): ProductVariant | null {
   return product.variants.find((v) => v.stock > 0) ?? null;
+}
+
+/** Available stock for the given variant, or the product's own stock when it has no variants. */
+export function getAvailableStock(
+  product: Product,
+  variant: ProductVariant | null,
+): number {
+  return variant ? variant.stock : product.stock;
 }

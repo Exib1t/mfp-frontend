@@ -13,6 +13,7 @@ import ProductReviews from "@/components/organisms/products/ProductReviews/Produ
 import { useCart } from "@/entities/cart/CartContext";
 import { useProduct } from "@/entities/products/api";
 import {
+  getAvailableStock,
   getDiscountPercent,
   getEffectivePrice,
   getFirstAvailableVariant,
@@ -82,7 +83,7 @@ function ProductPageContent({ product }: { product: Product }) {
 
   const selectedVariant =
     product.variants.find((v) => v.id === selectedVariantId) ?? null;
-  const variantStock = selectedVariant?.stock ?? 0;
+  const variantStock = getAvailableStock(product, selectedVariant);
   const canBuy = isProductAvailableToBuy(product) && variantStock > 0;
 
   const handleSelectVariant = (variantId: number) => {
@@ -91,7 +92,7 @@ function ProductPageContent({ product }: { product: Product }) {
   };
 
   const handleAddToCart = () => {
-    if (selectedVariant && canBuy) {
+    if (canBuy) {
       addItem(product, selectedVariant, quantity);
       toast(`«${product.name}» додано в кошик`, "success");
     }
