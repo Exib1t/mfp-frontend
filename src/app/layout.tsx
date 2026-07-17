@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
-import { ViewTransition } from "react";
+import AdminAwareChrome from "@/app/AdminAwareChrome";
 import Providers from "@/app/Providers";
-import Footer from "@/components/common/Footer/Footer";
-import Header from "@/components/common/Header/Header";
 
 import "../assets/styles/main.scss";
 
@@ -31,11 +29,7 @@ export default function RootLayout({
     <Providers>
       <html lang="en" className={`${geistSans.variable} ${inter.variable}`}>
         <body>
-          <Header />
-          <ViewTransition name="page-content">
-            <main>{children}</main>
-          </ViewTransition>
-          <Footer />
+          <AdminAwareChrome>{children}</AdminAwareChrome>
         </body>
       </html>
     </Providers>

@@ -1,0 +1,25 @@
+.admin-login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background: var(--background-variant);
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 360px;
+    padding: 32px;
+    border: 2px solid var(--foreground);
+    background: var(--background);
+  }
+
+  &_field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

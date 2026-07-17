@@ -16,6 +16,7 @@
 | `/checkout` | [Checkout](./checkout.md) | 🔲 planned |
 | `/orders/[id]` | [Order Confirmation](./order-confirmation.md) | 🔲 planned |
 | `/account` | Account | ⏳ deferred |
+| `/admin/*` | [Admin panel](./admin.md) | 🚧 in progress |
 
 ## Auth model
 

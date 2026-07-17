@@ -1,0 +1,27 @@
+.admin-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+
+  &_topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 32px;
+    border-bottom: 2px solid var(--foreground);
+    background: var(--background);
+  }
+
+  &_user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &_content {
+    flex: 1;
+    padding: 32px;
+  }
+}
