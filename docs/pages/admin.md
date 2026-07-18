@@ -10,7 +10,8 @@ Custom admin section built into the storefront app (no React Admin, no separate 
 |---|---|---|
 | `/admin/login` | `src/app/admin/login/page.tsx` → `views/AdminLoginPage` | public |
 | `/admin` | `src/app/admin/(protected)/page.tsx` → `views/AdminDashboardPage` | `role: 'admin'` only |
-| `/admin/*` (future modules) | siblings under `src/app/admin/(protected)/` | `role: 'admin'` only |
+| `/admin/categories` | `src/app/admin/(protected)/categories/page.tsx` → `views/AdminCategoriesPage` | `role: 'admin'` only |
+| `/admin/*` (future modules — products, orders) | siblings under `src/app/admin/(protected)/` | `role: 'admin'` only |
 
 ## Auth (v1 — localStorage)
 
@@ -24,6 +25,12 @@ Custom admin section built into the storefront app (no React Admin, no separate 
 
 `/admin/*` skips the public `Header`/`Footer` — see `src/app/AdminAwareChrome.tsx`. Authenticated pages get `AdminShell` (topbar + logout) — see [admin-shell.md](../components/admin-shell.md).
 
+## Modules
+
+- **Категорії** (`views/AdminCategoriesPage`) — done. `Table` + `Modal` (`src/components/controls/Table`, `src/components/controls/Modal`) + `entities/categories/api.ts` admin hooks. Flat list, no pagination (backend returns everything).
+- **Товари** — next. Bigger: variants as a nested sub-resource, image upload (`POST /files/upload` → `image_file_ids`), category picker. See backend `products-admin.controller.ts`.
+- **Замовлення** — later.
+
 ## Status
 
-🚧 in progress — auth shell only (login, guard, logout, empty dashboard). Products/categories/orders CRUD modules are a separate, later phase.
+🚧 in progress — auth shell + categories module done. Products/orders CRUD modules are a separate, later phase.

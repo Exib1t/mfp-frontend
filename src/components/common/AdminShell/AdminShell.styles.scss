@@ -20,6 +20,41 @@
     gap: 16px;
   }
 
+  &_body {
+    display: flex;
+    flex: 1;
+  }
+
+  &_nav {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 4px;
+    width: 220px;
+    padding: 24px 16px;
+    border-right: 2px solid var(--foreground);
+  }
+
+  &_nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: var(--foreground);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+
+    &:hover {
+      background: var(--background-variant);
+    }
+
+    &.-active {
+      color: var(--primary);
+      background: var(--background-variant);
+    }
+  }
+
   &_content {
     flex: 1;
     padding: 32px;

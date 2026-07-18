@@ -1,0 +1,29 @@
+.admin-categories-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &_row-actions {
+    display: flex;
+    gap: 4px;
+  }
+}
+
+.category-form_form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.category-form_field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
