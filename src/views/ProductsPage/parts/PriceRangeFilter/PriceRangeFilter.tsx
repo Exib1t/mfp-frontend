@@ -42,7 +42,7 @@ function PriceRangeFilter({
           value={effMin}
           min={boundMin}
           max={boundMax}
-          step={50}
+          step={1}
           disabled={range === 0}
           onChange={(e) => {
             const v = Number(e.target.value);
@@ -56,7 +56,7 @@ function PriceRangeFilter({
           value={effMax}
           min={boundMin}
           max={boundMax}
-          step={50}
+          step={1}
           disabled={range === 0}
           onChange={(e) => {
             const v = Number(e.target.value);
