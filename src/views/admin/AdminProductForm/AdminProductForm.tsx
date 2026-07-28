@@ -9,10 +9,12 @@ import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import type { AdminProduct } from "@/entities/admin/products/types";
 import { PRODUCT_FORM_TABS, TABS_REQUIRING_SAVED_PRODUCT } from "./constants";
+import AttributesTab from "./parts/AttributesTab";
 import GeneralTab from "./parts/GeneralTab";
 import OptionsTab from "./parts/OptionsTab";
 import PricingTab from "./parts/PricingTab";
 import SeoTab from "./parts/SeoTab";
+import VariantsTab from "./parts/VariantsTab";
 import type { ProductFormTab } from "./types";
 import { useProductForm } from "./useProductForm";
 
@@ -87,20 +89,9 @@ function AdminProductForm({ product }: AdminProductFormProps) {
             )}
             {tab === "seo" && <SeoTab form={form} />}
             {tab === "options" && product && <OptionsTab product={product} />}
-            {tab === "variants" && product && (
-              <AdminCard title="Варіанти">
-                <Typography variant="body2" color="muted">
-                  Матриця варіантів — наступний крок. Зараз опції вже можна
-                  налаштувати на сусідній вкладці.
-                </Typography>
-              </AdminCard>
-            )}
+            {tab === "variants" && product && <VariantsTab product={product} />}
             {tab === "attributes" && product && (
-              <AdminCard title="Характеристики">
-                <Typography variant="body2" color="muted">
-                  Редактор характеристик — наступний крок.
-                </Typography>
-              </AdminCard>
+              <AttributesTab product={product} />
             )}
             {tab === "media" && product && (
               <AdminCard title="Медіа">

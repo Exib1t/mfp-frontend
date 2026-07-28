@@ -1368,12 +1368,10 @@ export interface components {
             sku?: string | null;
             price?: number | null;
             compare_at_price?: number | null;
-            /** @default 0 */
-            stock: number;
+            stock?: number;
             is_default?: boolean;
             sort_order?: number;
-            /** @default [] */
-            option_value_ids: number[];
+            option_value_ids?: number[];
         };
         SetProductAttributesDto: {
             attributes: {
@@ -1555,14 +1553,11 @@ export interface components {
             type?: "size" | "fabric" | "color" | "addon";
             label?: string;
             value?: string;
-            /** @default 0 */
-            price_modifier: number;
+            price_modifier?: number;
             /** Format: uri */
             image_url?: string | null;
-            /** @default 0 */
-            sort_order: number;
-            /** @default true */
-            is_active: boolean;
+            sort_order?: number;
+            is_active?: boolean;
         };
     };
     responses: never;

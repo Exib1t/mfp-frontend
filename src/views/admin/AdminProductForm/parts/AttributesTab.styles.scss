@@ -1,0 +1,40 @@
+.product-attributes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+
+  &_checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+  }
+
+  &_options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &_chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--background-variant);
+    cursor: pointer;
+
+    &.-selected {
+      border-color: var(--primary);
+      background: var(--background-variant);
+    }
+  }
+
+  &_swatch {
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--foreground);
+  }
+}
