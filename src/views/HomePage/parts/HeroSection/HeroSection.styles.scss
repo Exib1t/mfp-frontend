@@ -15,16 +15,6 @@
     object-fit: cover;
   }
 
-  &_badge {
-    position: absolute;
-    right: 32px;
-    bottom: 32px;
-    padding: 10px 20px;
-    color: #fff;
-    border: 2px solid var(--foreground);
-    background: var(--primary);
-  }
-
   /* ─── Blur overlay content ───────────────────────── */
 
   &_content {

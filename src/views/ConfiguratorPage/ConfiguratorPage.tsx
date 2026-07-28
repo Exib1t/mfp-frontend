@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import {
@@ -8,11 +9,18 @@ import {
   useConfiguratorOptions,
 } from "@/entities/configurator/api";
 import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
+import ConfiguratorStage, {
+  type StageHotspot,
+} from "./parts/ConfiguratorStage/ConfiguratorStage";
+import {
+  HOTSPOTS,
+  type HotspotId,
+  WIGWAM_BASE_IMAGE,
+} from "./parts/ConfiguratorStage/hotspots.config";
 import AddonStep from "./parts/AddonStep/AddonStep";
 import ColorStep from "./parts/ColorStep/ColorStep";
 import FabricStep from "./parts/FabricStep/FabricStep";
 import NameStep from "./parts/NameStep/NameStep";
-import PreviewPanel from "./parts/PreviewPanel/PreviewPanel";
 import SizeStep from "./parts/SizeStep/SizeStep";
 import StickyBar from "./parts/StickyBar/StickyBar";
 import { useConfiguratorStorage } from "./useConfiguratorStorage";
@@ -26,6 +34,11 @@ function ConfiguratorPage() {
   const { setItem: setConfiguratorCartItem } = useConfiguratorCart();
   const { toast } = useToast();
   const { config, setConfig } = useConfiguratorStorage();
+
+  const [openId, setOpenId] = useState<HotspotId | null>(null);
+  const toggleHotspot = (id: HotspotId) =>
+    setOpenId((prev) => (prev === id ? null : id));
+  const closeHotspot = () => setOpenId(null);
 
   const sizes = options.filter((o) => o.type === "size");
   const fabrics = options.filter((o) => o.type === "fabric");
@@ -68,6 +81,70 @@ function ConfiguratorPage() {
     .filter(Boolean)
     .join(" · ");
 
+  const cfgOf = (id: HotspotId) => HOTSPOTS.find((h) => h.id === id)!;
+
+  const editors: Record<HotspotId, StageHotspot> = {
+    size: {
+      config: cfgOf("size"),
+      value: selectedSize?.label,
+      editor: (
+        <SizeStep
+          sizes={sizes}
+          selectedValue={config.size}
+          isLoading={isLoading}
+          onSelect={(size) => setConfig((p) => ({ ...p, size }))}
+        />
+      ),
+    },
+    fabric: {
+      config: cfgOf("fabric"),
+      value: selectedFabric?.label,
+      editor: (
+        <FabricStep
+          fabrics={fabrics}
+          selectedValue={config.fabric}
+          onSelect={(fabric) => setConfig((p) => ({ ...p, fabric }))}
+        />
+      ),
+    },
+    color: {
+      config: cfgOf("color"),
+      value: selectedColor?.label,
+      editor: (
+        <ColorStep
+          colors={colors}
+          selectedValue={config.color}
+          selectedLabel={selectedColor?.label}
+          onSelect={(color) => setConfig((p) => ({ ...p, color }))}
+        />
+      ),
+    },
+    addon: {
+      config: cfgOf("addon"),
+      value: config.addons.size > 0 ? `${config.addons.size} шт.` : undefined,
+      editor: (
+        <AddonStep
+          addons={addons}
+          selectedIds={config.addons}
+          onToggle={toggleAddon}
+        />
+      ),
+    },
+    name: {
+      config: cfgOf("name"),
+      value: config.name.trim() || undefined,
+      editor: (
+        <NameStep
+          name={config.name}
+          namePrice={NAME_PRICE}
+          onChange={(name) => setConfig((p) => ({ ...p, name }))}
+        />
+      ),
+    },
+  };
+
+  const hotspots: StageHotspot[] = HOTSPOTS.map((h) => editors[h.id]);
+
   const handleAddToCart = () => {
     if (!selectedSize || !selectedFabric || !selectedColor) return;
 
@@ -101,48 +178,22 @@ function ConfiguratorPage() {
             Конфігуратор вігваму
           </Typography>
           <Typography variant="body2" color="muted">
-            Зберіть вігвам під себе — оберіть розмір, тканину, колір та додатки
+            Натисніть на позначку на вігвамі, щоб змінити тканину, колір, розмір
+            чи додати ім'я
           </Typography>
         </div>
 
-        <div className={`${BASE_CLASS}_layout`}>
-          <PreviewPanel
-            selectedColor={selectedColor}
-            selectedAddons={selectedAddons}
-            childName={config.name.trim()}
-            configSummary={configSummary}
-          />
-
-          <div className={`${BASE_CLASS}_options`}>
-            <SizeStep
-              sizes={sizes}
-              selectedValue={config.size}
-              isLoading={isLoading}
-              onSelect={(size) => setConfig((p) => ({ ...p, size }))}
-            />
-            <FabricStep
-              fabrics={fabrics}
-              selectedValue={config.fabric}
-              onSelect={(fabric) => setConfig((p) => ({ ...p, fabric }))}
-            />
-            <ColorStep
-              colors={colors}
-              selectedValue={config.color}
-              selectedLabel={selectedColor?.label}
-              onSelect={(color) => setConfig((p) => ({ ...p, color }))}
-            />
-            <AddonStep
-              addons={addons}
-              selectedIds={config.addons}
-              onToggle={toggleAddon}
-            />
-            <NameStep
-              name={config.name}
-              namePrice={NAME_PRICE}
-              onChange={(name) => setConfig((p) => ({ ...p, name }))}
-            />
-          </div>
-        </div>
+        <ConfiguratorStage
+          imageUrl={WIGWAM_BASE_IMAGE}
+          imageKey="wigwam-base"
+          overlayColor={selectedColor?.hex}
+          childName={config.name.trim()}
+          selectedAddons={selectedAddons}
+          hotspots={hotspots}
+          openId={openId}
+          onToggle={toggleHotspot}
+          onClose={closeHotspot}
+        />
       </div>
 
       <StickyBar

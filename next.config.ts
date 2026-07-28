@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "d3m27cxyyu0emg.cloudfront.net",
       },
+      {
+        // Placeholder images used by seed/demo product data.
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
     ],
   },
 };

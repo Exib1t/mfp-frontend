@@ -1,9 +1,8 @@
 "use client";
 
 import { ShoppingBag } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useCart } from "@/entities/cart/CartContext";
+import { useCartDrawer } from "@/entities/cart/CartDrawerContext";
 import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { cn } from "@/lib/utils/cn";
 import "./HeaderRight.styles.scss";
@@ -11,18 +10,20 @@ import "./HeaderRight.styles.scss";
 const BASE_CLASS = "header-right";
 
 const HeaderRight = () => {
-  const pathname = usePathname();
-  const isCartActive = pathname === "/cart";
+  const { isOpen, toggle } = useCartDrawer();
   const { totalCount } = useCart();
   const { item: configuratorItem } = useConfiguratorCart();
   const count = totalCount + (configuratorItem ? 1 : 0);
 
   return (
     <div className={BASE_CLASS}>
-      <Link
-        href="/cart"
-        className={cn(`${BASE_CLASS}_cart`, { "-active": isCartActive })}
+      <button
+        type="button"
+        className={cn(`${BASE_CLASS}_cart`, { "-active": isOpen })}
         aria-label={`Кошик${count > 0 ? `, ${count} товари` : ""}`}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        onClick={toggle}
       >
         <ShoppingBag size={20} strokeWidth={1.75} />
         {count > 0 && (
@@ -30,7 +31,7 @@ const HeaderRight = () => {
             {count > 99 ? "99+" : count}
           </span>
         )}
-      </Link>
+      </button>
     </div>
   );
 };

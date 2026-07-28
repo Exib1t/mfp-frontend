@@ -23,9 +23,6 @@ function HeroSection() {
           loading="eager"
           sizes="100vw"
         />
-        <div className={`${BASE_CLASS}_badge`}>
-          <Typography variant="overline">Нова колекція</Typography>
-        </div>
       </div>
 
       <div className={`${BASE_CLASS}_content`}>
