@@ -1,0 +1,29 @@
+.admin-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--background-variant);
+
+  &_card {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px 24px;
+    background: var(--background);
+    border: 1px solid var(--foreground);
+    box-shadow: 4px 4px 0 var(--foreground);
+  }
+
+  &_title {
+    margin: 0 0 4px;
+    text-align: center;
+  }
+
+  &_error {
+    margin: 0;
+    color: var(--color-error);
+  }
+}

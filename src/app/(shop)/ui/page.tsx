@@ -3,48 +3,8 @@ import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import ProductCard from "@/components/organisms/products/ProductCard/ProductCard";
-import type { Product } from "@/entities/products/types";
+import { SAMPLE_PRODUCTS } from "./sample-products";
 import "./ui.styles.scss";
-
-// Backend-shaped samples for the showcase (no network).
-const SAMPLE_PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: "Сукня вишита «Калина»",
-    slug: "suknya-vyshyta-kalyna",
-    description: "Ніжна вишита сукня з натурального льону.",
-    price: 1200,
-    sale_price: null,
-    stock: 0,
-    status: "in_stock",
-    new_category: { id: 1, name: "Одяг", slug: "odyag" },
-    variants: [
-      { id: 1, color: "Білий", size: "M", child_name: null, stock: 5 },
-    ],
-    image_urls: [],
-    images: [],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    name: "Вишиванка «Дуб»",
-    slug: "vyshyvanka-dub",
-    description: "Класична вишиванка з орнаментом «Дуб».",
-    price: 1800,
-    sale_price: 1600,
-    stock: 0,
-    status: "made_to_order",
-    new_category: { id: 1, name: "Одяг", slug: "odyag" },
-    variants: [
-      { id: 2, color: "Синій", size: "L", child_name: null, stock: 3 },
-    ],
-    image_urls: [],
-    images: [],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-];
 
 const SECTION_CLASS = "ui-section";
 const ROW_CLASS = "ui-row";

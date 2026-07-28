@@ -15,6 +15,10 @@ export interface CartItem {
 }
 
 /** Stable identity for a cart line — keyed by variant when present, otherwise by product. */
-export function getCartItemKey(item: Pick<CartItem, "variantId" | "productId">): string {
-  return item.variantId != null ? `variant-${item.variantId}` : `product-${item.productId}`;
+export function getCartItemKey(
+  item: Pick<CartItem, "variantId" | "productId">,
+): string {
+  return item.variantId != null
+    ? `variant-${item.variantId}`
+    : `product-${item.productId}`;
 }

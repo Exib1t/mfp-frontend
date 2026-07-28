@@ -1,0 +1,22 @@
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &_label {
+    font-family: var(--font-inter), sans-serif;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  &_error {
+    color: var(--color-error);
+  }
+
+  &.-invalid .input {
+    border-color: var(--color-error);
+  }
+}

@@ -126,6 +126,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/categories/tree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get categories as a nested tree (each node carries `children`) */
+        get: operations["CategoriesController_findTree_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/categories/{slug}": {
         parameters: {
             query?: never;
@@ -180,6 +197,113 @@ export interface paths {
         patch: operations["CategoriesAdminController_update_v1"];
         trace?: never;
     };
+    "/api/v1/attributes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get attribute definitions (optionally scoped to a category) */
+        get: operations["AttributesController_findAll_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/attributes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all attributes (admin) */
+        get: operations["AttributesAdminController_findAll_v1"];
+        put?: never;
+        /** Create attribute */
+        post: operations["AttributesAdminController_create_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/attributes/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get attribute by id (admin) */
+        get: operations["AttributesAdminController_findOne_v1"];
+        put?: never;
+        post?: never;
+        /** Delete attribute */
+        delete: operations["AttributesAdminController_remove_v1"];
+        options?: never;
+        head?: never;
+        /** Update attribute */
+        patch: operations["AttributesAdminController_update_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/attributes/{id}/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an option to a select-like attribute */
+        post: operations["AttributesAdminController_createOption_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/attributes/{id}/options/{optionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete an attribute option */
+        delete: operations["AttributesAdminController_removeOption_v1"];
+        options?: never;
+        head?: never;
+        /** Update an attribute option */
+        patch: operations["AttributesAdminController_updateOption_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/categories/{categoryId}/attributes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Attributes wired to a category */
+        get: operations["CategoryAttributesAdminController_findAll_v1"];
+        /** Replace the attribute set of a category */
+        put: operations["CategoryAttributesAdminController_set_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/products": {
         parameters: {
             query?: never;
@@ -187,7 +311,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get all products */
+        /** Browse published products */
         get: operations["ProductsController_findAll_v1"];
         put?: never;
         post?: never;
@@ -221,7 +345,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get all products (admin) */
+        /** Get all products (admin, incl. drafts) */
         get: operations["ProductsAdminController_findAll_v1"];
         put?: never;
         /** Create product */
@@ -249,6 +373,76 @@ export interface paths {
         head?: never;
         /** Update product */
         patch: operations["ProductsAdminController_update_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a variation axis (Colour, Size, …) */
+        post: operations["ProductsAdminController_createOption_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/options/{optionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a variation axis */
+        delete: operations["ProductsAdminController_removeOption_v1"];
+        options?: never;
+        head?: never;
+        /** Update a variation axis */
+        patch: operations["ProductsAdminController_updateOption_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/options/{optionId}/values": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a choice to a variation axis */
+        post: operations["ProductsAdminController_createOptionValue_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/options/{optionId}/values/{valueId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a choice on a variation axis */
+        delete: operations["ProductsAdminController_removeOptionValue_v1"];
+        options?: never;
+        head?: never;
+        /** Update a choice on a variation axis */
+        patch: operations["ProductsAdminController_updateOptionValue_v1"];
         trace?: never;
     };
     "/api/v1/admin/products/{id}/variants": {
@@ -284,6 +478,23 @@ export interface paths {
         head?: never;
         /** Update product variant */
         patch: operations["ProductsAdminController_updateVariant_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/attributes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Replace every attribute value of a product */
+        put: operations["ProductsAdminController_setAttributes_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/admin/products/{id}/images/{imageId}": {
@@ -672,6 +883,10 @@ export interface components {
             name: string;
             slug: string;
             description: string | null;
+            parent_id: number | null;
+            image_url: string | null;
+            meta_title: string | null;
+            meta_description: string | null;
             sort_order: number;
             /** Format: date-time */
             created_at: string;
@@ -691,51 +906,270 @@ export interface components {
         CreateCategoryDto: {
             name: string;
             slug: string;
-            description?: string;
+            description?: string | null;
+            parent_id?: number | null;
+            /** Format: uri */
+            image_url?: string | null;
+            meta_title?: string | null;
+            meta_description?: string | null;
             /** @default 0 */
             sort_order: number;
         };
         UpdateCategoryDto: {
             name?: string;
             slug?: string;
-            description?: string;
+            description?: string | null;
+            parent_id?: number | null;
+            /** Format: uri */
+            image_url?: string | null;
+            meta_title?: string | null;
+            meta_description?: string | null;
             /** @default 0 */
             sort_order: number;
         };
-        ProductDto: {
+        AttributeDto: {
             id: number;
+            code: string;
             name: string;
-            slug: string;
-            description: string | null;
-            price: number;
-            sale_price: number | null;
-            stock: number;
             /** @enum {string} */
-            status: "in_stock" | "made_to_order" | "out_of_stock";
-            new_category: {
+            type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+            unit: string | null;
+            group_name: string | null;
+            is_filterable: boolean;
+            is_visible: boolean;
+            sort_order: number;
+            options: {
                 id: number;
-                name: string;
-                slug: string;
-            };
-            variants: {
-                id: number;
-                color: string | null;
-                size: string | null;
-                child_name: string | null;
-                stock: number;
-            }[];
-            image_urls: string[];
-            images: {
-                id: number;
-                url: string;
+                label: string;
+                value: string;
+                color_hex: string | null;
+                image_url: string | null;
+                sort_order: number;
             }[];
             /** Format: date-time */
             created_at: string;
             /** Format: date-time */
             updated_at: string;
         };
-        ApiArrayResponseOfProductDto: {
-            data: components["schemas"]["ProductDto"][];
+        ApiArrayResponseOfAttributeDto: {
+            data: components["schemas"]["AttributeDto"][];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        ApiResponseOfAttributeDto: {
+            data: components["schemas"]["AttributeDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        CreateAttributeDto: {
+            code: string;
+            name: string;
+            /** @enum {string} */
+            type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+            unit?: string | null;
+            group_name?: string | null;
+            is_filterable?: boolean;
+            is_visible?: boolean;
+            sort_order?: number;
+            options?: {
+                label: string;
+                value: string;
+                color_hex?: string | null;
+                /** Format: uri */
+                image_url?: string | null;
+                sort_order?: number;
+            }[];
+        };
+        UpdateAttributeDto: {
+            code?: string;
+            name?: string;
+            unit?: string | null;
+            group_name?: string | null;
+            is_filterable?: boolean;
+            is_visible?: boolean;
+            sort_order?: number;
+        };
+        CreateAttributeOptionDto: {
+            label: string;
+            value: string;
+            color_hex?: string | null;
+            /** Format: uri */
+            image_url?: string | null;
+            sort_order?: number;
+        };
+        AttributeOptionDto: {
+            id: number;
+            label: string;
+            value: string;
+            color_hex: string | null;
+            image_url: string | null;
+            sort_order: number;
+        };
+        ApiResponseOfAttributeOptionDto: {
+            data: components["schemas"]["AttributeOptionDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        UpdateAttributeOptionDto: {
+            label?: string;
+            value?: string;
+            color_hex?: string | null;
+            /** Format: uri */
+            image_url?: string | null;
+            sort_order?: number;
+        };
+        SetCategoryAttributesDto: {
+            attributes: {
+                attribute_id: number;
+                is_required?: boolean;
+                sort_order?: number;
+            }[];
+        };
+        ProductDto: {
+            id: number;
+            name: string;
+            slug: string;
+            sku: string | null;
+            brand: string | null;
+            short_description: string | null;
+            description: string | null;
+            /** @enum {string} */
+            status: "in_stock" | "made_to_order" | "out_of_stock";
+            is_featured: boolean;
+            currency: string;
+            price: number;
+            compare_at_price: number | null;
+            sale_price: number | null;
+            sale_active: boolean;
+            /** Format: date-time */
+            sale_starts_at: string | null;
+            /** Format: date-time */
+            sale_ends_at: string | null;
+            effective_price: number;
+            price_range: {
+                min: number;
+                max: number;
+            };
+            stock: number;
+            category: {
+                id: number;
+                name: string;
+                slug: string;
+            };
+            options: {
+                id: number;
+                name: string;
+                sort_order: number;
+                values: {
+                    id: number;
+                    label: string;
+                    value: string;
+                    color_hex: string | null;
+                    image_url: string | null;
+                    sort_order: number;
+                }[];
+            }[];
+            variants: {
+                id: number;
+                sku: string | null;
+                label: string;
+                stock: number;
+                is_default: boolean;
+                sort_order: number;
+                price: number;
+                compare_at_price: number | null;
+                effective_price: number;
+                sale_active: boolean;
+                option_values: {
+                    option_id: number;
+                    option_name: string;
+                    value_id: number;
+                    label: string;
+                    value: string;
+                    color_hex: string | null;
+                    image_url: string | null;
+                }[];
+                image_ids: number[];
+                attributes: {
+                    id: number;
+                    code: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+                    unit: string | null;
+                    group_name: string | null;
+                    is_filterable: boolean;
+                    sort_order: number;
+                    value: (string | number | boolean | {
+                        id: number;
+                        label: string;
+                        value: string;
+                        color_hex: string | null;
+                        image_url: string | null;
+                    } | {
+                        id: number;
+                        label: string;
+                        value: string;
+                        color_hex: string | null;
+                        image_url: string | null;
+                    }[]) | null;
+                }[];
+            }[];
+            attributes: {
+                id: number;
+                code: string;
+                name: string;
+                /** @enum {string} */
+                type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+                unit: string | null;
+                group_name: string | null;
+                is_filterable: boolean;
+                sort_order: number;
+                value: (string | number | boolean | {
+                    id: number;
+                    label: string;
+                    value: string;
+                    color_hex: string | null;
+                    image_url: string | null;
+                } | {
+                    id: number;
+                    label: string;
+                    value: string;
+                    color_hex: string | null;
+                    image_url: string | null;
+                }[]) | null;
+            }[];
+            specs: {
+                [key: string]: (string | number | boolean) | null;
+            };
+            images: {
+                id: number;
+                url: string;
+                alt: string | null;
+                variant_id: number | null;
+                sort_order: number;
+            }[];
+            meta_title: string | null;
+            meta_description: string | null;
+            /** Format: date-time */
+            published_at: string | null;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        PaginationMetaClass: {
+            total: number;
+            page: number;
+            limit: number;
+            pages: number;
+        };
+        PaginatedPayloadClass: {
+            items: components["schemas"]["ProductDto"][];
+            meta: components["schemas"]["PaginationMetaClass"];
+        };
+        ApiPaginatedResponseOfProductDto: {
+            data: components["schemas"]["PaginatedPayloadClass"];
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
         };
@@ -747,6 +1181,9 @@ export interface components {
         CreateProductDto: {
             name: string;
             slug: string;
+            sku?: string | null;
+            brand?: string | null;
+            short_description?: string | null;
             description?: string | null;
             category_id: number;
             /**
@@ -755,38 +1192,172 @@ export interface components {
              */
             status: "in_stock" | "made_to_order" | "out_of_stock";
             price: number;
+            compare_at_price?: number | null;
             sale_price?: number | null;
+            /** Format: date-time */
+            sale_starts_at?: string | null;
+            /** Format: date-time */
+            sale_ends_at?: string | null;
+            currency?: string;
             stock?: number;
+            specs?: {
+                [key: string]: (string | number | boolean) | null;
+            } | null;
+            meta_title?: string | null;
+            meta_description?: string | null;
+            is_featured?: boolean;
+            /** Format: date-time */
+            published_at?: string | null;
             image_file_ids?: number[];
         };
         UpdateProductDto: {
             name?: string;
             slug?: string;
+            sku?: string | null;
+            brand?: string | null;
+            short_description?: string | null;
             description?: string | null;
             category_id?: number;
-            /**
-             * @default in_stock
-             * @enum {string}
-             */
-            status: "in_stock" | "made_to_order" | "out_of_stock";
+            /** @enum {string} */
+            status?: "in_stock" | "made_to_order" | "out_of_stock";
             price?: number;
+            compare_at_price?: number | null;
             sale_price?: number | null;
+            /** Format: date-time */
+            sale_starts_at?: string | null;
+            /** Format: date-time */
+            sale_ends_at?: string | null;
+            currency?: string;
             stock?: number;
+            specs?: {
+                [key: string]: (string | number | boolean) | null;
+            } | null;
+            meta_title?: string | null;
+            meta_description?: string | null;
+            is_featured?: boolean;
+            /** Format: date-time */
+            published_at?: string | null;
             image_file_ids?: number[];
         };
+        CreateOptionDto: {
+            name: string;
+            sort_order?: number;
+            values?: {
+                label: string;
+                value: string;
+                color_hex?: string | null;
+                /** Format: uri */
+                image_url?: string | null;
+                sort_order?: number;
+            }[];
+        };
+        ProductOptionDto: {
+            id: number;
+            name: string;
+            sort_order: number;
+            values: {
+                id: number;
+                label: string;
+                value: string;
+                color_hex: string | null;
+                image_url: string | null;
+                sort_order: number;
+            }[];
+        };
+        ApiResponseOfProductOptionDto: {
+            data: components["schemas"]["ProductOptionDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        UpdateOptionDto: {
+            name?: string;
+            sort_order?: number;
+        };
+        CreateOptionValueDto: {
+            label: string;
+            value: string;
+            color_hex?: string | null;
+            /** Format: uri */
+            image_url?: string | null;
+            sort_order?: number;
+        };
+        ProductOptionValueDto: {
+            id: number;
+            label: string;
+            value: string;
+            color_hex: string | null;
+            image_url: string | null;
+            sort_order: number;
+        };
+        ApiResponseOfProductOptionValueDto: {
+            data: components["schemas"]["ProductOptionValueDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        UpdateOptionValueDto: {
+            label?: string;
+            value?: string;
+            color_hex?: string | null;
+            /** Format: uri */
+            image_url?: string | null;
+            sort_order?: number;
+        };
         CreateVariantDto: {
-            color?: string;
-            size?: string;
-            child_name?: string;
+            sku?: string | null;
+            price?: number | null;
+            compare_at_price?: number | null;
             /** @default 0 */
             stock: number;
+            is_default?: boolean;
+            sort_order?: number;
+            /** @default [] */
+            option_value_ids: number[];
         };
         ProductVariantDto: {
             id: number;
-            color: string | null;
-            size: string | null;
-            child_name: string | null;
+            sku: string | null;
+            label: string;
             stock: number;
+            is_default: boolean;
+            sort_order: number;
+            price: number;
+            compare_at_price: number | null;
+            effective_price: number;
+            sale_active: boolean;
+            option_values: {
+                option_id: number;
+                option_name: string;
+                value_id: number;
+                label: string;
+                value: string;
+                color_hex: string | null;
+                image_url: string | null;
+            }[];
+            image_ids: number[];
+            attributes: {
+                id: number;
+                code: string;
+                name: string;
+                /** @enum {string} */
+                type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+                unit: string | null;
+                group_name: string | null;
+                is_filterable: boolean;
+                sort_order: number;
+                value: (string | number | boolean | {
+                    id: number;
+                    label: string;
+                    value: string;
+                    color_hex: string | null;
+                    image_url: string | null;
+                } | {
+                    id: number;
+                    label: string;
+                    value: string;
+                    color_hex: string | null;
+                    image_url: string | null;
+                }[]) | null;
+            }[];
         };
         ApiResponseOfProductVariantDto: {
             data: components["schemas"]["ProductVariantDto"];
@@ -794,11 +1365,22 @@ export interface components {
             timestamp: string;
         };
         UpdateVariantDto: {
-            color?: string;
-            size?: string;
-            child_name?: string;
+            sku?: string | null;
+            price?: number | null;
+            compare_at_price?: number | null;
             /** @default 0 */
             stock: number;
+            is_default?: boolean;
+            sort_order?: number;
+            /** @default [] */
+            option_value_ids: number[];
+        };
+        SetProductAttributesDto: {
+            attributes: {
+                attribute_id: number;
+                variant_id?: number | null;
+                value: (string | number | boolean | number[]) | null;
+            }[];
         };
         FileDto: {
             id: number;
@@ -852,11 +1434,16 @@ export interface components {
                 product_id: number | null;
                 quantity: number;
                 price: number;
+                product_name: string | null;
+                variant_label: string | null;
+                sku: string | null;
+                configuration: {
+                    [key: string]: unknown;
+                } | null;
                 variant: {
                     id: number;
-                    color: string | null;
-                    size: string | null;
-                    child_name: string | null;
+                    sku: string | null;
+                    stock: number;
                 } | null;
                 product: {
                     id: number;
@@ -923,6 +1510,7 @@ export interface components {
         };
         ConfiguratorOptionDto: {
             id: number;
+            product_id: number | null;
             /** @enum {string} */
             type: "size" | "fabric" | "color" | "addon";
             label: string;
@@ -947,6 +1535,7 @@ export interface components {
             timestamp: string;
         };
         CreateConfiguratorOptionDto: {
+            product_id?: number | null;
             /** @enum {string} */
             type: "size" | "fabric" | "color" | "addon";
             label: string;
@@ -961,6 +1550,7 @@ export interface components {
             is_active: boolean;
         };
         UpdateConfiguratorOptionDto: {
+            product_id?: number | null;
             /** @enum {string} */
             type?: "size" | "fabric" | "color" | "addon";
             label?: string;
@@ -1218,6 +1808,25 @@ export interface operations {
             };
         };
     };
+    CategoriesController_findTree_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
+                };
+            };
+        };
+    };
     CategoriesController_findOne_v1: {
         parameters: {
             query?: never;
@@ -1361,13 +1970,11 @@ export interface operations {
             };
         };
     };
-    ProductsController_findAll_v1: {
+    AttributesController_findAll_v1: {
         parameters: {
             query?: {
-                page?: number;
-                limit?: number;
                 category_id?: number;
-                status?: "in_stock" | "made_to_order" | "out_of_stock";
+                is_filterable?: boolean;
             };
             header?: never;
             path?: never;
@@ -1380,7 +1987,276 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfProductDto"];
+                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+                };
+            };
+        };
+    };
+    AttributesAdminController_findAll_v1: {
+        parameters: {
+            query?: {
+                category_id?: number;
+                is_filterable?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+                };
+            };
+        };
+    };
+    AttributesAdminController_create_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAttributeDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+                };
+            };
+        };
+    };
+    AttributesAdminController_findOne_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+                };
+            };
+            /** @description Attribute not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AttributesAdminController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AttributesAdminController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateAttributeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+                };
+            };
+        };
+    };
+    AttributesAdminController_createOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAttributeOptionDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfAttributeOptionDto"];
+                };
+            };
+        };
+    };
+    AttributesAdminController_removeOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AttributesAdminController_updateOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateAttributeOptionDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfAttributeOptionDto"];
+                };
+            };
+        };
+    };
+    CategoryAttributesAdminController_findAll_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                categoryId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+                };
+            };
+        };
+    };
+    CategoryAttributesAdminController_set_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                categoryId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetCategoryAttributesDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+                };
+            };
+        };
+    };
+    ProductsController_findAll_v1: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                category_id?: number;
+                include_descendants?: boolean | ("0" | "1" | "true" | "false");
+                status?: "in_stock" | "made_to_order" | "out_of_stock";
+                search?: string;
+                min_price?: number;
+                max_price?: number;
+                is_featured?: boolean | ("0" | "1" | "true" | "false");
+                in_stock?: boolean | ("0" | "1" | "true" | "false");
+                sort?: "newest" | "oldest" | "price_asc" | "price_desc" | "name_asc" | "name_desc";
+                /** @description Facets keyed by attribute code: attributes[color]=red,blue or attributes[width_cm]=80..120 */
+                attributes?: {
+                    [key: string]: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
                 };
             };
         };
@@ -1415,7 +2291,22 @@ export interface operations {
     };
     ProductsAdminController_findAll_v1: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                limit?: number;
+                category_id?: number;
+                include_descendants?: boolean | ("0" | "1" | "true" | "false");
+                status?: "in_stock" | "made_to_order" | "out_of_stock";
+                search?: string;
+                min_price?: number;
+                max_price?: number;
+                is_featured?: boolean | ("0" | "1" | "true" | "false");
+                in_stock?: boolean | ("0" | "1" | "true" | "false");
+                sort?: "newest" | "oldest" | "price_asc" | "price_desc" | "name_asc" | "name_desc";
+                attributes?: {
+                    [key: string]: string;
+                };
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -1427,7 +2318,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfProductDto"];
+                    "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
                 };
             };
         };
@@ -1527,6 +2418,151 @@ export interface operations {
             };
         };
     };
+    ProductsAdminController_createOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOptionDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductOptionDto"];
+                };
+            };
+        };
+    };
+    ProductsAdminController_removeOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsAdminController_updateOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateOptionDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductOptionDto"];
+                };
+            };
+        };
+    };
+    ProductsAdminController_createOptionValue_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOptionValueDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductOptionValueDto"];
+                };
+            };
+        };
+    };
+    ProductsAdminController_removeOptionValue_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+                valueId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsAdminController_updateOptionValue_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                optionId: number;
+                valueId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateOptionValueDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductOptionValueDto"];
+                };
+            };
+        };
+    };
     ProductsAdminController_createVariant_v1: {
         parameters: {
             query?: never;
@@ -1594,6 +2630,31 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponseOfProductVariantDto"];
+                };
+            };
+        };
+    };
+    ProductsAdminController_setAttributes_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetProductAttributesDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
                 };
             };
         };
@@ -1912,6 +2973,7 @@ export interface operations {
         parameters: {
             query?: {
                 type?: "size" | "fabric" | "color" | "addon";
+                product_id?: number;
             };
             header?: never;
             path?: never;
@@ -1961,6 +3023,7 @@ export interface operations {
         parameters: {
             query?: {
                 type?: "size" | "fabric" | "color" | "addon";
+                product_id?: number;
             };
             header?: never;
             path?: never;

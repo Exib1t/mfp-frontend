@@ -1,0 +1,67 @@
+.price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-inter), sans-serif;
+  line-height: var(--line-height-tight);
+
+  &_prefix {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  &_current {
+    color: var(--foreground);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  &_original {
+    color: var(--color-muted);
+    font-weight: var(--font-weight-regular);
+    text-decoration: line-through;
+  }
+
+  &.-sale &_current {
+    color: var(--color-error);
+  }
+
+  /* ─── Sizes ─────────────────────────────────────── */
+
+  &[data-size="sm"] {
+    gap: 6px;
+
+    & .price_current {
+      font-size: var(--font-size-sm);
+    }
+
+    & .price_original {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  &[data-size="md"] {
+    & .price_current {
+      font-size: var(--font-size-lg);
+    }
+
+    & .price_original {
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  &[data-size="lg"] {
+    gap: 12px;
+
+    & .price_current {
+      font-size: var(--font-size-2xl);
+    }
+
+    & .price_original {
+      font-size: var(--font-size-md);
+    }
+  }
+}

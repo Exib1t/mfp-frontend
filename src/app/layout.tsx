@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
-import { ViewTransition } from "react";
 import Providers from "@/app/Providers";
-import Footer from "@/components/common/Footer/Footer";
-import Header from "@/components/common/Header/Header";
 
 import "../assets/styles/main.scss";
 
@@ -22,6 +19,10 @@ export const metadata: Metadata = {
   description: "Web store",
 };
 
+/**
+ * Owns only the document shell. Storefront chrome lives in `(shop)/layout`,
+ * the admin panel in `(admin)/layout` — they must not leak into each other.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,14 +30,8 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <html lang="en" className={`${geistSans.variable} ${inter.variable}`}>
-        <body>
-          <Header />
-          <ViewTransition name="page-content">
-            <main>{children}</main>
-          </ViewTransition>
-          <Footer />
-        </body>
+      <html lang="uk" className={`${geistSans.variable} ${inter.variable}`}>
+        <body>{children}</body>
       </html>
     </Providers>
   );

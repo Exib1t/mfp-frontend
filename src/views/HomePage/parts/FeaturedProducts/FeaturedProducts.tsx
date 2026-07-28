@@ -11,7 +11,11 @@ const BASE_CLASS = "featured-products";
 const SKELETON_KEYS = ["s1", "s2", "s3", "s4"];
 
 function FeaturedProducts() {
-  const { data: products, isLoading, isError } = useProducts({ limit: 4 });
+  const {
+    data: page,
+    isLoading,
+    isError,
+  } = useProducts({ limit: 4, is_featured: true });
 
   return (
     <section className={BASE_CLASS}>
@@ -39,7 +43,7 @@ function FeaturedProducts() {
           </div>
         ) : (
           <div className={`${BASE_CLASS}_grid`}>
-            {products?.map((product) => (
+            {page?.items.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

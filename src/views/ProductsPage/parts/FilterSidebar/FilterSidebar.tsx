@@ -78,7 +78,7 @@ function FilterSidebar({
           </li>
           {categories.map((cat) => {
             const count = products.filter(
-              (p) => p.new_category.id === cat.id,
+              (p) => p.category.id === cat.id,
             ).length;
             return (
               <li key={cat.id}>

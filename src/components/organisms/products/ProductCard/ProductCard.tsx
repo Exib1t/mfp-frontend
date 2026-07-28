@@ -6,19 +6,19 @@ import Link from "next/link";
 import { ViewTransition } from "react";
 import Badge from "@/components/controls/Badge/Badge";
 import Button from "@/components/controls/Button/Button";
+import Price from "@/components/controls/Price/Price";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
 import {
-  getDiscountPercent,
-  getEffectivePrice,
   getFirstAvailableVariant,
   getMainImageUrl,
+  getProductDiscountPercent,
+  hasPriceRange,
   isProductAvailableToBuy,
 } from "@/entities/products/helpers";
 import type { Product } from "@/entities/products/types";
 import { cn } from "@/lib/utils/cn";
-import { formatPrice } from "@/lib/utils/formatPrice";
 
 import "./ProductCard.styles.scss";
 
@@ -32,14 +32,16 @@ const BASE_CLASS = "product-card";
 function ProductCard({ product, className }: ProductCardProps) {
   const { addItem } = useCart();
   const { toast } = useToast();
-  const { slug, name, price, sale_price, new_category } = product;
+  const { slug, name, category } = product;
 
   const mainImage = getMainImageUrl(product);
-  const discount = getDiscountPercent(product);
+  const discount = getProductDiscountPercent(product);
+  const isRange = hasPriceRange(product);
   const inStock = isProductAvailableToBuy(product);
   const hasVariants = product.variants.length > 0;
   const firstVariant = getFirstAvailableVariant(product);
-  const canBuy = inStock && (hasVariants ? firstVariant !== null : product.stock > 0);
+  const canBuy =
+    inStock && (hasVariants ? firstVariant !== null : product.stock > 0);
   const href = `/products/${slug}`;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -102,7 +104,7 @@ function ProductCard({ product, className }: ProductCardProps) {
       <div className={`${BASE_CLASS}_body`}>
         <Link href={href} className={`${BASE_CLASS}_body-link`}>
           <Typography variant="overline" color="muted">
-            {new_category.name}
+            {category.name}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -111,19 +113,19 @@ function ProductCard({ product, className }: ProductCardProps) {
           >
             {name}
           </Typography>
-          <div className={`${BASE_CLASS}_price`}>
-            <span
-              className={`${BASE_CLASS}_price-current`}
-              data-sale={sale_price !== null}
-            >
-              {formatPrice(getEffectivePrice(product))}
-            </span>
-            {sale_price !== null && (
-              <span className={`${BASE_CLASS}_price-original`}>
-                {formatPrice(price)}
-              </span>
-            )}
-          </div>
+          {isRange ? (
+            <Price
+              className={`${BASE_CLASS}_price`}
+              value={product.price_range.min}
+              prefix="від"
+            />
+          ) : (
+            <Price
+              className={`${BASE_CLASS}_price`}
+              value={product.effective_price}
+              compareAt={product.compare_at_price}
+            />
+          )}
         </Link>
       </div>
 

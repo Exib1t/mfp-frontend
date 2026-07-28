@@ -5,7 +5,7 @@ import Link from "next/link";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import { useOrder } from "@/entities/orders/api";
-import { DEFAULT_VARIANT_LABEL, getVariantLabel } from "@/entities/products/helpers";
+import { DEFAULT_VARIANT_LABEL } from "@/entities/products/constants";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
 import "./OrderPage.styles.scss";
@@ -73,13 +73,15 @@ function OrderPage({ orderId }: OrderPageProps) {
             {order.items.map((item) => (
               <div key={item.id} className={`${BASE_CLASS}_item`}>
                 <div className={`${BASE_CLASS}_item-info`}>
+                  {/* Snapshots win — the catalogue may have changed since checkout. */}
                   <Typography variant="body2">
-                    {item.variant
-                      ? getVariantLabel(item.variant)
-                      : (item.product?.name ?? DEFAULT_VARIANT_LABEL)}
+                    {item.product_name ??
+                      item.product?.name ??
+                      DEFAULT_VARIANT_LABEL}
                   </Typography>
                   <Typography variant="caption" color="muted">
-                    × {item.quantity}
+                    {item.variant_label ? `${item.variant_label} · ` : ""}×{" "}
+                    {item.quantity}
                   </Typography>
                 </div>
                 <Typography variant="body2">

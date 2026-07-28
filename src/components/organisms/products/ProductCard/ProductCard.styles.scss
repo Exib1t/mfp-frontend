@@ -113,28 +113,9 @@
 
   /* ─── Price ──────────────────────────────────────── */
 
+  /* Sizing and colours come from the shared `Price` control. */
   &_price {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
     margin-top: 8px;
-  }
-
-  &_price-current {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
-    color: var(--foreground);
-
-    &[data-sale="true"] {
-      color: var(--color-error);
-    }
-  }
-
-  &_price-original {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-regular);
-    color: var(--color-muted);
-    text-decoration: line-through;
   }
 
   /* ─── Footer / CTA ───────────────────────────────── */

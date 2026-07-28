@@ -23,12 +23,10 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
 const BASE_CLASS = "products-page";
 
 function ProductsPage() {
-  const {
-    data: products = [],
-    isLoading,
-    isError,
-  } = useProducts({ limit: 100 });
+  const { data: page, isLoading, isError } = useProducts({ limit: 100 });
   const { data: categories = [] } = useCategories();
+
+  const products = page?.items ?? [];
 
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const [priceMin, setPriceMin] = useState<number | null>(null);
@@ -36,7 +34,7 @@ function ProductsPage() {
   const [sort, setSort] = useState<SortKey>("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const prices = products.map(getEffectivePrice);
+  const prices = products.map((product) => getEffectivePrice(product));
   const boundMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
   const boundMax = prices.length ? Math.ceil(Math.max(...prices)) : 0;
 
@@ -54,7 +52,7 @@ function ProductsPage() {
 
   const filtered = products.filter((p) => {
     const effectivePrice = getEffectivePrice(p);
-    if (activeCategoryId !== null && p.new_category.id !== activeCategoryId)
+    if (activeCategoryId !== null && p.category.id !== activeCategoryId)
       return false;
     return !(effectivePrice < effMin || effectivePrice > effMax);
   });

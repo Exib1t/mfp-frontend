@@ -8,14 +8,15 @@ import {
   useMemo,
   useState,
 } from "react";
+import { DEFAULT_VARIANT_LABEL } from "@/entities/products/constants";
 import {
-  DEFAULT_VARIANT_LABEL,
+  getBasePrice,
   getEffectivePrice,
   getMainImageUrl,
   getVariantLabel,
 } from "@/entities/products/helpers";
 import type { Product, ProductVariant } from "@/entities/products/types";
-import { getCartItemKey, type CartItem } from "./types";
+import { type CartItem, getCartItemKey } from "./types";
 
 const STORAGE_KEY = "mfp-cart";
 
@@ -106,9 +107,11 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             slug: product.slug,
             name: product.name,
             image: getMainImageUrl(product),
-            variantLabel: variant ? getVariantLabel(variant) : DEFAULT_VARIANT_LABEL,
-            unitPrice: getEffectivePrice(product),
-            basePrice: product.price,
+            variantLabel: variant
+              ? getVariantLabel(variant)
+              : DEFAULT_VARIANT_LABEL,
+            unitPrice: getEffectivePrice(product, variant),
+            basePrice: getBasePrice(product, variant),
             quantity: clampQuantity(quantity, maxStock),
             maxStock,
           };
