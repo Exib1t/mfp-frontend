@@ -1,0 +1,45 @@
+.sortable-list {
+  display: flex;
+  gap: 8px;
+
+  &[data-direction="vertical"] {
+    flex-direction: column;
+  }
+
+  &[data-direction="grid"] {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &_item {
+    /* dnd-kit writes transform/transition inline; keep the stacking sane. */
+    position: relative;
+    touch-action: none;
+
+    &.-dragging {
+      z-index: 2;
+      opacity: 0.9;
+      box-shadow: 4px 4px 0 var(--foreground);
+    }
+  }
+
+  &_handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    color: var(--color-muted);
+    background: none;
+    border: none;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

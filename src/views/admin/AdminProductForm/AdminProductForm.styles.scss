@@ -1,0 +1,19 @@
+.admin-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &_publish {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+  }
+
+  &_panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
