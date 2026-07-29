@@ -1,0 +1,31 @@
+.admin-category-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.category-attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &_chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--background-variant);
+    cursor: pointer;
+
+    &.-selected {
+      border-color: var(--primary);
+      background: var(--background-variant);
+    }
+  }
+
+  &_type {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+  }
+}
