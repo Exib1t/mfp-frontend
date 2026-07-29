@@ -27,6 +27,15 @@ export function useAdminAttributes(categoryId?: number) {
   );
 }
 
+export function useAdminAttribute(id: number | undefined) {
+  return $adminApi.useQuery(
+    "get",
+    DETAIL_PATH,
+    { params: { path: { id: id ?? 0 } } },
+    { enabled: id !== undefined, select: (res) => res.data },
+  );
+}
+
 export function useCreateAttribute() {
   const invalidate = useInvalidateAttributes();
   return $adminApi.useMutation("post", LIST_PATH, { onSuccess: invalidate });
@@ -47,6 +56,11 @@ export function useDeleteAttribute() {
 export function useCreateAttributeOption() {
   const invalidate = useInvalidateAttributes();
   return $adminApi.useMutation("post", OPTIONS_PATH, { onSuccess: invalidate });
+}
+
+export function useUpdateAttributeOption() {
+  const invalidate = useInvalidateAttributes();
+  return $adminApi.useMutation("patch", OPTION_PATH, { onSuccess: invalidate });
 }
 
 export function useDeleteAttributeOption() {

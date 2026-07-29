@@ -1,37 +1,15 @@
 import { z } from "zod";
-
-/**
- * Inputs hand back strings, the API wants numbers and nulls — so the schema
- * transforms. That makes input and output types differ; both are exported from
- * `./types` and the form is generic over the pair.
- */
-const optionalText = z.union([z.string(), z.null()]).transform((value) => {
-  const trimmed = value?.trim() ?? "";
-  return trimmed === "" ? null : trimmed;
-});
-
-const optionalMoney = z
-  .union([z.string(), z.number(), z.null()])
-  .transform((value) => {
-    if (value === null || value === "") return null;
-    const parsed = Number(value);
-    return Number.isNaN(parsed) ? null : parsed;
-  });
-
-const requiredNumber = z
-  .union([z.string(), z.number()])
-  .transform((value) => Number(value));
+import {
+  optionalMoney,
+  optionalText,
+  requiredNumber,
+  slugField,
+} from "@/lib/forms/schema-fields";
 
 export const ProductFormSchema = z
   .object({
     name: z.string().trim().min(1, { error: "Вкажіть назву" }),
-    slug: z
-      .string()
-      .trim()
-      .min(1, { error: "Вкажіть slug" })
-      .regex(/^[a-z0-9-]+$/, {
-        error: "Лише малі латинські літери, цифри та дефіс",
-      }),
+    slug: slugField("Вкажіть slug"),
     sku: optionalText,
     brand: optionalText,
     short_description: optionalText,
