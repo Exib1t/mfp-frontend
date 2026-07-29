@@ -5,6 +5,7 @@ import { Controller } from "react-hook-form";
 import AdminCard from "@/components/admin/AdminCard/AdminCard";
 import AdminField from "@/components/admin/AdminField/AdminField";
 import AdminPageHeader from "@/components/admin/AdminPageHeader/AdminPageHeader";
+import ImageUploadField from "@/components/admin/ImageUploadField/ImageUploadField";
 import Button from "@/components/controls/Button/Button";
 import Input from "@/components/controls/Input/Input";
 import Select from "@/components/controls/Select/Select";
@@ -106,8 +107,19 @@ function AdminCategoryForm({ category }: AdminCategoryFormProps) {
             />
           </AdminField>
 
-          <AdminField htmlFor="category-image" label="Зображення (URL)">
-            <Input id="category-image" {...form.register("image_url")} />
+          <AdminField htmlFor="category-image" label="Зображення">
+            <Controller
+              control={form.control}
+              name="image_url"
+              render={({ field }) => (
+                <ImageUploadField
+                  value={field.value ?? null}
+                  folder="categories"
+                  label="Обкладинка категорії"
+                  onChange={field.onChange}
+                />
+              )}
+            />
           </AdminField>
 
           <AdminField htmlFor="category-sort" label="Порядок">

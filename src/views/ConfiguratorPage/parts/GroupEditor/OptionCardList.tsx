@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import Image from "next/image";
+import RemoteImage from "@/components/common/RemoteImage/RemoteImage";
 import Typography from "@/components/controls/Typography/Typography";
 import type { ConfiguratorOption } from "@/entities/configurator/types";
 import { cn } from "@/lib/utils/cn";
@@ -37,7 +37,7 @@ function OptionCardList({
             onClick={() => onPick(option.value)}
           >
             {withImages && option.image_url && (
-              <Image
+              <RemoteImage
                 className={`${BASE_CLASS}_card-image`}
                 src={option.image_url}
                 alt=""
