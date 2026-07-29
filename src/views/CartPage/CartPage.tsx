@@ -162,7 +162,9 @@ function CartPage() {
               <CartItemRow
                 key={getCartItemKey(item)}
                 item={item}
-                onQuantityChange={(qty) => setQuantity(getCartItemKey(item), qty)}
+                onQuantityChange={(qty) =>
+                  setQuantity(getCartItemKey(item), qty)
+                }
                 onRemove={() => removeItem(getCartItemKey(item))}
               />
             ))}

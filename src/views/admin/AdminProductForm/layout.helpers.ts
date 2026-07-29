@@ -5,21 +5,21 @@ import {
   SINGLETON_BLOCK_TYPES,
 } from "@/entities/products/layout";
 
-/** Where a freshly added block lands, so it is visible straight away. */
-const DEFAULT_COLUMN: Record<ProductBlockType, ProductBlock["column"]> = {
-  gallery: "left",
-  summary: "right",
-  description: "full",
-  specs: "full",
-  reviews: "full",
-  richtext: "full",
+/** Sensible starting width, in grid columns, per block type. */
+const DEFAULT_SPAN: Record<ProductBlockType, number> = {
+  gallery: 6,
+  summary: 6,
+  description: 12,
+  specs: 12,
+  reviews: 12,
+  richtext: 12,
 };
 
 export function createBlock(type: ProductBlockType): ProductBlock {
   return {
     id: crypto.randomUUID(),
     type,
-    column: DEFAULT_COLUMN[type],
+    span: DEFAULT_SPAN[type],
     enabled: true,
     ...(type === "richtext" ? { settings: { title: "", body: "" } } : {}),
   };

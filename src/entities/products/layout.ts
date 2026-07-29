@@ -2,7 +2,9 @@ import type { Product } from "./types";
 
 export type ProductBlock = NonNullable<Product["layout"]>[number];
 export type ProductBlockType = ProductBlock["type"];
-export type ProductBlockColumn = ProductBlock["column"];
+
+/** Blocks flow across this many columns; `span` is a width in them. */
+export const PRODUCT_GRID_COLUMNS = 12;
 
 export const PRODUCT_BLOCK_TYPES: ProductBlockType[] = [
   "gallery",
@@ -22,12 +24,6 @@ export const PRODUCT_BLOCK_LABELS: Record<ProductBlockType, string> = {
   richtext: "Довільний текст",
 };
 
-export const PRODUCT_BLOCK_COLUMN_LABELS: Record<ProductBlockColumn, string> = {
-  left: "Ліва колонка",
-  right: "Права колонка",
-  full: "На всю ширину",
-};
-
 /** Blocks that make no sense twice on one page. */
 export const SINGLETON_BLOCK_TYPES: ProductBlockType[] = [
   "gallery",
@@ -42,10 +38,10 @@ export const SINGLETON_BLOCK_TYPES: ProductBlockType[] = [
  * arrangement the storefront shipped with, expressed as blocks.
  */
 export const DEFAULT_PRODUCT_LAYOUT: ProductBlock[] = [
-  { id: "gallery", type: "gallery", column: "left", enabled: true },
-  { id: "summary", type: "summary", column: "right", enabled: true },
-  { id: "specs", type: "specs", column: "full", enabled: true },
-  { id: "reviews", type: "reviews", column: "full", enabled: true },
+  { id: "gallery", type: "gallery", span: 6, enabled: true },
+  { id: "summary", type: "summary", span: 6, enabled: true },
+  { id: "specs", type: "specs", span: 12, enabled: true },
+  { id: "reviews", type: "reviews", span: 12, enabled: true },
 ];
 
 /** The layout to render: the product's own, or the default when unset/empty. */
@@ -55,11 +51,12 @@ export function resolveLayout(product: Product): ProductBlock[] {
   return layout;
 }
 
-export function blocksInColumn(
-  blocks: ProductBlock[],
-  column: ProductBlockColumn,
-): ProductBlock[] {
-  return blocks.filter((block) => block.enabled && block.column === column);
+export function visibleBlocks(blocks: ProductBlock[]): ProductBlock[] {
+  return blocks.filter((block) => block.enabled);
+}
+
+export function clampSpan(span: number): number {
+  return Math.min(PRODUCT_GRID_COLUMNS, Math.max(1, Math.round(span)));
 }
 
 /** Reads a string setting without trusting the opaque `settings` bag. */

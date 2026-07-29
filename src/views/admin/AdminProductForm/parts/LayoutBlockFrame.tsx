@@ -1,78 +1,80 @@
 "use client";
 
 import { EyeOff, Trash2 } from "lucide-react";
+import type { CSSProperties } from "react";
 import DragHandle from "@/components/admin/SortableList/parts/DragHandle";
 import type { DragHandleProps } from "@/components/admin/SortableList/types";
 import Input from "@/components/controls/Input/Input";
-import Select from "@/components/controls/Select/Select";
 import {
-  PRODUCT_BLOCK_COLUMN_LABELS,
   PRODUCT_BLOCK_LABELS,
   type ProductBlock,
 } from "@/entities/products/layout";
+import type { Product } from "@/entities/products/types";
 import { cn } from "@/lib/utils/cn";
+import ProductBlockRenderer from "@/views/ProductPage/parts/ProductBlockRenderer/ProductBlockRenderer";
+import type { useProductPurchase } from "@/views/ProductPage/useProductPurchase";
 import { BLOCK_TEXT_SETTINGS } from "../layout.helpers";
 
-interface LayoutBlockCardProps {
+interface LayoutBlockFrameProps {
   block: ProductBlock;
+  product: Product;
+  purchase: ReturnType<typeof useProductPurchase>;
   dragHandleProps: DragHandleProps;
+  isResizing: boolean;
   onPatch: (patch: Partial<ProductBlock>) => void;
   onSetting: (key: string, value: string) => void;
   onRemove: () => void;
+  onResizeStart: (event: React.PointerEvent) => void;
 }
 
-const BASE_CLASS = "layout-blocks";
+const BASE_CLASS = "layout-canvas";
 
-const COLUMN_OPTIONS = (
-  Object.keys(PRODUCT_BLOCK_COLUMN_LABELS) as ProductBlock["column"][]
-).map((column) => ({
-  value: column,
-  label: PRODUCT_BLOCK_COLUMN_LABELS[column],
-}));
-
-function LayoutBlockCard({
+/** One block on the canvas: real storefront content under an editing chrome. */
+function LayoutBlockFrame({
   block,
+  product,
+  purchase,
   dragHandleProps,
+  isResizing,
   onPatch,
   onSetting,
   onRemove,
-}: LayoutBlockCardProps) {
+  onResizeStart,
+}: LayoutBlockFrameProps) {
   const textSettings = BLOCK_TEXT_SETTINGS[block.type];
 
   return (
-    <div className={cn(`${BASE_CLASS}_card`, { "-disabled": !block.enabled })}>
-      <div className={`${BASE_CLASS}_head`}>
+    <div
+      className={cn(`${BASE_CLASS}_block`, {
+        "-hidden": !block.enabled,
+        "-resizing": isResizing,
+      })}
+      style={{ "--block-span": block.span } as CSSProperties}
+    >
+      <div className={`${BASE_CLASS}_toolbar`}>
         <DragHandle handle={dragHandleProps} />
-
-        <span className={`${BASE_CLASS}_title`}>
+        <span className={`${BASE_CLASS}_label`}>
           {PRODUCT_BLOCK_LABELS[block.type]}
         </span>
-
-        <Select
-          className={`${BASE_CLASS}_column`}
-          value={block.column}
-          options={COLUMN_OPTIONS}
-          onChange={(column) => onPatch({ column })}
-          aria-label="Розташування блока"
-        />
+        <span className={`${BASE_CLASS}_span`}>{block.span}/12</span>
 
         <button
           type="button"
-          className={cn(`${BASE_CLASS}_toggle`, { "-off": !block.enabled })}
+          className={cn(`${BASE_CLASS}_icon`, { "-off": !block.enabled })}
           aria-label={block.enabled ? "Приховати блок" : "Показати блок"}
           aria-pressed={!block.enabled}
           onClick={() => onPatch({ enabled: !block.enabled })}
         >
-          <EyeOff size={15} strokeWidth={2} />
+          <EyeOff size={14} strokeWidth={2} />
         </button>
 
         <button
           type="button"
-          className={`${BASE_CLASS}_remove`}
+          className={`${BASE_CLASS}_icon -danger`}
           aria-label="Прибрати блок"
           onClick={onRemove}
         >
-          <Trash2 size={15} strokeWidth={2} />
+          <Trash2 size={14} strokeWidth={2} />
         </button>
       </div>
 
@@ -93,7 +95,7 @@ function LayoutBlockCard({
           {textSettings.body && (
             <Input
               as="textarea"
-              rows={3}
+              rows={2}
               aria-label="Текст блока"
               placeholder="Текст"
               value={
@@ -106,8 +108,29 @@ function LayoutBlockCard({
           )}
         </div>
       )}
+
+      {/* The real storefront component, inert while editing. */}
+      <div className={`${BASE_CLASS}_content`} aria-hidden="true">
+        <ProductBlockRenderer
+          block={block}
+          product={product}
+          purchase={purchase}
+          onAddToCart={() => {}}
+        />
+      </div>
+
+      <button
+        type="button"
+        className={`${BASE_CLASS}_resize`}
+        aria-label={`Ширина блока ${PRODUCT_BLOCK_LABELS[block.type]}`}
+        onPointerDown={onResizeStart}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowRight") onPatch({ span: block.span + 1 });
+          if (event.key === "ArrowLeft") onPatch({ span: block.span - 1 });
+        }}
+      />
     </div>
   );
 }
 
-export default LayoutBlockCard;
+export default LayoutBlockFrame;

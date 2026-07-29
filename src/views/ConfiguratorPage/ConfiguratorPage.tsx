@@ -9,6 +9,8 @@ import {
   useConfiguratorOptions,
 } from "@/entities/configurator/api";
 import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
+import AddonStep from "./parts/AddonStep/AddonStep";
+import ColorStep from "./parts/ColorStep/ColorStep";
 import ConfiguratorStage, {
   type StageHotspot,
 } from "./parts/ConfiguratorStage/ConfiguratorStage";
@@ -17,8 +19,6 @@ import {
   type HotspotId,
   WIGWAM_BASE_IMAGE,
 } from "./parts/ConfiguratorStage/hotspots.config";
-import AddonStep from "./parts/AddonStep/AddonStep";
-import ColorStep from "./parts/ColorStep/ColorStep";
 import FabricStep from "./parts/FabricStep/FabricStep";
 import NameStep from "./parts/NameStep/NameStep";
 import SizeStep from "./parts/SizeStep/SizeStep";

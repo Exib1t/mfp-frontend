@@ -1,17 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import Button from "@/components/controls/Button/Button";
 import EmptyState from "@/components/controls/EmptyState/EmptyState";
 import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import { useCart } from "@/entities/cart/CartContext";
 import { useProduct } from "@/entities/products/api";
-import {
-  blocksInColumn,
-  type ProductBlock,
-  resolveLayout,
-} from "@/entities/products/layout";
+import { resolveLayout, visibleBlocks } from "@/entities/products/layout";
 import type { Product } from "@/entities/products/types";
 import Breadcrumb from "./parts/Breadcrumb/Breadcrumb";
 import ProductBlockRenderer from "./parts/ProductBlockRenderer/ProductBlockRenderer";
@@ -71,31 +68,28 @@ function ProductPageContent({ product }: { product: Product }) {
 
   // The page is assembled from the product's layout; null falls back to the
   // default arrangement, so pages that were never customised look unchanged.
-  const blocks = resolveLayout(product);
-  const renderBlock = (block: ProductBlock) => (
-    <ProductBlockRenderer
-      key={block.id}
-      block={block}
-      product={product}
-      purchase={purchase}
-      onAddToCart={handleAddToCart}
-    />
-  );
+  const blocks = visibleBlocks(resolveLayout(product));
 
   return (
     <div className={BASE_CLASS}>
       <Breadcrumb productName={product.name} />
 
       <div className={`${BASE_CLASS}_grid`}>
-        <div className={`${BASE_CLASS}_column`}>
-          {blocksInColumn(blocks, "left").map(renderBlock)}
-        </div>
-        <div className={`${BASE_CLASS}_column`}>
-          {blocksInColumn(blocks, "right").map(renderBlock)}
-        </div>
+        {blocks.map((block) => (
+          <div
+            key={block.id}
+            className={`${BASE_CLASS}_cell`}
+            style={{ "--block-span": block.span } as CSSProperties}
+          >
+            <ProductBlockRenderer
+              block={block}
+              product={product}
+              purchase={purchase}
+              onAddToCart={handleAddToCart}
+            />
+          </div>
+        ))}
       </div>
-
-      {blocksInColumn(blocks, "full").map(renderBlock)}
     </div>
   );
 }

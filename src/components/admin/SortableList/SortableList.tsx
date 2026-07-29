@@ -37,6 +37,7 @@ function SortableList<T>({
   direction = "vertical",
   disabled = false,
   className,
+  getItemStyle,
 }: SortableListProps<T>) {
   const sensors = useSensors(
     // A small distance threshold keeps clicks on buttons inside rows working.
@@ -68,9 +69,9 @@ function SortableList<T>({
       <SortableContext
         items={ids}
         strategy={
-          direction === "grid"
-            ? rectSortingStrategy
-            : verticalListSortingStrategy
+          direction === "vertical"
+            ? verticalListSortingStrategy
+            : rectSortingStrategy
         }
       >
         <div className={cn(BASE_CLASS, className)} data-direction={direction}>
@@ -79,6 +80,7 @@ function SortableList<T>({
               key={getId(item)}
               id={getId(item)}
               disabled={disabled}
+              style={getItemStyle?.(item)}
             >
               {(args) => renderItem(item, args)}
             </SortableItem>

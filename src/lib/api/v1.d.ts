@@ -1164,8 +1164,7 @@ export interface components {
                 id: string;
                 /** @enum {string} */
                 type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
-                /** @enum {string} */
-                column: "left" | "right" | "full";
+                span: number;
                 enabled: boolean;
                 settings?: {
                     [key: string]: unknown;
@@ -1236,11 +1235,8 @@ export interface components {
                 id: string;
                 /** @enum {string} */
                 type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
-                /**
-                 * @default full
-                 * @enum {string}
-                 */
-                column: "left" | "right" | "full";
+                /** @default 12 */
+                span: number;
                 /** @default true */
                 enabled: boolean;
                 settings?: {
@@ -1280,11 +1276,8 @@ export interface components {
                 id: string;
                 /** @enum {string} */
                 type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
-                /**
-                 * @default full
-                 * @enum {string}
-                 */
-                column: "left" | "right" | "full";
+                /** @default 12 */
+                span: number;
                 /** @default true */
                 enabled: boolean;
                 settings?: {

@@ -11,6 +11,17 @@
     flex-wrap: wrap;
   }
 
+  /* Layout grid: the item wrapper is the grid child, so the span lives there. */
+  &[data-direction="grid-12"] {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+
+    & > .sortable-list_item {
+      grid-column: span var(--block-span, 12);
+    }
+  }
+
   &_item {
     /* dnd-kit writes transform/transition inline; keep the stacking sane. */
     position: relative;

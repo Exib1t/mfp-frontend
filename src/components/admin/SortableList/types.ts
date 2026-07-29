@@ -1,6 +1,6 @@
 import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 export type SortableId = string | number;
 
@@ -20,8 +20,13 @@ export interface SortableListProps<T> {
   /** Receives the full list in its new order. */
   onReorder: (items: T[]) => void;
   renderItem: (item: T, args: SortableRenderArgs) => ReactNode;
-  /** `grid` lets rows reflow in both axes (image galleries). */
-  direction?: "vertical" | "grid";
+  /**
+   * `grid` lets rows reflow in both axes (image galleries); `grid-12` is a
+   * 12-column layout grid where each item spans `--block-span` columns.
+   */
+  direction?: "vertical" | "grid" | "grid-12";
   disabled?: boolean;
   className?: string;
+  /** Applied to the item wrapper — the element the grid actually positions. */
+  getItemStyle?: (item: T) => CSSProperties;
 }

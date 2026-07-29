@@ -2,19 +2,20 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 import type { SortableId, SortableRenderArgs } from "../types";
 
 interface SortableItemProps {
   id: SortableId;
   disabled?: boolean;
+  style?: CSSProperties;
   children: (args: SortableRenderArgs) => ReactNode;
 }
 
 const BASE_CLASS = "sortable-list";
 
-function SortableItem({ id, disabled, children }: SortableItemProps) {
+function SortableItem({ id, disabled, style, children }: SortableItemProps) {
   const {
     attributes,
     listeners,
@@ -28,7 +29,11 @@ function SortableItem({ id, disabled, children }: SortableItemProps) {
     <div
       ref={setNodeRef}
       className={cn(`${BASE_CLASS}_item`, { "-dragging": isDragging })}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
+      style={{
+        ...style,
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
     >
       {children({
         dragHandleProps: { ...attributes, listeners },
