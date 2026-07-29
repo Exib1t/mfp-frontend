@@ -1160,6 +1160,17 @@ export interface components {
             specs: {
                 [key: string]: (string | number | boolean) | null;
             };
+            layout: {
+                id: string;
+                /** @enum {string} */
+                type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
+                /** @enum {string} */
+                column: "left" | "right" | "full";
+                enabled: boolean;
+                settings?: {
+                    [key: string]: unknown;
+                };
+            }[] | null;
             images: {
                 id: number;
                 url: string;
@@ -1221,6 +1232,21 @@ export interface components {
             specs?: {
                 [key: string]: (string | number | boolean) | null;
             } | null;
+            layout?: {
+                id: string;
+                /** @enum {string} */
+                type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
+                /**
+                 * @default full
+                 * @enum {string}
+                 */
+                column: "left" | "right" | "full";
+                /** @default true */
+                enabled: boolean;
+                settings?: {
+                    [key: string]: unknown;
+                };
+            }[] | null;
             meta_title?: string | null;
             meta_description?: string | null;
             is_featured?: boolean;
@@ -1250,6 +1276,21 @@ export interface components {
             specs?: {
                 [key: string]: (string | number | boolean) | null;
             } | null;
+            layout?: {
+                id: string;
+                /** @enum {string} */
+                type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
+                /**
+                 * @default full
+                 * @enum {string}
+                 */
+                column: "left" | "right" | "full";
+                /** @default true */
+                enabled: boolean;
+                settings?: {
+                    [key: string]: unknown;
+                };
+            }[] | null;
             meta_title?: string | null;
             meta_description?: string | null;
             is_featured?: boolean;

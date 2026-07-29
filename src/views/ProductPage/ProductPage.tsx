@@ -5,15 +5,16 @@ import Button from "@/components/controls/Button/Button";
 import EmptyState from "@/components/controls/EmptyState/EmptyState";
 import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
-import ProductGallery from "@/components/organisms/products/ProductGallery/ProductGallery";
-import ProductReviews from "@/components/organisms/products/ProductReviews/ProductReviews";
 import { useCart } from "@/entities/cart/CartContext";
 import { useProduct } from "@/entities/products/api";
-import { getVariantImages } from "@/entities/products/helpers";
+import {
+  blocksInColumn,
+  type ProductBlock,
+  resolveLayout,
+} from "@/entities/products/layout";
 import type { Product } from "@/entities/products/types";
 import Breadcrumb from "./parts/Breadcrumb/Breadcrumb";
-import ProductSpecs from "./parts/ProductSpecs/ProductSpecs";
-import ProductSummary from "./parts/ProductSummary/ProductSummary";
+import ProductBlockRenderer from "./parts/ProductBlockRenderer/ProductBlockRenderer";
 import { useProductPurchase } from "./useProductPurchase";
 
 import "./ProductPage.styles.scss";
@@ -62,37 +63,39 @@ function ProductPageContent({ product }: { product: Product }) {
   const { toast } = useToast();
   const purchase = useProductPurchase(product);
 
-  const images = getVariantImages(product, purchase.selectedVariant).map(
-    (image) => image.url,
-  );
-
   const handleAddToCart = () => {
     if (!purchase.canBuy) return;
     addItem(product, purchase.selectedVariant, purchase.quantity);
     toast(`«${product.name}» додано в кошик`, "success");
   };
 
+  // The page is assembled from the product's layout; null falls back to the
+  // default arrangement, so pages that were never customised look unchanged.
+  const blocks = resolveLayout(product);
+  const renderBlock = (block: ProductBlock) => (
+    <ProductBlockRenderer
+      key={block.id}
+      block={block}
+      product={product}
+      purchase={purchase}
+      onAddToCart={handleAddToCart}
+    />
+  );
+
   return (
     <div className={BASE_CLASS}>
       <Breadcrumb productName={product.name} />
 
       <div className={`${BASE_CLASS}_grid`}>
-        <ProductGallery
-          images={images}
-          name={product.name}
-          slug={product.slug}
-        />
-
-        <ProductSummary
-          product={product}
-          purchase={purchase}
-          onAddToCart={handleAddToCart}
-        />
+        <div className={`${BASE_CLASS}_column`}>
+          {blocksInColumn(blocks, "left").map(renderBlock)}
+        </div>
+        <div className={`${BASE_CLASS}_column`}>
+          {blocksInColumn(blocks, "right").map(renderBlock)}
+        </div>
       </div>
 
-      <ProductSpecs product={product} />
-
-      <ProductReviews productId={product.id} />
+      {blocksInColumn(blocks, "full").map(renderBlock)}
     </div>
   );
 }

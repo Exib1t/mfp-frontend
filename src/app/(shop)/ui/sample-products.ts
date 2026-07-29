@@ -48,6 +48,7 @@ function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
     options: [],
     attributes: [],
     specs: {},
+    layout: null,
     images: [],
     meta_title: null,
     meta_description: null,
