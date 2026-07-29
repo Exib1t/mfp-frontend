@@ -4,7 +4,6 @@ import { activeOptions } from "@/entities/configurator/helpers";
 import type { ConfiguratorGroup } from "@/entities/configurator/types";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import OptionCardList, { type OptionMarker } from "./OptionCardList";
-import OptionSelect from "./OptionSelect";
 import SwatchGrid from "./SwatchGrid";
 
 import "./GroupEditor.styles.scss";
@@ -19,9 +18,15 @@ interface GroupEditorProps {
 
 const BASE_CLASS = "group-editor";
 
-/** Which marker each list-style step draws next to its rows. */
+/**
+ * Which marker each list-style step draws next to its rows. `select` is a
+ * retired look kept only for presets saved before it was dropped — a dropdown
+ * inside the hotspot popover was clipped by its scroll container, and the
+ * popover already does the job a dropdown would.
+ */
 const MARKER_BY_UI: Record<string, OptionMarker> = {
   radio: "radio",
+  select: "radio",
   checkbox: "check",
   image: "none",
 };
@@ -59,19 +64,7 @@ function GroupEditor({ group, picked, onPick, onText }: GroupEditorProps) {
         <SwatchGrid options={options} picked={picked} onPick={onPick} />
       )}
 
-      {group.ui === "select" && (
-        <OptionSelect
-          options={options}
-          picked={picked}
-          label={group.label}
-          isRequired={group.is_required}
-          onPick={onPick}
-        />
-      )}
-
-      {(group.ui === "radio" ||
-        group.ui === "checkbox" ||
-        group.ui === "image") && (
+      {group.ui !== "text" && group.ui !== "swatch" && (
         <OptionCardList
           options={options}
           picked={picked}

@@ -14,6 +14,7 @@ import {
   GROUP_UI_HINTS,
   GROUP_UI_LABELS,
   MULTI_CAPABLE_UI,
+  OFFERED_GROUP_UI,
   OPTION_BACKED_UI,
   type UpdateGroupPayload,
 } from "@/entities/admin/configurators/types";
@@ -30,9 +31,10 @@ interface ConfiguratorGroupCardProps {
 
 const BASE_CLASS = "configurator-group";
 
-const UI_OPTIONS = (Object.keys(GROUP_UI_LABELS) as ConfiguratorGroupUi[]).map(
-  (ui) => ({ value: ui, label: GROUP_UI_LABELS[ui] }),
-);
+const toItem = (ui: ConfiguratorGroupUi) => ({
+  value: ui,
+  label: GROUP_UI_LABELS[ui],
+});
 
 function ConfiguratorGroupCard({
   configuratorId,
@@ -43,6 +45,12 @@ function ConfiguratorGroupCard({
 }: ConfiguratorGroupCardProps) {
   const [isOpen, setIsOpen] = useState(true);
   const hasOptions = OPTION_BACKED_UI.includes(group.ui);
+
+  // A retired look stays listed while a group still uses it, so the dropdown
+  // shows its real value and the admin can switch away from it.
+  const uiOptions = OFFERED_GROUP_UI.includes(group.ui)
+    ? OFFERED_GROUP_UI.map(toItem)
+    : [toItem(group.ui), ...OFFERED_GROUP_UI.map(toItem)];
 
   return (
     <section className={cn(BASE_CLASS, { "-off": !group.is_active })}>
@@ -96,7 +104,7 @@ function ConfiguratorGroupCard({
               <span>Вигляд</span>
               <Select
                 value={group.ui}
-                options={UI_OPTIONS}
+                options={uiOptions}
                 aria-label="Вигляд кроку"
                 onChange={(ui) =>
                   // "Прапорці" *is* the multi-pick step, every other look is
