@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
   /* The popover sits over the stage photo, where the inherited colour can be
      light — state it, or labels come out white on white. */
   color: var(--foreground);
@@ -35,9 +36,34 @@
     flex-direction: column;
     gap: 6px;
 
+    /*
+     * Image tiles stack the picture above its label. A side-by-side row would
+     * force a min-content width wider than the popover, which is what put a
+     * horizontal scrollbar under the list.
+     */
     &[data-images="true"] {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      & > .group-editor_card {
+        flex-direction: column;
+        align-items: stretch;
+        /* Cards stretch to the tallest in the row; centre so an option with
+           no picture yet does not leave its label stranded at the top. */
+        justify-content: center;
+        gap: 6px;
+        text-align: center;
+      }
+
+      & .group-editor_card-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+      }
+
+      & .group-editor_card-text {
+        align-items: center;
+      }
     }
   }
 
@@ -80,6 +106,8 @@
     gap: 2px;
     min-width: 0;
     color: var(--foreground);
+    /* Long single words must wrap rather than push the card wider. */
+    overflow-wrap: anywhere;
   }
 
   /* Marker: a ring for single-choice steps, a box for multi-pick ones. */

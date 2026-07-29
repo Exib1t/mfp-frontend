@@ -266,6 +266,9 @@
     padding: 16px 18px;
     max-height: 420px;
     overflow-y: auto;
+    /* Editors size themselves to the popover; anything wider is a bug, not
+       something to scroll sideways for. */
+    overflow-x: hidden;
 
     /* neutralise the wizard section chrome inside the compact popover */
     .configurator_section {
