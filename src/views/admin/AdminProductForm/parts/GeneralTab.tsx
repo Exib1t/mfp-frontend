@@ -5,8 +5,9 @@ import AdminCard from "@/components/admin/AdminCard/AdminCard";
 import AdminField from "@/components/admin/AdminField/AdminField";
 import Input from "@/components/controls/Input/Input";
 import Select from "@/components/controls/Select/Select";
+import { useAdminConfigurators } from "@/entities/admin/configurators/api";
 import { useCategories } from "@/entities/categories/api";
-import { PRODUCT_STATUS_OPTIONS } from "../constants";
+import { NO_CONFIGURATOR, PRODUCT_STATUS_OPTIONS } from "../constants";
 import type { ProductForm } from "../types";
 
 interface GeneralTabProps {
@@ -17,11 +18,20 @@ function GeneralTab({ form }: GeneralTabProps) {
   const { register, control, formState } = form;
   const { errors } = formState;
   const { data: categories = [] } = useCategories();
+  const { data: configurators = [] } = useAdminConfigurators();
 
   const categoryOptions = categories.map((category) => ({
     value: String(category.id),
     label: category.name,
   }));
+
+  const configuratorOptions = [
+    { value: NO_CONFIGURATOR, label: "— без конфігуратора —" },
+    ...configurators.map((configurator) => ({
+      value: String(configurator.id),
+      label: configurator.name,
+    })),
+  ];
 
   return (
     <AdminCard title="Основна інформація">
@@ -56,6 +66,27 @@ function GeneralTab({ form }: GeneralTabProps) {
               options={categoryOptions}
               onChange={(value) => field.onChange(Number(value))}
               aria-label="Категорія"
+            />
+          )}
+        />
+      </AdminField>
+
+      <AdminField
+        htmlFor="product-configurator"
+        label="Конфігуратор"
+        hint="Покупець збере товар за цими кроками перед додаванням у кошик"
+      >
+        <Controller
+          control={control}
+          name="configurator_id"
+          render={({ field }) => (
+            <Select
+              value={field.value ? String(field.value) : NO_CONFIGURATOR}
+              options={configuratorOptions}
+              onChange={(value) =>
+                field.onChange(value === NO_CONFIGURATOR ? null : Number(value))
+              }
+              aria-label="Конфігуратор"
             />
           )}
         />

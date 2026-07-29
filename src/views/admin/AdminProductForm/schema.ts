@@ -17,6 +17,12 @@ export const ProductFormSchema = z
     category_id: requiredNumber.pipe(
       z.number().int().positive({ error: "Оберіть категорію" }),
     ),
+    /** null = the product is bought as-is, with no build step. */
+    configurator_id: z
+      .union([z.string(), z.number(), z.null()])
+      .transform((value) =>
+        value === null || value === "" ? null : Number(value),
+      ),
     status: z.enum(["in_stock", "made_to_order", "out_of_stock"]),
     price: requiredNumber.pipe(
       z.number().nonnegative({ error: "Ціна не може бути відʼємною" }),

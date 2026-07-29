@@ -45,6 +45,7 @@ function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
     price_range: { min: effectivePrice, max: effectivePrice },
     stock: 0,
     category: { id: 1, name: "Одяг", slug: "odyag" },
+    configurator: null,
     options: [],
     attributes: [],
     specs: {},

@@ -21,6 +21,9 @@ export const TABS_REQUIRING_SAVED_PRODUCT: ProductFormTab[] = [
   "layout",
 ];
 
+/** Sentinel for the "no configurator" row — Select works on strings only. */
+export const NO_CONFIGURATOR = "none";
+
 export const PRODUCT_STATUS_OPTIONS = [
   { value: "in_stock", label: "В наявності" },
   { value: "made_to_order", label: "Під замовлення" },

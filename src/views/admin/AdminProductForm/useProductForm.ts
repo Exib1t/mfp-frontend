@@ -21,6 +21,7 @@ function toDefaults(product?: AdminProduct): ProductFormInput {
     short_description: product?.short_description ?? null,
     description: product?.description ?? null,
     category_id: product?.category.id ?? 0,
+    configurator_id: product?.configurator?.id ?? null,
     status: product?.status ?? "in_stock",
     price: product?.price ?? 0,
     compare_at_price: product?.compare_at_price ?? null,

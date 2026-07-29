@@ -720,14 +720,14 @@ export interface paths {
         patch: operations["ReviewsAdminController_updateStatus_v1"];
         trace?: never;
     };
-    "/api/v1/configurator/options": {
+    "/api/v1/configurators": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get all active configurator options */
+        /** Get all active configurators with their groups */
         get: operations["ConfiguratorController_findAll_v1"];
         put?: never;
         post?: never;
@@ -737,14 +737,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/configurator/options/{id}": {
+    "/api/v1/configurators/{slug}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get configurator option by id */
+        /** Get one configurator by slug */
         get: operations["ConfiguratorController_findOne_v1"];
         put?: never;
         post?: never;
@@ -754,17 +754,17 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/admin/configurator/options": {
+    "/api/v1/admin/configurators": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get all configurator options (admin) */
+        /** Get all configurators (admin) */
         get: operations["ConfiguratorAdminController_findAll_v1"];
         put?: never;
-        /** Create configurator option */
+        /** Create configurator */
         post: operations["ConfiguratorAdminController_create_v1"];
         delete?: never;
         options?: never;
@@ -772,23 +772,93 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/admin/configurator/options/{id}": {
+    "/api/v1/admin/configurators/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get configurator option by id (admin) */
+        /** Get configurator by id (admin) */
         get: operations["ConfiguratorAdminController_findOne_v1"];
         put?: never;
         post?: never;
-        /** Delete configurator option */
+        /** Delete configurator */
         delete: operations["ConfiguratorAdminController_remove_v1"];
         options?: never;
         head?: never;
-        /** Update configurator option */
+        /** Update configurator */
         patch: operations["ConfiguratorAdminController_update_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/configurators/{id}/groups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a step to a configurator */
+        post: operations["ConfiguratorAdminController_createGroup_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/configurators/{id}/groups/{groupId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a configurator step */
+        delete: operations["ConfiguratorAdminController_removeGroup_v1"];
+        options?: never;
+        head?: never;
+        /** Update a configurator step */
+        patch: operations["ConfiguratorAdminController_updateGroup_v1"];
+        trace?: never;
+    };
+    "/api/v1/admin/configurators/{id}/groups/{groupId}/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a choice to a configurator step */
+        post: operations["ConfiguratorAdminController_createOption_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/configurators/{id}/groups/{groupId}/options/{optionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a configurator choice */
+        delete: operations["ConfiguratorAdminController_removeOption_v1"];
+        options?: never;
+        head?: never;
+        /** Update a configurator choice */
+        patch: operations["ConfiguratorAdminController_updateOption_v1"];
         trace?: never;
     };
 }
@@ -1074,6 +1144,11 @@ export interface components {
                 name: string;
                 slug: string;
             };
+            configurator: {
+                id: number;
+                name: string;
+                slug: string;
+            } | null;
             options: {
                 id: number;
                 name: string;
@@ -1231,6 +1306,7 @@ export interface components {
             specs?: {
                 [key: string]: (string | number | boolean) | null;
             } | null;
+            configurator_id?: number | null;
             layout?: {
                 id: string;
                 /** @enum {string} */
@@ -1272,6 +1348,7 @@ export interface components {
             specs?: {
                 [key: string]: (string | number | boolean) | null;
             } | null;
+            configurator_id?: number | null;
             layout?: {
                 id: string;
                 /** @enum {string} */
@@ -1567,56 +1644,182 @@ export interface components {
             /** @enum {string} */
             status: "pending" | "approved" | "rejected";
         };
-        ConfiguratorOptionDto: {
+        ConfiguratorDto: {
             id: number;
-            product_id: number | null;
-            /** @enum {string} */
-            type: "size" | "fabric" | "color" | "addon";
-            label: string;
-            value: string;
-            price_modifier: number;
-            image_url: string | null;
-            sort_order: number;
+            name: string;
+            slug: string;
+            description: string | null;
+            base_price: number;
+            currency: string;
             is_active: boolean;
+            groups: {
+                id: number;
+                configurator_id: number;
+                code: string;
+                label: string;
+                description: string | null;
+                /** @enum {string} */
+                ui: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
+                is_multiple: boolean;
+                is_required: boolean;
+                price_modifier: number;
+                sort_order: number;
+                is_active: boolean;
+                options: {
+                    id: number;
+                    group_id: number;
+                    label: string;
+                    value: string;
+                    description: string | null;
+                    price_modifier: number;
+                    image_url: string | null;
+                    color_hex: string | null;
+                    is_default: boolean;
+                    sort_order: number;
+                    is_active: boolean;
+                }[];
+            }[];
             /** Format: date-time */
             created_at: string;
             /** Format: date-time */
             updated_at: string;
         };
-        ApiArrayResponseOfConfiguratorOptionDto: {
-            data: components["schemas"]["ConfiguratorOptionDto"][];
+        ApiArrayResponseOfConfiguratorDto: {
+            data: components["schemas"]["ConfiguratorDto"][];
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
+        };
+        ApiResponseOfConfiguratorDto: {
+            data: components["schemas"]["ConfiguratorDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        CreateConfiguratorDto: {
+            name: string;
+            slug: string;
+            description?: string | null;
+            /** @default 0 */
+            base_price: number;
+            /** @default UAH */
+            currency: string;
+            /** @default true */
+            is_active: boolean;
+        };
+        UpdateConfiguratorDto: {
+            name?: string;
+            slug?: string;
+            description?: string | null;
+            base_price?: number;
+            currency?: string;
+            is_active?: boolean;
+        };
+        CreateConfiguratorGroupDto: {
+            code: string;
+            label: string;
+            description?: string | null;
+            /**
+             * @default radio
+             * @enum {string}
+             */
+            ui: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
+            /** @default false */
+            is_multiple: boolean;
+            /** @default true */
+            is_required: boolean;
+            /** @default 0 */
+            price_modifier: number;
+            /** @default 0 */
+            sort_order: number;
+            /** @default true */
+            is_active: boolean;
+        };
+        ConfiguratorGroupDto: {
+            id: number;
+            configurator_id: number;
+            code: string;
+            label: string;
+            description: string | null;
+            /** @enum {string} */
+            ui: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
+            is_multiple: boolean;
+            is_required: boolean;
+            price_modifier: number;
+            sort_order: number;
+            is_active: boolean;
+            options: {
+                id: number;
+                group_id: number;
+                label: string;
+                value: string;
+                description: string | null;
+                price_modifier: number;
+                image_url: string | null;
+                color_hex: string | null;
+                is_default: boolean;
+                sort_order: number;
+                is_active: boolean;
+            }[];
+        };
+        ApiResponseOfConfiguratorGroupDto: {
+            data: components["schemas"]["ConfiguratorGroupDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        UpdateConfiguratorGroupDto: {
+            code?: string;
+            label?: string;
+            description?: string | null;
+            /** @enum {string} */
+            ui?: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
+            is_multiple?: boolean;
+            is_required?: boolean;
+            price_modifier?: number;
+            sort_order?: number;
+            is_active?: boolean;
+        };
+        CreateConfiguratorOptionDto: {
+            label: string;
+            value: string;
+            description?: string | null;
+            /** @default 0 */
+            price_modifier: number;
+            /** Format: uri */
+            image_url?: string | null;
+            color_hex?: string | null;
+            /** @default false */
+            is_default: boolean;
+            /** @default 0 */
+            sort_order: number;
+            /** @default true */
+            is_active: boolean;
+        };
+        ConfiguratorOptionDto: {
+            id: number;
+            group_id: number;
+            label: string;
+            value: string;
+            description: string | null;
+            price_modifier: number;
+            image_url: string | null;
+            color_hex: string | null;
+            is_default: boolean;
+            sort_order: number;
+            is_active: boolean;
         };
         ApiResponseOfConfiguratorOptionDto: {
             data: components["schemas"]["ConfiguratorOptionDto"];
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
         };
-        CreateConfiguratorOptionDto: {
-            product_id?: number | null;
-            /** @enum {string} */
-            type: "size" | "fabric" | "color" | "addon";
-            label: string;
-            value: string;
-            /** @default 0 */
-            price_modifier: number;
-            /** Format: uri */
-            image_url?: string | null;
-            /** @default 0 */
-            sort_order: number;
-            /** @default true */
-            is_active: boolean;
-        };
         UpdateConfiguratorOptionDto: {
-            product_id?: number | null;
-            /** @enum {string} */
-            type?: "size" | "fabric" | "color" | "addon";
             label?: string;
             value?: string;
+            description?: string | null;
             price_modifier?: number;
             /** Format: uri */
             image_url?: string | null;
+            color_hex?: string | null;
+            is_default?: boolean;
             sort_order?: number;
             is_active?: boolean;
         };
@@ -3078,10 +3281,7 @@ export interface operations {
     };
     ConfiguratorController_findAll_v1: {
         parameters: {
-            query?: {
-                type?: "size" | "fabric" | "color" | "addon";
-                product_id?: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -3093,7 +3293,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfConfiguratorOptionDto"];
+                    "application/json": components["schemas"]["ApiArrayResponseOfConfiguratorDto"];
                 };
             };
         };
@@ -3103,7 +3303,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -3114,10 +3314,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorOptionDto"];
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
                 };
             };
-            /** @description Option not found */
+            /** @description Configurator not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -3128,10 +3328,7 @@ export interface operations {
     };
     ConfiguratorAdminController_findAll_v1: {
         parameters: {
-            query?: {
-                type?: "size" | "fabric" | "color" | "addon";
-                product_id?: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -3143,7 +3340,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfConfiguratorOptionDto"];
+                    "application/json": components["schemas"]["ApiArrayResponseOfConfiguratorDto"];
                 };
             };
         };
@@ -3157,7 +3354,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateConfiguratorOptionDto"];
+                "application/json": components["schemas"]["CreateConfiguratorDto"];
             };
         };
         responses: {
@@ -3166,7 +3363,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorOptionDto"];
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
                 };
             };
         };
@@ -3187,10 +3384,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorOptionDto"];
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
                 };
             };
-            /** @description Option not found */
+            /** @description Configurator not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -3210,7 +3407,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Option deleted */
+            /** @description Configurator deleted */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -3225,6 +3422,153 @@ export interface operations {
             header?: never;
             path: {
                 id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateConfiguratorDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
+                };
+            };
+        };
+    };
+    ConfiguratorAdminController_createGroup_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateConfiguratorGroupDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorGroupDto"];
+                };
+            };
+        };
+    };
+    ConfiguratorAdminController_removeGroup_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                groupId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Group deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ConfiguratorAdminController_updateGroup_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                groupId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateConfiguratorGroupDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorGroupDto"];
+                };
+            };
+        };
+    };
+    ConfiguratorAdminController_createOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                groupId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateConfiguratorOptionDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfConfiguratorOptionDto"];
+                };
+            };
+        };
+    };
+    ConfiguratorAdminController_removeOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                groupId: number;
+                optionId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Option deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ConfiguratorAdminController_updateOption_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                groupId: number;
+                optionId: number;
             };
             cookie?: never;
         };

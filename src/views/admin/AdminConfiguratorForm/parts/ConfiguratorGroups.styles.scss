@@ -1,0 +1,203 @@
+.configurator-groups {
+  gap: 12px;
+
+  &_add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--background-variant);
+
+    & > .input {
+      max-width: 320px;
+    }
+  }
+}
+
+.configurator-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  background: var(--background);
+  border: 1px solid var(--background-variant);
+
+  &.-off {
+    opacity: 0.55;
+  }
+
+  &_head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &_label {
+    flex: 1;
+    min-width: 0;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &_code {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+    font-family: var(--font-mono, monospace);
+    white-space: nowrap;
+  }
+
+  &_icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding: 4px;
+    color: var(--color-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--foreground);
+    }
+
+    &.-danger:hover {
+      color: var(--color-error);
+    }
+  }
+
+  &_chevron {
+    transition: transform 0.15s ease;
+
+    &.-open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &_body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 28px;
+  }
+
+  &_settings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  &_field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 180px;
+
+    & > span {
+      font-size: var(--font-size-xs);
+      color: var(--color-muted);
+    }
+  }
+
+  &_toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 8px;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+
+    & > input {
+      accent-color: var(--primary);
+    }
+  }
+
+  @media (width <= 640px) {
+    &_body {
+      padding-left: 0;
+    }
+  }
+}
+
+.configurator-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &_row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) 110px auto auto auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    background: var(--background-variant);
+
+    &.-off {
+      opacity: 0.5;
+    }
+
+    /* Swatch and image UIs add a leading colour input / trailing URL field. */
+    &:has(> .configurator-options_color) {
+      grid-template-columns: auto auto minmax(0, 1fr) 110px auto auto auto;
+    }
+  }
+
+  &_color {
+    width: 34px;
+    height: 32px;
+    padding: 2px;
+    background: var(--background);
+    border: 1px solid var(--background-variant);
+    cursor: pointer;
+  }
+
+  &_price {
+    text-align: right;
+  }
+
+  &_active {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--font-size-xs);
+    color: var(--color-muted);
+    white-space: nowrap;
+    cursor: pointer;
+
+    & > input {
+      accent-color: var(--primary);
+    }
+  }
+
+  &_icon {
+    display: inline-flex;
+    padding: 4px;
+    color: var(--color-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &.-on {
+      color: var(--primary);
+    }
+
+    &.-danger:hover {
+      color: var(--color-error);
+    }
+  }
+
+  &_add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    & > .input {
+      max-width: 280px;
+    }
+  }
+
+  @media (width <= 720px) {
+    &_row,
+    &_row:has(> .configurator-options_color) {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+}
