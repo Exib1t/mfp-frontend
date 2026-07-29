@@ -11,6 +11,7 @@ import type { AdminProduct } from "@/entities/admin/products/types";
 import { PRODUCT_FORM_TABS, TABS_REQUIRING_SAVED_PRODUCT } from "./constants";
 import AttributesTab from "./parts/AttributesTab";
 import GeneralTab from "./parts/GeneralTab";
+import MediaTab from "./parts/MediaTab";
 import OptionsTab from "./parts/OptionsTab";
 import PricingTab from "./parts/PricingTab";
 import SeoTab from "./parts/SeoTab";
@@ -93,13 +94,7 @@ function AdminProductForm({ product }: AdminProductFormProps) {
             {tab === "attributes" && product && (
               <AttributesTab product={product} />
             )}
-            {tab === "media" && product && (
-              <AdminCard title="Медіа">
-                <Typography variant="body2" color="muted">
-                  Завантаження та перетягування зображень — наступний крок.
-                </Typography>
-              </AdminCard>
-            )}
+            {tab === "media" && product && <MediaTab product={product} />}
           </>
         )}
       </div>

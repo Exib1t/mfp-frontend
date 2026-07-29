@@ -497,6 +497,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/products/{id}/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Append uploaded files to the gallery (keeps existing images) */
+        post: operations["ProductsAdminController_addImages_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/products/{id}/images/{imageId}": {
         parameters: {
             query?: never;
@@ -511,7 +528,8 @@ export interface paths {
         delete: operations["ProductsAdminController_removeImage_v1"];
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update one image (alt, order, variant binding) */
+        patch: operations["ProductsAdminController_updateImage_v1"];
         trace?: never;
     };
     "/api/v1/files/upload": {
@@ -1379,6 +1397,15 @@ export interface components {
                 variant_id?: number | null;
                 value: (string | number | boolean | number[]) | null;
             }[];
+        };
+        AddProductImagesDto: {
+            file_ids: number[];
+            variant_id?: number | null;
+        };
+        UpdateProductImageDto: {
+            alt?: string | null;
+            sort_order?: number;
+            variant_id?: number | null;
         };
         FileDto: {
             id: number;
@@ -2654,6 +2681,31 @@ export interface operations {
             };
         };
     };
+    ProductsAdminController_addImages_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddProductImagesDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
+                };
+            };
+        };
+    };
     ProductsAdminController_removeImage_v1: {
         parameters: {
             query?: never;
@@ -2671,6 +2723,32 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    ProductsAdminController_updateImage_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                imageId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateProductImageDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
+                };
             };
         };
     };
