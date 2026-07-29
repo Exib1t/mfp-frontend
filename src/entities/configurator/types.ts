@@ -34,6 +34,7 @@ export interface ConfiguratorCartItem {
  */
 export type ConfiguratorChoices = Record<string, string[]>;
 
+/** UIs whose choices come from the option list rather than buyer input. */
 export const OPTION_BACKED_UI: ConfiguratorGroupUi[] = [
   "radio",
   "swatch",
@@ -41,3 +42,11 @@ export const OPTION_BACKED_UI: ConfiguratorGroupUi[] = [
   "select",
   "checkbox",
 ];
+
+/**
+ * "Прапорці" is the multi-pick step by definition. The stored flag is still
+ * honoured so presets saved before that rule keep working.
+ */
+export function isMultiGroup(group: ConfiguratorGroup): boolean {
+  return group.is_multiple || group.ui === "checkbox";
+}

@@ -99,14 +99,10 @@ function ConfiguratorGroupCard({
                 options={UI_OPTIONS}
                 aria-label="Вигляд кроку"
                 onChange={(ui) =>
-                  onPatch({
-                    ui,
-                    // Only checkbox groups can hold several picks; switching
-                    // away must not leave a stale multi flag behind.
-                    ...(MULTI_CAPABLE_UI.includes(ui)
-                      ? {}
-                      : { is_multiple: false }),
-                  })
+                  // "Прапорці" *is* the multi-pick step, every other look is
+                  // single-choice — so the flag follows the look rather than
+                  // being a second thing to remember.
+                  onPatch({ ui, is_multiple: MULTI_CAPABLE_UI.includes(ui) })
                 }
               />
             </div>

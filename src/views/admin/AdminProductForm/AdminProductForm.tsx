@@ -3,12 +3,17 @@
 import Link from "next/link";
 import { useState } from "react";
 import AdminCard from "@/components/admin/AdminCard/AdminCard";
+import AdminCheckbox from "@/components/admin/AdminCheckbox/AdminCheckbox";
 import AdminPageHeader from "@/components/admin/AdminPageHeader/AdminPageHeader";
 import AdminTabs from "@/components/admin/AdminTabs/AdminTabs";
 import Button from "@/components/controls/Button/Button";
 import Typography from "@/components/controls/Typography/Typography";
 import type { AdminProduct } from "@/entities/admin/products/types";
-import { PRODUCT_FORM_TABS, TABS_REQUIRING_SAVED_PRODUCT } from "./constants";
+import {
+  FIELD_TABS,
+  PRODUCT_FORM_TABS,
+  TABS_REQUIRING_SAVED_PRODUCT,
+} from "./constants";
 import AttributesTab from "./parts/AttributesTab";
 import GeneralTab from "./parts/GeneralTab";
 import LayoutTab from "./parts/LayoutTab";
@@ -27,6 +32,7 @@ interface AdminProductFormProps {
 }
 
 const BASE_CLASS = "admin-product-form";
+const FORM_ID = "product-form";
 
 function AdminProductForm({ product }: AdminProductFormProps) {
   const [tab, setTab] = useState<ProductFormTab>("general");
@@ -44,7 +50,7 @@ function AdminProductForm({ product }: AdminProductFormProps) {
   );
 
   return (
-    <form className={BASE_CLASS} onSubmit={submit}>
+    <div className={BASE_CLASS}>
       <AdminPageHeader
         title={product ? product.name : "Новий товар"}
         description={product ? `/${product.slug}` : "Заповніть основні поля"}
@@ -53,22 +59,12 @@ function AdminProductForm({ product }: AdminProductFormProps) {
             <Button as={Link} href="/admin/products" variant="ghost">
               До списку
             </Button>
-            <Button type="submit" loading={isSaving}>
+            <Button type="submit" form={FORM_ID} loading={isSaving}>
               Зберегти
             </Button>
           </>
         }
       />
-
-      <label className={`${BASE_CLASS}_publish`}>
-        <input type="checkbox" {...form.register("is_published")} />
-        <span>Опубліковано в каталозі</span>
-      </label>
-
-      <label className={`${BASE_CLASS}_publish`}>
-        <input type="checkbox" {...form.register("is_featured")} />
-        <span>Показувати серед популярних</span>
-      </label>
 
       <AdminTabs tabs={tabs} value={tab} onChange={setTab} />
 
@@ -82,14 +78,37 @@ function AdminProductForm({ product }: AdminProductFormProps) {
           </AdminCard>
         ) : (
           <>
-            {tab === "general" && <GeneralTab form={form} />}
-            {tab === "pricing" && (
-              <PricingTab
-                form={form}
-                hasVariants={Boolean(product?.variants.length)}
+            {/*
+              Only the react-hook-form tabs live inside the <form>. The rest
+              write to the API directly, and the layout canvas renders real
+              storefront blocks — the reviews block has its own <form>, and
+              nesting forms is invalid HTML.
+            */}
+            <form
+              id={FORM_ID}
+              className={`${BASE_CLASS}_fields`}
+              hidden={!FIELD_TABS.includes(tab)}
+              onSubmit={submit}
+            >
+              <AdminCheckbox
+                label="Опубліковано в каталозі"
+                {...form.register("is_published")}
               />
-            )}
-            {tab === "seo" && <SeoTab form={form} />}
+              <AdminCheckbox
+                label="Показувати серед популярних"
+                {...form.register("is_featured")}
+              />
+
+              {tab === "general" && <GeneralTab form={form} />}
+              {tab === "pricing" && (
+                <PricingTab
+                  form={form}
+                  hasVariants={Boolean(product?.variants.length)}
+                />
+              )}
+              {tab === "seo" && <SeoTab form={form} />}
+            </form>
+
             {tab === "options" && product && <OptionsTab product={product} />}
             {tab === "variants" && product && <VariantsTab product={product} />}
             {tab === "attributes" && product && (
@@ -100,7 +119,7 @@ function AdminProductForm({ product }: AdminProductFormProps) {
           </>
         )}
       </div>
-    </form>
+    </div>
   );
 }
 

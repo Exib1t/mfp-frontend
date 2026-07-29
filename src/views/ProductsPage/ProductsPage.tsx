@@ -2,68 +2,43 @@
 
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import Button from "@/components/controls/Button/Button";
 import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCategories } from "@/entities/categories/api";
-import { useProducts } from "@/entities/products/api";
-import { getEffectivePrice } from "@/entities/products/helpers";
+import type { ProductsQuery } from "@/entities/products/types";
 import FilterSidebar from "./parts/FilterSidebar/FilterSidebar";
 import ProductGrid from "./parts/ProductGrid/ProductGrid";
+import { useCatalogFilters } from "./useCatalogFilters";
 
 import "./ProductsPage.styles.scss";
 
-type SortKey = "default" | "price-asc" | "price-desc";
+const SORT_OPTIONS = [
+  { value: "newest", label: "Спочатку нові" },
+  { value: "price_asc", label: "Ціна: від дешевих" },
+  { value: "price_desc", label: "Ціна: від дорогих" },
+  { value: "name_asc", label: "Назва: А–Я" },
+] as const;
 
-const SORT_OPTIONS: { value: SortKey; label: string }[] = [
-  { value: "default", label: "За замовчуванням" },
-  { value: "price-asc", label: "Ціна: від дешевих" },
-  { value: "price-desc", label: "Ціна: від дорогих" },
-];
+/** Bounds for the price slider. Server-side filtering means the page never
+ *  sees the whole catalogue, so these stay fixed rather than derived. */
+const PRICE_BOUND_MIN = 0;
+const PRICE_BOUND_MAX = 10000;
 
 const BASE_CLASS = "products-page";
 
+function pluralProducts(count: number): string {
+  if (count === 1) return "товар";
+  if (count < 5) return "товари";
+  return "товарів";
+}
+
 function ProductsPage() {
-  const { data: page, isLoading, isError } = useProducts({ limit: 100 });
+  const state = useCatalogFilters();
   const { data: categories = [] } = useCategories();
-
-  const products = page?.items ?? [];
-
-  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
-  const [priceMin, setPriceMin] = useState<number | null>(null);
-  const [priceMax, setPriceMax] = useState<number | null>(null);
-  const [sort, setSort] = useState<SortKey>("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const prices = products.map((product) => getEffectivePrice(product));
-  const boundMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
-  const boundMax = prices.length ? Math.ceil(Math.max(...prices)) : 0;
-
-  const effMin = priceMin ?? boundMin;
-  const effMax = priceMax ?? boundMax;
-
-  const hasFilters =
-    activeCategoryId !== null || priceMin !== null || priceMax !== null;
-
-  const resetFilters = () => {
-    setActiveCategoryId(null);
-    setPriceMin(null);
-    setPriceMax(null);
-  };
-
-  const filtered = products.filter((p) => {
-    const effectivePrice = getEffectivePrice(p);
-    if (activeCategoryId !== null && p.category.id !== activeCategoryId)
-      return false;
-    return !(effectivePrice < effMin || effectivePrice > effMax);
-  });
-
-  const sorted = [...filtered].sort((a, b) => {
-    const pa = getEffectivePrice(a);
-    const pb = getEffectivePrice(b);
-    if (sort === "price-asc") return pa - pb;
-    if (sort === "price-desc") return pb - pa;
-    return 0;
-  });
+  const total = state.meta?.total ?? 0;
 
   return (
     <div className={BASE_CLASS}>
@@ -80,11 +55,10 @@ function ProductsPage() {
           >
             <SlidersHorizontal size={18} strokeWidth={1.75} />
             Фільтри
-            {hasFilters && (
-              <span
-                className={`${BASE_CLASS}_filter-toggle-dot`}
-                aria-hidden="true"
-              />
+            {state.hasFilters && (
+              <span className={`${BASE_CLASS}_filter-count`}>
+                {state.activeCount}
+              </span>
             )}
           </button>
         </div>
@@ -100,17 +74,9 @@ function ProductsPage() {
         <div className={`${BASE_CLASS}_layout`}>
           <FilterSidebar
             categories={categories}
-            products={products}
-            activeCategoryId={activeCategoryId}
-            onSelectCategory={setActiveCategoryId}
-            boundMin={boundMin}
-            boundMax={boundMax}
-            effMin={effMin}
-            effMax={effMax}
-            onPriceMinChange={setPriceMin}
-            onPriceMaxChange={setPriceMax}
-            hasFilters={hasFilters}
-            onReset={resetFilters}
+            state={state}
+            boundMin={PRICE_BOUND_MIN}
+            boundMax={PRICE_BOUND_MAX}
             open={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
@@ -118,23 +84,49 @@ function ProductsPage() {
           <div className={`${BASE_CLASS}_main`}>
             <div className={`${BASE_CLASS}_toolbar`}>
               <Typography variant="body2" color="muted">
-                {sorted.length === 0
+                {total === 0
                   ? "Нічого не знайдено"
-                  : `${sorted.length} ${sorted.length === 1 ? "товар" : sorted.length < 5 ? "товари" : "товарів"}`}
+                  : `${total} ${pluralProducts(total)}`}
               </Typography>
               <Select
-                value={sort}
-                options={SORT_OPTIONS}
-                onChange={setSort}
+                value={state.sort}
+                options={[...SORT_OPTIONS]}
+                onChange={(value) =>
+                  state.setSort(value as NonNullable<ProductsQuery["sort"]>)
+                }
                 aria-label="Сортування"
               />
             </div>
 
             <ProductGrid
-              products={sorted}
-              isLoading={isLoading}
-              isError={isError}
+              products={state.products}
+              isLoading={state.isLoading}
+              isError={state.isError}
             />
+
+            {state.meta && state.meta.pages > 1 && (
+              <div className={`${BASE_CLASS}_pagination`}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={state.page <= 1}
+                  onClick={() => state.setPage(state.page - 1)}
+                >
+                  Назад
+                </Button>
+                <Typography variant="caption" color="muted">
+                  {state.meta.page} / {state.meta.pages}
+                </Typography>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={state.page >= state.meta.pages}
+                  onClick={() => state.setPage(state.page + 1)}
+                >
+                  Далі
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

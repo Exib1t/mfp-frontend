@@ -3,24 +3,17 @@ import Button from "@/components/controls/Button/Button";
 import IconButton from "@/components/controls/IconButton/IconButton";
 import Typography from "@/components/controls/Typography/Typography";
 import type { Category } from "@/entities/categories/types";
-import type { Product } from "@/entities/products/types";
+import type { useCatalogFilters } from "../../useCatalogFilters";
+import AttributeFilter from "../AttributeFilter/AttributeFilter";
 import PriceRangeFilter from "../PriceRangeFilter/PriceRangeFilter";
 
 import "../../ProductsPage.styles.scss";
 
 interface FilterSidebarProps {
   categories: Category[];
-  products: Product[];
-  activeCategoryId: number | null;
-  onSelectCategory: (id: number | null) => void;
+  state: ReturnType<typeof useCatalogFilters>;
   boundMin: number;
   boundMax: number;
-  effMin: number;
-  effMax: number;
-  onPriceMinChange: (value: number) => void;
-  onPriceMaxChange: (value: number) => void;
-  hasFilters: boolean;
-  onReset: () => void;
   open: boolean;
   onClose: () => void;
 }
@@ -29,17 +22,9 @@ const BASE_CLASS = "products-page";
 
 function FilterSidebar({
   categories,
-  products,
-  activeCategoryId,
-  onSelectCategory,
+  state,
   boundMin,
   boundMax,
-  effMin,
-  effMax,
-  onPriceMinChange,
-  onPriceMaxChange,
-  hasFilters,
-  onReset,
   open,
   onClose,
 }: FilterSidebarProps) {
@@ -67,33 +52,24 @@ function FilterSidebar({
             <button
               type="button"
               className={`${BASE_CLASS}_cat-item`}
-              data-active={activeCategoryId === null}
-              onClick={() => onSelectCategory(null)}
+              data-active={state.categoryId === null}
+              onClick={() => state.selectCategory(null)}
             >
               <span>Усі</span>
-              <span className={`${BASE_CLASS}_cat-count`}>
-                {products.length}
-              </span>
             </button>
           </li>
-          {categories.map((cat) => {
-            const count = products.filter(
-              (p) => p.category.id === cat.id,
-            ).length;
-            return (
-              <li key={cat.id}>
-                <button
-                  type="button"
-                  className={`${BASE_CLASS}_cat-item`}
-                  data-active={activeCategoryId === cat.id}
-                  onClick={() => onSelectCategory(cat.id)}
-                >
-                  <span>{cat.name}</span>
-                  <span className={`${BASE_CLASS}_cat-count`}>{count}</span>
-                </button>
-              </li>
-            );
-          })}
+          {categories.map((category) => (
+            <li key={category.id}>
+              <button
+                type="button"
+                className={`${BASE_CLASS}_cat-item`}
+                data-active={state.categoryId === category.id}
+                onClick={() => state.selectCategory(category.id)}
+              >
+                <span>{category.name}</span>
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -108,15 +84,26 @@ function FilterSidebar({
         <PriceRangeFilter
           boundMin={boundMin}
           boundMax={boundMax}
-          effMin={effMin}
-          effMax={effMax}
-          onMinChange={onPriceMinChange}
-          onMaxChange={onPriceMaxChange}
+          effMin={state.priceMin ?? boundMin}
+          effMax={state.priceMax ?? boundMax}
+          onMinChange={state.setPriceMin}
+          onMaxChange={state.setPriceMax}
         />
       </div>
 
-      {hasFilters && (
-        <Button variant="ghost" size="sm" onClick={onReset}>
+      {state.attributes.map((attribute) => (
+        <div key={attribute.id} className={`${BASE_CLASS}_sidebar-section`}>
+          <AttributeFilter
+            attribute={attribute}
+            picked={state.facets[attribute.code] ?? []}
+            onToggle={(value) => state.toggleFacet(attribute.code, value)}
+            onRange={(range) => state.setRangeFacet(attribute.code, range)}
+          />
+        </div>
+      ))}
+
+      {state.hasFilters && (
+        <Button variant="ghost" size="sm" onClick={state.reset}>
           <RotateCcw size={14} strokeWidth={2} />
           Скинути фільтри
         </Button>

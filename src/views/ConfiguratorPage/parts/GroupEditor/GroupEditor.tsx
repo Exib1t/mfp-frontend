@@ -3,7 +3,8 @@ import Typography from "@/components/controls/Typography/Typography";
 import { activeOptions } from "@/entities/configurator/helpers";
 import type { ConfiguratorGroup } from "@/entities/configurator/types";
 import { formatPrice } from "@/lib/utils/formatPrice";
-import OptionCardList from "./OptionCardList";
+import OptionCardList, { type OptionMarker } from "./OptionCardList";
+import OptionSelect from "./OptionSelect";
 import SwatchGrid from "./SwatchGrid";
 
 import "./GroupEditor.styles.scss";
@@ -18,6 +19,13 @@ interface GroupEditorProps {
 
 const BASE_CLASS = "group-editor";
 
+/** Which marker each list-style step draws next to its rows. */
+const MARKER_BY_UI: Record<string, OptionMarker> = {
+  radio: "radio",
+  checkbox: "check",
+  image: "none",
+};
+
 /** Renders one configurator step from its `ui` hint. */
 function GroupEditor({ group, picked, onPick, onText }: GroupEditorProps) {
   const options = activeOptions(group);
@@ -30,7 +38,7 @@ function GroupEditor({ group, picked, onPick, onText }: GroupEditorProps) {
         </Typography>
       )}
 
-      {group.ui === "text" ? (
+      {group.ui === "text" && (
         <>
           <Input
             value={picked[0] ?? ""}
@@ -45,13 +53,29 @@ function GroupEditor({ group, picked, onPick, onText }: GroupEditorProps) {
             </Typography>
           )}
         </>
-      ) : group.ui === "swatch" ? (
+      )}
+
+      {group.ui === "swatch" && (
         <SwatchGrid options={options} picked={picked} onPick={onPick} />
-      ) : (
+      )}
+
+      {group.ui === "select" && (
+        <OptionSelect
+          options={options}
+          picked={picked}
+          label={group.label}
+          isRequired={group.is_required}
+          onPick={onPick}
+        />
+      )}
+
+      {(group.ui === "radio" ||
+        group.ui === "checkbox" ||
+        group.ui === "image") && (
         <OptionCardList
           options={options}
           picked={picked}
-          isMultiple={group.is_multiple}
+          marker={MARKER_BY_UI[group.ui] ?? "radio"}
           withImages={group.ui === "image"}
           onPick={onPick}
         />

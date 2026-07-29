@@ -7,6 +7,7 @@ import Input from "@/components/controls/Input/Input";
 import Select from "@/components/controls/Select/Select";
 import { useAdminConfigurators } from "@/entities/admin/configurators/api";
 import { useCategories } from "@/entities/categories/api";
+import { slugify } from "@/lib/utils/slugify";
 import { NO_CONFIGURATOR, PRODUCT_STATUS_OPTIONS } from "../constants";
 import type { ProductForm } from "../types";
 
@@ -15,7 +16,7 @@ interface GeneralTabProps {
 }
 
 function GeneralTab({ form }: GeneralTabProps) {
-  const { register, control, formState } = form;
+  const { register, control, formState, setValue, getValues } = form;
   const { errors } = formState;
   const { data: categories = [] } = useCategories();
   const { data: configurators = [] } = useAdminConfigurators();
@@ -40,7 +41,19 @@ function GeneralTab({ form }: GeneralTabProps) {
         label="Назва"
         error={errors.name?.message}
       >
-        <Input id="product-name" {...register("name")} />
+        <Input
+          id="product-name"
+          {...register("name", {
+            // Transliterate into the slug on the way out, and only while the
+            // slug is still blank — a hand-written one is never overwritten.
+            onBlur: (event) => {
+              if (getValues("slug")) return;
+              setValue("slug", slugify(event.target.value), {
+                shouldValidate: true,
+              });
+            },
+          })}
+        />
       </AdminField>
 
       <AdminField

@@ -1,0 +1,61 @@
+.attribute-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &_title {
+    display: block;
+  }
+
+  &_options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  &_check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+
+    & > input {
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+  }
+
+  &_swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &_swatch {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--background-variant);
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.08);
+    }
+
+    &.-active {
+      border-color: var(--foreground);
+    }
+  }
+
+  &_range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    & > .input {
+      min-width: 0;
+    }
+  }
+}

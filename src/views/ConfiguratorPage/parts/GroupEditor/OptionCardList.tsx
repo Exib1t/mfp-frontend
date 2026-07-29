@@ -5,21 +5,24 @@ import type { ConfiguratorOption } from "@/entities/configurator/types";
 import { cn } from "@/lib/utils/cn";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
+/** What sits to the left of each row and says how many picks are allowed. */
+export type OptionMarker = "radio" | "check" | "none";
+
 interface OptionCardListProps {
   options: ConfiguratorOption[];
   picked: string[];
-  isMultiple: boolean;
+  marker: OptionMarker;
   withImages: boolean;
   onPick: (value: string) => void;
 }
 
 const BASE_CLASS = "group-editor";
 
-/** Radio / select / checkbox / image steps all share this card list. */
+/** Row list shared by the radio, checkbox and image steps. */
 function OptionCardList({
   options,
   picked,
-  isMultiple,
+  marker,
   withImages,
   onPick,
 }: OptionCardListProps) {
@@ -33,6 +36,9 @@ function OptionCardList({
             type="button"
             key={option.id}
             className={cn(`${BASE_CLASS}_card`, { "-active": isPicked })}
+            // Toggle buttons rather than role=radio/checkbox: the role would
+            // have to be computed per marker, and a dynamic role defeats the
+            // a11y lint. `aria-pressed` conveys the same state on a button.
             aria-pressed={isPicked}
             onClick={() => onPick(option.value)}
           >
@@ -46,12 +52,16 @@ function OptionCardList({
               />
             )}
 
-            {isMultiple && (
+            {marker !== "none" && (
               <span
-                className={cn(`${BASE_CLASS}_check`, { "-on": isPicked })}
+                className={cn(`${BASE_CLASS}_marker`, `-${marker}`, {
+                  "-on": isPicked,
+                })}
                 aria-hidden="true"
               >
-                {isPicked && <Check size={12} strokeWidth={2.5} />}
+                {marker === "check" && isPicked && (
+                  <Check size={12} strokeWidth={3} />
+                )}
               </span>
             )}
 

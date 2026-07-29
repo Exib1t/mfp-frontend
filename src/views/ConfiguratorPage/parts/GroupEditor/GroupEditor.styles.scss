@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  /* The popover sits over the stage photo, where the inherited colour can be
+     light — state it, or labels come out white on white. */
+  color: var(--foreground);
 
   &_swatches {
     display: flex;
@@ -12,7 +15,7 @@
   &_swatch {
     width: 32px;
     height: 32px;
-    border: 2px solid transparent;
+    border: 2px solid var(--background-variant);
     outline-offset: 2px;
     cursor: pointer;
     transition: transform 0.15s ease;
@@ -23,6 +26,7 @@
 
     &.-active {
       border-color: var(--foreground);
+      box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--foreground);
     }
   }
 
@@ -40,13 +44,17 @@
   &_card {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px;
+    gap: 10px;
+    padding: 9px 10px;
     font-family: inherit;
     text-align: left;
+    color: var(--foreground);
     background: var(--background);
     border: 1px solid var(--background-variant);
     cursor: pointer;
+    transition:
+      border-color 0.12s ease,
+      background 0.12s ease;
 
     &:hover {
       border-color: var(--color-muted);
@@ -54,7 +62,7 @@
 
     &.-active {
       border-color: var(--primary);
-      background: var(--background-variant);
+      background: color-mix(in srgb, var(--primary) 8%, var(--background));
     }
   }
 
@@ -71,19 +79,39 @@
     flex-direction: column;
     gap: 2px;
     min-width: 0;
+    color: var(--foreground);
   }
 
-  &_check {
+  /* Marker: a ring for single-choice steps, a box for multi-pick ones. */
+  &_marker {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     color: var(--background);
     border: 1px solid var(--color-muted);
+    transition:
+      border-color 0.12s ease,
+      background 0.12s ease;
 
-    &.-on {
+    &.-radio {
+      border-radius: 50%;
+    }
+
+    &.-radio.-on {
+      border-color: var(--primary);
+      /* Inner dot, drawn without an extra element. */
+      background:
+        radial-gradient(
+          circle at center,
+          var(--primary) 0 5px,
+          transparent 5px
+        );
+    }
+
+    &.-check.-on {
       background: var(--primary);
       border-color: var(--primary);
     }

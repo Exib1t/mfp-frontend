@@ -42,14 +42,25 @@
     flex-shrink: 0;
   }
 
-  &_filter-toggle-dot {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
+  &_filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: var(--font-size-xs);
+    color: var(--background);
     background: var(--primary);
+    border-radius: 9px;
+  }
+
+  &_pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 8px;
   }
 
   /* ─── Backdrop (mobile) ──────────────────────────── */

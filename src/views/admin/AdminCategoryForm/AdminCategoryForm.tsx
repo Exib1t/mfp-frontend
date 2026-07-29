@@ -15,6 +15,7 @@ import {
   collectSubtreeIds,
 } from "@/entities/admin/categories/helpers";
 import type { AdminCategory } from "@/entities/admin/categories/types";
+import { slugify } from "@/lib/utils/slugify";
 import CategoryAttributesCard from "./parts/CategoryAttributesCard";
 import { useCategoryForm } from "./useCategoryForm";
 
@@ -70,7 +71,18 @@ function AdminCategoryForm({ category }: AdminCategoryFormProps) {
             label="Назва"
             error={form.formState.errors.name?.message}
           >
-            <Input id="category-name" {...form.register("name")} />
+            <Input
+              id="category-name"
+              {...form.register("name", {
+                // Transliterate into the slug while it is still blank.
+                onBlur: (event) => {
+                  if (form.getValues("slug")) return;
+                  form.setValue("slug", slugify(event.target.value), {
+                    shouldValidate: true,
+                  });
+                },
+              })}
+            />
           </AdminField>
 
           <AdminField

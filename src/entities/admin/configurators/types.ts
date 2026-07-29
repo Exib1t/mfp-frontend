@@ -19,21 +19,22 @@ export type UpdateOptionPayload =
   components["schemas"]["UpdateConfiguratorOptionDto"];
 
 export const GROUP_UI_LABELS: Record<ConfiguratorGroupUi, string> = {
-  radio: "Список з крапками",
+  radio: "Список (один вибір)",
   swatch: "Кольорові плитки",
   image: "Плитки із зображенням",
   select: "Випадаючий список",
-  checkbox: "Прапорці",
+  checkbox: "Список (кілька виборів)",
   text: "Поле для вводу",
 };
 
 export const GROUP_UI_HINTS: Record<ConfiguratorGroupUi, string> = {
-  radio: "Один варіант із кількох. Підходить для розміру чи тканини.",
-  swatch: "Один колір. Кожен варіант має свій відтінок.",
-  image: "Один варіант, кожен зі своїм фото.",
-  select: "Один варіант зі списку. Зручно, коли варіантів багато.",
-  checkbox: "Кілька варіантів одночасно. Підходить для аксесуарів.",
-  text: "Покупець вводить текст. Доплата задається для всієї групи.",
+  radio: "Список із кружечками. Один варіант. Для розміру чи тканини.",
+  swatch: "Кольорові плитки. Один варіант.",
+  image: "Плитки з фото. Один варіант.",
+  select:
+    "Випадаючий список. Один варіант — беріть, коли варіантів забагато для списку.",
+  checkbox: "Список із галочками. Кілька варіантів. Для аксесуарів.",
+  text: "Покупець вводить текст. Доплата задається для всього кроку.",
 };
 
 /** UIs whose choices come from the option list rather than buyer input. */

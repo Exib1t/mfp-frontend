@@ -30,13 +30,7 @@ function pluralItems(count: number): string {
 const CartDrawer = () => {
   const { isOpen, close } = useCartDrawer();
   const pathname = usePathname();
-  const {
-    items,
-    totalCount,
-    subtotal,
-    setQuantity,
-    removeItem,
-  } = useCart();
+  const { items, totalCount, subtotal, setQuantity, removeItem } = useCart();
   const { item: configuratorItem, clear: clearConfigurator } =
     useConfiguratorCart();
 

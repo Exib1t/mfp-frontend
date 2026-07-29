@@ -12,6 +12,9 @@ export const PRODUCT_FORM_TABS: AdminTab<ProductFormTab>[] = [
   { id: "seo", label: "SEO" },
 ];
 
+/** Tabs backed by react-hook-form — the only ones rendered inside <form>. */
+export const FIELD_TABS: ProductFormTab[] = ["general", "pricing", "seo"];
+
 /** Tabs that need a saved product id before they can do anything. */
 export const TABS_REQUIRING_SAVED_PRODUCT: ProductFormTab[] = [
   "options",

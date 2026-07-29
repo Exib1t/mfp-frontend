@@ -3,12 +3,15 @@
   flex-direction: column;
   gap: 16px;
 
-  &_publish {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: var(--font-size-sm);
-    cursor: pointer;
+  &_fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    /* `hidden` must win over the flex display above. */
+    &[hidden] {
+      display: none;
+    }
   }
 
   &_panel {

@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { initialChoices } from "@/entities/configurator/helpers";
-import type {
-  ConfiguratorChoices,
-  ConfiguratorGroup,
+import {
+  type ConfiguratorChoices,
+  type ConfiguratorGroup,
+  isMultiGroup,
 } from "@/entities/configurator/types";
 
 const STORAGE_PREFIX = "mfp-configurator";
@@ -37,7 +38,10 @@ export function useConfiguratorStorage(
   /** Replaces a single-choice group, or toggles an entry in a multi one. */
   const pick = (group: ConfiguratorGroup, value: string) =>
     setChoices((current) => {
-      if (!group.is_multiple) return { ...current, [group.code]: [value] };
+      if (!isMultiGroup(group)) {
+        // An empty value is the "не обрано" row of an optional dropdown.
+        return { ...current, [group.code]: value ? [value] : [] };
+      }
 
       const picked = current[group.code] ?? [];
       return {
