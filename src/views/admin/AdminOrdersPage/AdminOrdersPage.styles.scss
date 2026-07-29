@@ -1,0 +1,110 @@
+.admin-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &_revenue {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  &_tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    border-bottom: 1px solid var(--background-variant);
+  }
+
+  &_tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+    color: var(--color-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--foreground);
+    }
+
+    &.-active {
+      color: var(--foreground);
+      font-weight: var(--font-weight-semibold);
+      border-bottom-color: var(--primary);
+    }
+  }
+
+  &_tab-count {
+    padding: 0 6px;
+    font-size: var(--font-size-xs);
+    color: var(--color-muted);
+    background: var(--background-variant);
+  }
+
+  &_toolbar {
+    display: flex;
+    gap: 8px;
+
+    & > .input {
+      max-width: 360px;
+    }
+  }
+
+  &_id-cell,
+  &_customer {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &_id {
+    color: var(--foreground);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  &_date,
+  &_items {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  &_customer-name {
+    font-weight: var(--font-weight-medium);
+  }
+
+  &_phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  &_items {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &_pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+}

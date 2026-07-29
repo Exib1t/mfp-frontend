@@ -590,8 +590,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get all orders (admin) */
+        /** Get orders (admin, filtered + paginated) */
         get: operations["OrdersAdminController_findAll_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/orders/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Order counts and revenue per status */
+        get: operations["OrdersAdminController_stats_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -611,10 +628,12 @@ export interface paths {
         get: operations["OrdersAdminController_findOne_v1"];
         put?: never;
         post?: never;
-        delete?: never;
+        /** Archive an order (soft delete) */
+        delete: operations["OrdersAdminController_remove_v1"];
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update customer, delivery or notes */
+        patch: operations["OrdersAdminController_update_v1"];
         trace?: never;
     };
     "/api/v1/admin/orders/{id}/status": {
@@ -1261,18 +1280,18 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
-        PaginationMetaClass: {
+        PaginationMeta: {
             total: number;
             page: number;
             limit: number;
             pages: number;
         };
-        PaginatedPayloadClass: {
+        PaginatedProductDto: {
             items: components["schemas"]["ProductDto"][];
-            meta: components["schemas"]["PaginationMetaClass"];
+            meta: components["schemas"]["PaginationMeta"];
         };
         ApiPaginatedResponseOfProductDto: {
-            data: components["schemas"]["PaginatedPayloadClass"];
+            data: components["schemas"]["PaginatedProductDto"];
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
         };
@@ -1597,8 +1616,27 @@ export interface components {
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
         };
-        ApiArrayResponseOfOrderDto: {
-            data: components["schemas"]["OrderDto"][];
+        PaginatedOrderDto: {
+            items: components["schemas"]["OrderDto"][];
+            meta: components["schemas"]["PaginationMeta"];
+        };
+        ApiPaginatedResponseOfOrderDto: {
+            data: components["schemas"]["PaginatedOrderDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        OrderStatsDto: {
+            by_status: {
+                /** @enum {string} */
+                status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
+                orders: number;
+                revenue: number;
+            }[];
+            total_orders: number;
+            total_revenue: number;
+        };
+        ApiResponseOfOrderStatsDto: {
+            data: components["schemas"]["OrderStatsDto"];
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
         };
@@ -1607,6 +1645,15 @@ export interface components {
             status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
             /** @enum {string} */
             payment_status?: "pending" | "paid" | "failed";
+        };
+        UpdateOrderDto: {
+            guest_name?: string;
+            /** Format: email */
+            guest_email?: string;
+            guest_phone?: string;
+            address?: string;
+            nova_poshta_ref?: string | null;
+            notes?: string | null;
         };
         ReviewDto: {
             id: number;
@@ -3068,6 +3115,35 @@ export interface operations {
     };
     OrdersAdminController_findAll_v1: {
         parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                status?: "new" | "processing" | "shipped" | "delivered" | "cancelled";
+                payment_status?: "pending" | "paid" | "failed";
+                payment_method?: "online" | "cash_on_delivery";
+                search?: string;
+                created_from?: string;
+                created_to?: string;
+                sort?: "newest" | "oldest" | "total_desc" | "total_asc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiPaginatedResponseOfOrderDto"];
+                };
+            };
+        };
+    };
+    OrdersAdminController_stats_v1: {
+        parameters: {
             query?: never;
             header?: never;
             path?: never;
@@ -3080,7 +3156,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfOrderDto"];
+                    "application/json": components["schemas"]["ApiResponseOfOrderStatsDto"];
                 };
             };
         };
@@ -3110,6 +3186,51 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    OrdersAdminController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Order archived */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersAdminController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateOrderDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfOrderDto"];
+                };
             };
         };
     };

@@ -1,0 +1,20 @@
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 4px;
+  color: var(--color-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--foreground);
+  }
+
+  &.-copied {
+    color: var(--color-success, var(--primary));
+  }
+}
