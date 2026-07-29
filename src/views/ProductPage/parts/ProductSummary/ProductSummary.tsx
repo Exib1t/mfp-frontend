@@ -99,6 +99,7 @@ function ProductSummary({
         canBuy={purchase.canBuy}
         quantity={purchase.quantity}
         variantStock={purchase.stock}
+        configurator={product.configurator}
         onQuantityChange={purchase.setQuantity}
         onAddToCart={onAddToCart}
       />

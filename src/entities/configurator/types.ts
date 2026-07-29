@@ -1,37 +1,43 @@
-export interface ConfiguratorOption {
-  id: string;
-  type: "size" | "fabric" | "color" | "addon";
-  label: string;
-  value: string;
-  price_modifier: number;
-  image_url: string | null;
-  sort_order: number;
-  description?: string;
-  dimensions?: string;
-  hex?: string;
-}
+import type { components } from "@/lib/api/v1";
 
-export interface ConfiguratorAddonInCart {
-  id: string;
+export type Configurator = components["schemas"]["ConfiguratorDto"];
+export type ConfiguratorGroup = Configurator["groups"][number];
+export type ConfiguratorOption = ConfiguratorGroup["options"][number];
+export type ConfiguratorGroupUi = ConfiguratorGroup["ui"];
+
+/**
+ * What the buyer picked in one step. `text` groups store the typed string in
+ * `label` and leave `value` empty; option groups store the option's `value`.
+ */
+export interface ConfiguratorSelection {
+  groupCode: string;
+  groupLabel: string;
+  value: string;
   label: string;
   price: number;
+  colorHex?: string | null;
+  imageUrl?: string | null;
 }
 
+/** One built product waiting in the cart. */
 export interface ConfiguratorCartItem {
-  sizeId: string;
-  sizeLabel: string;
-  sizeDescription: string;
-  fabricId: string;
-  fabricLabel: string;
-  colorId: string;
-  colorLabel: string;
-  colorHex: string;
-  addons: ConfiguratorAddonInCart[];
-  childName: string;
+  configuratorSlug: string;
+  configuratorName: string;
   basePrice: number;
-  sizePrice: number;
-  fabricPrice: number;
-  addonsTotal: number;
-  namePrice: number;
+  selections: ConfiguratorSelection[];
   total: number;
 }
+
+/**
+ * Live editor state: option groups hold the chosen `value`s (several only when
+ * the group allows it), text groups hold the raw string under the same key.
+ */
+export type ConfiguratorChoices = Record<string, string[]>;
+
+export const OPTION_BACKED_UI: ConfiguratorGroupUi[] = [
+  "radio",
+  "swatch",
+  "image",
+  "select",
+  "checkbox",
+];

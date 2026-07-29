@@ -1,0 +1,91 @@
+.group-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &_swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &_swatch {
+    width: 32px;
+    height: 32px;
+    border: 2px solid transparent;
+    outline-offset: 2px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: scale(1.08);
+    }
+
+    &.-active {
+      border-color: var(--foreground);
+    }
+  }
+
+  &_cards {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &[data-images="true"] {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+  }
+
+  &_card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    font-family: inherit;
+    text-align: left;
+    background: var(--background);
+    border: 1px solid var(--background-variant);
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--color-muted);
+    }
+
+    &.-active {
+      border-color: var(--primary);
+      background: var(--background-variant);
+    }
+  }
+
+  &_card-image {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+  }
+
+  &_card-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &_check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--background);
+    border: 1px solid var(--color-muted);
+
+    &.-on {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+  }
+}

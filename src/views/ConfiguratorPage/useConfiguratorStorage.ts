@@ -1,54 +1,83 @@
-import { useEffect, useState } from "react";
+"use client";
 
-export interface ConfigState {
-  size: string;
-  fabric: string;
-  color: string;
-  addons: Set<string>;
-  name: string;
+import { useEffect, useState } from "react";
+import { initialChoices } from "@/entities/configurator/helpers";
+import type {
+  ConfiguratorChoices,
+  ConfiguratorGroup,
+} from "@/entities/configurator/types";
+
+const STORAGE_PREFIX = "mfp-configurator";
+
+/**
+ * Live choices for one preset, persisted per slug so switching products does
+ * not leak a half-built configuration into the next one.
+ */
+export function useConfiguratorStorage(
+  slug: string | undefined,
+  groups: ConfiguratorGroup[],
+) {
+  const [choices, setChoices] = useState<ConfiguratorChoices>({});
+  const [isReady, setIsReady] = useState(false);
+
+  // Hydrate after mount to avoid an SSR mismatch, and only once the groups
+  // have arrived — defaults come from them.
+  useEffect(() => {
+    if (!slug || groups.length === 0) return;
+
+    setChoices(mergeStored(readStored(slug), initialChoices(groups)));
+    setIsReady(true);
+  }, [slug, groups]);
+
+  useEffect(() => {
+    if (!isReady || !slug) return;
+    localStorage.setItem(`${STORAGE_PREFIX}:${slug}`, JSON.stringify(choices));
+  }, [choices, isReady, slug]);
+
+  /** Replaces a single-choice group, or toggles an entry in a multi one. */
+  const pick = (group: ConfiguratorGroup, value: string) =>
+    setChoices((current) => {
+      if (!group.is_multiple) return { ...current, [group.code]: [value] };
+
+      const picked = current[group.code] ?? [];
+      return {
+        ...current,
+        [group.code]: picked.includes(value)
+          ? picked.filter((entry) => entry !== value)
+          : [...picked, value],
+      };
+    });
+
+  const setText = (group: ConfiguratorGroup, text: string) =>
+    setChoices((current) => ({ ...current, [group.code]: [text] }));
+
+  const reset = () => setChoices(initialChoices(groups));
+
+  return { choices, isReady, pick, setText, reset };
 }
 
-export const DEFAULT_CONFIG: ConfigState = {
-  size: "m",
-  fabric: "cotton",
-  color: "cream",
-  addons: new Set(),
-  name: "",
-};
-
-const STORAGE_KEY = "mfp-configurator";
-
-function loadConfig(): ConfigState {
+function readStored(slug: string): ConfiguratorChoices {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_CONFIG;
-    const parsed = JSON.parse(raw) as Omit<ConfigState, "addons"> & {
-      addons: string[];
-    };
-    return { ...parsed, addons: new Set(parsed.addons ?? []) };
+    const raw = localStorage.getItem(`${STORAGE_PREFIX}:${slug}`);
+    return raw ? (JSON.parse(raw) as ConfiguratorChoices) : {};
   } catch {
-    return DEFAULT_CONFIG;
+    return {};
   }
 }
 
-export function useConfiguratorStorage() {
-  const [config, setConfig] = useState<ConfigState>(DEFAULT_CONFIG);
-  const [ready, setReady] = useState(false);
+/**
+ * Stored choices win, but only for groups that still exist — an admin can
+ * rename or drop a step between visits.
+ */
+function mergeStored(
+  stored: ConfiguratorChoices,
+  defaults: ConfiguratorChoices,
+): ConfiguratorChoices {
+  const merged: ConfiguratorChoices = { ...defaults };
 
-  // Hydrate from localStorage after mount to avoid SSR mismatch.
-  useEffect(() => {
-    setConfig(loadConfig());
-    setReady(true);
-  }, []);
+  for (const [code, values] of Object.entries(stored)) {
+    if (code in defaults && Array.isArray(values)) merged[code] = values;
+  }
 
-  // Persist to localStorage on every change.
-  useEffect(() => {
-    if (!ready) return;
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ ...config, addons: [...config.addons] }),
-    );
-  }, [config, ready]);
-
-  return { config, setConfig, ready };
+  return merged;
 }

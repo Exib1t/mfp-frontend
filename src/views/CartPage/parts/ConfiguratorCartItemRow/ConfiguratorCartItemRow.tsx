@@ -17,13 +17,16 @@ function ConfiguratorCartItemRow({
   item,
   onRemove,
 }: ConfiguratorCartItemRowProps) {
+  // Any step with a colour tints the glyph; the first one wins.
+  const tint = item.selections.find((selection) => selection.colorHex);
+
   return (
     <div className={`${BASE_CLASS}_item`}>
       <div className={`${BASE_CLASS}_item-image-wrap`}>
         <span
           className={`${BASE_CLASS}_item-glyph`}
           aria-hidden="true"
-          style={{ backgroundColor: item.colorHex || undefined }}
+          style={{ backgroundColor: tint?.colorHex || undefined }}
         >
           <Settings2
             size={28}
@@ -35,27 +38,27 @@ function ConfiguratorCartItemRow({
 
       <div className={`${BASE_CLASS}_item-body`}>
         <Typography variant="overline" color="muted">
-          Кастомний вігвам
+          Власна збірка
         </Typography>
         <Typography
           variant="subtitle1"
           as="h3"
           className={`${BASE_CLASS}_item-name`}
         >
-          Вігвам «{item.sizeLabel} · {item.fabricLabel} · {item.colorLabel}»
+          {item.configuratorName}
         </Typography>
 
         <div className={`${BASE_CLASS}_configurator-details`}>
-          {item.addons.length > 0 && (
-            <Typography variant="caption" color="muted">
-              Аксесуари: {item.addons.map((a) => a.label).join(", ")}
+          {item.selections.map((selection) => (
+            <Typography
+              key={`${selection.groupCode}:${selection.value}`}
+              variant="caption"
+              color="muted"
+            >
+              {selection.groupLabel}: {selection.label}
+              {selection.price > 0 && ` (+${formatPrice(selection.price)})`}
             </Typography>
-          )}
-          {item.childName && (
-            <Typography variant="caption" color="muted">
-              Ім'я для вишивки: «{item.childName}»
-            </Typography>
-          )}
+          ))}
         </div>
 
         <div className={`${BASE_CLASS}_item-footer`}>

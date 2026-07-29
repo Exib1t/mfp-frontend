@@ -1,21 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "@/config/api.config";
-import type { ConfiguratorOption } from "./types";
+import { $api } from "@/services/api/apiClient";
 
-export const BASE_PRICE = 2800;
-export const NAME_PRICE = 150;
+/** Slug of the preset behind the standalone `/configurator` page. */
+export const DEFAULT_CONFIGURATOR_SLUG = "wigwam";
 
-export function useConfiguratorOptions(type?: string) {
-  return useQuery<ConfiguratorOption[]>({
-    queryKey: ["configurator-options", type ?? "all"],
-    queryFn: async () => {
-      const url = new URL(`${API_URL}/api/v1/configurator/options`);
-      if (type) url.searchParams.set("type", type);
-      const res = await fetch(url.toString());
-      if (!res.ok) throw new Error("Failed to fetch configurator options");
-      const { data } = (await res.json()) as { data: ConfiguratorOption[] };
-      return data;
-    },
-    staleTime: Infinity,
-  });
+/** One preset with its full group tree (public, active groups only). */
+export function useConfigurator(slug: string | undefined) {
+  return $api.useQuery(
+    "get",
+    "/api/v1/configurators/{slug}",
+    { params: { path: { slug: slug ?? "" } } },
+    { enabled: Boolean(slug), select: (res) => res.data },
+  );
+}
+
+export function useConfigurators() {
+  return $api.useQuery(
+    "get",
+    "/api/v1/configurators",
+    {},
+    { select: (res) => res.data },
+  );
 }

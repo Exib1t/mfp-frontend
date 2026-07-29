@@ -1,9 +1,8 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import Typography from "@/components/controls/Typography/Typography";
-import type { ConfiguratorAddonInCart } from "@/entities/configurator/types";
 import HotspotChip from "./HotspotChip";
-import type { HotspotConfig, HotspotId } from "./hotspots.config";
+import type { HotspotConfig } from "./hotspots.config";
 
 import "./ConfiguratorStage.styles.scss";
 
@@ -18,12 +17,15 @@ export interface StageHotspot {
 interface ConfiguratorStageProps {
   imageUrl?: string | null;
   imageKey?: string;
-  overlayColor?: string;
-  childName: string;
-  selectedAddons: ConfiguratorAddonInCart[];
+  /** Tint from the chosen swatch, if the preset has a colour step. */
+  overlayColor?: string | null;
+  /** Free text the buyer entered, shown as a badge on the photo. */
+  caption?: string;
+  /** Extra picks worth showing on the photo, e.g. accessories. */
+  tags?: { id: string; label: string }[];
   hotspots: StageHotspot[];
-  openId: HotspotId | null;
-  onToggle: (id: HotspotId) => void;
+  openId: string | null;
+  onToggle: (id: string) => void;
   onClose: () => void;
 }
 
@@ -33,8 +35,8 @@ function ConfiguratorStage({
   imageUrl,
   imageKey,
   overlayColor,
-  childName,
-  selectedAddons,
+  caption,
+  tags = [],
   hotspots,
   openId,
   onToggle,
@@ -47,7 +49,7 @@ function ConfiguratorStage({
           <Image
             className={`${BASE_CLASS}_image`}
             src={imageUrl}
-            alt="Превью вігваму"
+            alt="Превʼю збірки"
             fill
             sizes="(max-width: 900px) 100vw, 60vw"
             key={imageKey}
@@ -59,19 +61,19 @@ function ConfiguratorStage({
           style={{ backgroundColor: overlayColor ?? "transparent" }}
         />
 
-        {selectedAddons.length > 0 && (
+        {tags.length > 0 && (
           <div className={`${BASE_CLASS}_addon-tags`}>
-            {selectedAddons.map((addon) => (
-              <span key={addon.id} className={`${BASE_CLASS}_addon-tag`}>
-                {addon.label}
+            {tags.map((tag) => (
+              <span key={tag.id} className={`${BASE_CLASS}_addon-tag`}>
+                {tag.label}
               </span>
             ))}
           </div>
         )}
 
-        {childName && (
+        {caption && (
           <div className={`${BASE_CLASS}_name-badge`}>
-            <Typography variant="caption">✦ {childName}</Typography>
+            <Typography variant="caption">✦ {caption}</Typography>
           </div>
         )}
 

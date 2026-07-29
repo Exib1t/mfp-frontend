@@ -33,20 +33,12 @@ function buildConfiguratorNotes(
   configuratorItem: NonNullable<ReturnType<typeof useConfiguratorCart>["item"]>,
 ): string {
   const lines = [
-    "=== Кастомний вігвам ===",
-    `Розмір: ${configuratorItem.sizeLabel} (${configuratorItem.sizeDescription})`,
-    `Тканина: ${configuratorItem.fabricLabel}`,
-    `Колір: ${configuratorItem.colorLabel}`,
+    `=== ${configuratorItem.configuratorName} ===`,
+    ...configuratorItem.selections.map(
+      (selection) => `${selection.groupLabel}: ${selection.label}`,
+    ),
+    `Сума: ${formatPrice(configuratorItem.total)}`,
   ];
-  if (configuratorItem.addons.length > 0) {
-    lines.push(
-      `Аксесуари: ${configuratorItem.addons.map((a) => a.label).join(", ")}`,
-    );
-  }
-  if (configuratorItem.childName) {
-    lines.push(`Ім'я для вишивки: ${configuratorItem.childName}`);
-  }
-  lines.push(`Сума: ${formatPrice(configuratorItem.total)}`);
   return lines.join("\n");
 }
 
