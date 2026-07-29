@@ -979,11 +979,8 @@ export interface components {
             password?: string;
             first_name?: string;
             last_name?: string;
-            /**
-             * @default user
-             * @enum {string}
-             */
-            role: "admin" | "user";
+            /** @enum {string} */
+            role?: "admin" | "user";
         };
         CategoryDto: {
             id: number;
@@ -1658,6 +1655,11 @@ export interface components {
         ReviewDto: {
             id: number;
             product_id: number;
+            product: {
+                id: number;
+                name: string;
+                slug: string;
+            } | null;
             author_name: string;
             author_email: string | null;
             rating: number;
