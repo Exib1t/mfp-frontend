@@ -20,4 +20,5 @@ export type ProductFormTab =
   | "variants"
   | "attributes"
   | "media"
+  | "layout"
   | "seo";

@@ -8,6 +8,7 @@ export const PRODUCT_FORM_TABS: AdminTab<ProductFormTab>[] = [
   { id: "variants", label: "Варіанти" },
   { id: "attributes", label: "Характеристики" },
   { id: "media", label: "Медіа" },
+  { id: "layout", label: "Сторінка" },
   { id: "seo", label: "SEO" },
 ];
 
@@ -17,6 +18,7 @@ export const TABS_REQUIRING_SAVED_PRODUCT: ProductFormTab[] = [
   "variants",
   "attributes",
   "media",
+  "layout",
 ];
 
 export const PRODUCT_STATUS_OPTIONS = [

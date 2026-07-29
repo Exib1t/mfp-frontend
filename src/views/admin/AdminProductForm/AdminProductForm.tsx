@@ -11,6 +11,7 @@ import type { AdminProduct } from "@/entities/admin/products/types";
 import { PRODUCT_FORM_TABS, TABS_REQUIRING_SAVED_PRODUCT } from "./constants";
 import AttributesTab from "./parts/AttributesTab";
 import GeneralTab from "./parts/GeneralTab";
+import LayoutTab from "./parts/LayoutTab";
 import MediaTab from "./parts/MediaTab";
 import OptionsTab from "./parts/OptionsTab";
 import PricingTab from "./parts/PricingTab";
@@ -95,6 +96,7 @@ function AdminProductForm({ product }: AdminProductFormProps) {
               <AttributesTab product={product} />
             )}
             {tab === "media" && product && <MediaTab product={product} />}
+            {tab === "layout" && product && <LayoutTab product={product} />}
           </>
         )}
       </div>
