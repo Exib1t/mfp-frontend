@@ -4,7 +4,7 @@ import Typography from "@/components/controls/Typography/Typography";
 import ProductGallery from "@/components/organisms/products/ProductGallery/ProductGallery";
 import ProductReviews from "@/components/organisms/products/ProductReviews/ProductReviews";
 import { getVariantImages } from "@/entities/products/helpers";
-import { blockSetting, type ProductBlock } from "@/entities/products/layout";
+import type { ProductBlock } from "@/entities/products/layout";
 import type { Product } from "@/entities/products/types";
 import type { useProductPurchase } from "../../useProductPurchase";
 import ProductSpecs from "../ProductSpecs/ProductSpecs";
@@ -51,7 +51,7 @@ function ProductBlockRenderer({
       return product.description ? (
         <section className={`${BASE_CLASS}_block`}>
           <Typography variant="h4" as="h2">
-            {blockSetting(block, "title") ?? "Опис"}
+            Опис
           </Typography>
           <Typography variant="body1">{product.description}</Typography>
         </section>
@@ -62,21 +62,6 @@ function ProductBlockRenderer({
 
     case "reviews":
       return <ProductReviews productId={product.id} />;
-
-    case "richtext": {
-      const body = blockSetting(block, "body");
-      if (!body) return null;
-      return (
-        <section className={`${BASE_CLASS}_block`}>
-          {blockSetting(block, "title") && (
-            <Typography variant="h4" as="h2">
-              {blockSetting(block, "title")}
-            </Typography>
-          )}
-          <Typography variant="body1">{body}</Typography>
-        </section>
-      );
-    }
 
     default:
       return null;

@@ -17,39 +17,27 @@ function toDefaults(product?: AdminProduct): ProductFormInput {
     name: product?.name ?? "",
     slug: product?.slug ?? "",
     sku: product?.sku ?? null,
-    brand: product?.brand ?? null,
     short_description: product?.short_description ?? null,
     description: product?.description ?? null,
     category_id: product?.category.id ?? 0,
-    configurator_id: product?.configurator?.id ?? null,
     status: product?.status ?? "in_stock",
     price: product?.price ?? 0,
-    compare_at_price: product?.compare_at_price ?? null,
     sale_price: product?.sale_price ?? null,
-    sale_starts_at: product?.sale_starts_at ?? null,
-    sale_ends_at: product?.sale_ends_at ?? null,
     stock: product?.stock ?? 0,
     is_featured: product?.is_featured ?? false,
-    is_published: Boolean(product?.published_at),
+    is_published: product?.is_published ?? false,
     meta_title: product?.meta_title ?? null,
     meta_description: product?.meta_description ?? null,
   };
 }
 
-/** Maps form values onto the API payload, including the published_at toggle. */
-function toPayload(values: ProductFormValues, wasPublished: boolean) {
-  const { is_published, ...rest } = values;
-
-  return {
-    ...rest,
-    // Keep the original timestamp when it was already live; stamp now on first
-    // publish; null takes it back to draft.
-    published_at: is_published
-      ? wasPublished
-        ? undefined
-        : new Date().toISOString()
-      : null,
-  };
+/**
+ * Values as the API wants them. `published_at` used to be a timestamp the form
+ * had to stamp and preserve by hand; it is a plain boolean now, so the mapping
+ * is the identity.
+ */
+function toPayload(values: ProductFormValues) {
+  return values;
 }
 
 export function useProductForm(product?: AdminProduct) {
@@ -67,10 +55,8 @@ export function useProductForm(product?: AdminProduct) {
     defaultValues: toDefaults(product),
   });
 
-  const wasPublished = Boolean(product?.published_at);
-
   const submit = form.handleSubmit((values) => {
-    const body = toPayload(values, wasPublished);
+    const body = toPayload(values);
 
     if (product) {
       updateProduct.mutate(

@@ -1,14 +1,16 @@
 import type { AdminTab } from "@/components/admin/AdminTabs/AdminTabs";
 import type { ProductFormTab } from "./types";
 
+/**
+ * «Опції», «Варіанти» and «Сторінка» are gone. The first two merged into the
+ * characteristics dictionary and are edited in the new admin panel; the third
+ * was a per-product page layout that no longer exists server-side.
+ */
 export const PRODUCT_FORM_TABS: AdminTab<ProductFormTab>[] = [
   { id: "general", label: "Основне" },
   { id: "pricing", label: "Ціни" },
-  { id: "options", label: "Опції" },
-  { id: "variants", label: "Варіанти" },
   { id: "attributes", label: "Характеристики" },
   { id: "media", label: "Медіа" },
-  { id: "layout", label: "Сторінка" },
   { id: "seo", label: "SEO" },
 ];
 
@@ -17,15 +19,9 @@ export const FIELD_TABS: ProductFormTab[] = ["general", "pricing", "seo"];
 
 /** Tabs that need a saved product id before they can do anything. */
 export const TABS_REQUIRING_SAVED_PRODUCT: ProductFormTab[] = [
-  "options",
-  "variants",
   "attributes",
   "media",
-  "layout",
 ];
-
-/** Sentinel for the "no configurator" row — Select works on strings only. */
-export const NO_CONFIGURATOR = "none";
 
 export const PRODUCT_STATUS_OPTIONS = [
   { value: "in_stock", label: "В наявності" },

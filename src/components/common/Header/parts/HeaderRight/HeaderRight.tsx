@@ -3,7 +3,6 @@
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/entities/cart/CartContext";
 import { useCartDrawer } from "@/entities/cart/CartDrawerContext";
-import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { cn } from "@/lib/utils/cn";
 import "./HeaderRight.styles.scss";
 
@@ -12,8 +11,7 @@ const BASE_CLASS = "header-right";
 const HeaderRight = () => {
   const { isOpen, toggle } = useCartDrawer();
   const { totalCount } = useCart();
-  const { item: configuratorItem } = useConfiguratorCart();
-  const count = totalCount + (configuratorItem ? 1 : 0);
+  const count = totalCount;
 
   return (
     <div className={BASE_CLASS}>

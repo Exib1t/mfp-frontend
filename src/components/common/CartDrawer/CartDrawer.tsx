@@ -11,11 +11,9 @@ import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
 import { useCartDrawer } from "@/entities/cart/CartDrawerContext";
 import { getCartItemKey } from "@/entities/cart/types";
-import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { cn } from "@/lib/utils/cn";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import CartItemRow from "@/views/CartPage/parts/CartItemRow/CartItemRow";
-import ConfiguratorCartItemRow from "@/views/CartPage/parts/ConfiguratorCartItemRow/ConfiguratorCartItemRow";
 
 import "./CartDrawer.styles.scss";
 
@@ -31,12 +29,9 @@ const CartDrawer = () => {
   const { isOpen, close } = useCartDrawer();
   const pathname = usePathname();
   const { items, totalCount, subtotal, setQuantity, removeItem } = useCart();
-  const { item: configuratorItem, clear: clearConfigurator } =
-    useConfiguratorCart();
 
-  const hasAnyItems = items.length > 0 || !!configuratorItem;
-  const grandTotal = subtotal + (configuratorItem?.total ?? 0);
-  const totalItemCount = totalCount + (configuratorItem ? 1 : 0);
+  const hasAnyItems = items.length > 0;
+  const totalItemCount = totalCount;
 
   // Close on route change (e.g. navigating to the full cart page).
   useEffect(() => {
@@ -99,12 +94,6 @@ const CartDrawer = () => {
         <div className={`${BASE_CLASS}_body`}>
           {hasAnyItems ? (
             <div className={`${BASE_CLASS}_items`}>
-              {configuratorItem && (
-                <ConfiguratorCartItemRow
-                  item={configuratorItem}
-                  onRemove={clearConfigurator}
-                />
-              )}
               {items.map((item) => (
                 <CartItemRow
                   key={getCartItemKey(item)}
@@ -136,7 +125,7 @@ const CartDrawer = () => {
             <div className={`${BASE_CLASS}_total`}>
               <Typography variant="subtitle1">Разом</Typography>
               <Typography variant="subtitle1">
-                {formatPrice(grandTotal)}
+                {formatPrice(subtotal)}
               </Typography>
             </div>
             <Button as={Link} href="/cart" fullWidth onClick={close}>

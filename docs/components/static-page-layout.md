@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Shared shell for static content pages (About, Delivery, Contacts, Blog, Privacy) — title + optional subtitle header, content wrapper. Replaces the identical `_header`/`_inner` block that would otherwise be copy-pasted into every one of these pages (same pattern already used ad hoc in CartPage/ProductsPage/ConfiguratorPage).
+Shared shell for static content pages (About, Delivery, Contacts, Blog, Privacy) — title + optional subtitle header, content wrapper. Replaces the identical `_header`/`_inner` block that would otherwise be copy-pasted into every one of these pages (same pattern already used ad hoc in CartPage/ProductsPage).
 
 ## Props
 

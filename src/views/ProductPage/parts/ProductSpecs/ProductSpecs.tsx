@@ -10,12 +10,11 @@ interface ProductSpecsProps {
 
 const BASE_CLASS = "product-specs";
 
-/** Characteristics table: typed attributes first, then free-form `specs`. */
+/** Characteristics table, grouped by `group_name`. */
 function ProductSpecs({ product }: ProductSpecsProps) {
   const groups = groupAttributes(product.attributes);
-  const specEntries = Object.entries(product.specs ?? {});
 
-  if (groups.length === 0 && specEntries.length === 0) return null;
+  if (groups.length === 0) return null;
 
   return (
     <section className={BASE_CLASS}>
@@ -42,19 +41,6 @@ function ProductSpecs({ product }: ProductSpecsProps) {
           </dl>
         </div>
       ))}
-
-      {specEntries.length > 0 && (
-        <div className={`${BASE_CLASS}_group`}>
-          <dl className={`${BASE_CLASS}_list`}>
-            {specEntries.map(([key, value]) => (
-              <div key={key} className={`${BASE_CLASS}_row`}>
-                <dt className={`${BASE_CLASS}_term`}>{key}</dt>
-                <dd className={`${BASE_CLASS}_value`}>{String(value)}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      )}
     </section>
   );
 }

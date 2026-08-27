@@ -16,9 +16,6 @@ export type ProductForm = UseFormReturn<
 export type ProductFormTab =
   | "general"
   | "pricing"
-  | "options"
-  | "variants"
   | "attributes"
   | "media"
-  | "layout"
   | "seo";

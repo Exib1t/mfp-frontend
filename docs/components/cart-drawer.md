@@ -12,15 +12,15 @@ the current page. Opened from the header cart button.
 - Header cart button (`HeaderRight`) toggles it; badge count unchanged.
 - Closes on: overlay click, close button, `Escape`, and any route change (`usePathname`).
 - Locks `body` scroll while open.
-- Reuses `CartItemRow` + `ConfiguratorCartItemRow` from `CartPage/parts` — same
-  `cart-page_item` markup, tightened to a `80px 1fr auto` grid for the narrow panel.
+- Reuses `CartItemRow` from `CartPage/parts` — same `cart-page_item` markup,
+  tightened to a `80px 1fr auto` grid for the narrow panel.
 - Empty state → `EmptyState` with "До каталогу" link.
 - Footer: grand total + "Оформити замовлення" (→ `/cart`) + "Продовжити покупки" (close).
 
 ## State / providers
 
-`CartDrawerProvider` sits inside `CartProvider` → `ConfiguratorCartProvider` in
-`app/Providers.tsx`. `<CartDrawer />` is rendered once there, as a sibling of `children`.
+`CartDrawerProvider` sits inside `CartProvider` in `(shop)/ShopProviders.tsx`.
+`<CartDrawer />` is rendered once there, as a sibling of `children`.
 
 ## DOM output
 

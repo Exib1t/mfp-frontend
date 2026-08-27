@@ -1,7 +1,6 @@
 "use client";
 
 import { X } from "lucide-react";
-import ImageUploadField from "@/components/admin/ImageUploadField/ImageUploadField";
 import DragHandle from "@/components/admin/SortableList/parts/DragHandle";
 import type { DragHandleProps } from "@/components/admin/SortableList/types";
 import Input from "@/components/controls/Input/Input";
@@ -58,15 +57,6 @@ function AttributeOptionRow({
           defaultValue={option.color_hex ?? "#ffffff"}
           aria-label="Колір"
           onBlur={(event) => onPatch({ color_hex: event.target.value })}
-        />
-      )}
-
-      {type === "image" && (
-        <ImageUploadField
-          value={option.image_url}
-          folder="attributes"
-          label={option.label}
-          onChange={(image_url) => onPatch({ image_url })}
         />
       )}
 

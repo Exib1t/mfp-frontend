@@ -1,4 +1,4 @@
-import { ArrowRight, Wand2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/images/hero.png";
@@ -40,16 +40,6 @@ function HeroSection() {
           <Button as={Link} href="/products" size="lg" fullWidth>
             Переглянути каталог
             <ArrowRight size={18} strokeWidth={2} />
-          </Button>
-          <Button
-            as={Link}
-            href="/configurator"
-            variant="secondary"
-            size="lg"
-            fullWidth
-          >
-            <Wand2 size={18} strokeWidth={2} />
-            Зібрати вігвам
           </Button>
         </div>
         <ul className={`${BASE_CLASS}_trust`}>

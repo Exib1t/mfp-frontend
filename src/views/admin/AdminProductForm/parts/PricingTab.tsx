@@ -39,20 +39,6 @@ function PricingTab({ form, hasVariants }: PricingTabProps) {
         </AdminField>
 
         <AdminField
-          htmlFor="product-compare-at"
-          label="Стара ціна, ₴"
-          hint="Закреслена ціна поруч. На суму не впливає."
-        >
-          <Input
-            id="product-compare-at"
-            type="number"
-            step="0.01"
-            min="0"
-            {...register("compare_at_price")}
-          />
-        </AdminField>
-
-        <AdminField
           htmlFor="product-stock"
           label="Залишок"
           hint={
@@ -72,11 +58,12 @@ function PricingTab({ form, hasVariants }: PricingTabProps) {
 
       <AdminCard
         title="Акція"
-        description="Акційна ціна діє лише всередині вказаного вікна."
+        description="Заповнена акційна ціна діє одразу — вікна дат більше немає."
       >
         <AdminField
           htmlFor="product-sale-price"
           label="Акційна ціна, ₴"
+          hint="Порожньо — акції немає."
           error={errors.sale_price?.message}
         >
           <Input
@@ -85,26 +72,6 @@ function PricingTab({ form, hasVariants }: PricingTabProps) {
             step="0.01"
             min="0"
             {...register("sale_price")}
-          />
-        </AdminField>
-
-        <AdminField htmlFor="product-sale-start" label="Початок акції">
-          <Input
-            id="product-sale-start"
-            type="datetime-local"
-            {...register("sale_starts_at")}
-          />
-        </AdminField>
-
-        <AdminField
-          htmlFor="product-sale-end"
-          label="Кінець акції"
-          error={errors.sale_ends_at?.message}
-        >
-          <Input
-            id="product-sale-end"
-            type="datetime-local"
-            {...register("sale_ends_at")}
           />
         </AdminField>
       </AdminCard>

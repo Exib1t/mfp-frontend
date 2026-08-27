@@ -3,7 +3,7 @@
 import { BFF_BASE_PATH } from "@/config/admin.config";
 
 /** Whitelisted destinations — must match MEDIA_FOLDERS on the backend. */
-export type MediaFolder = "configurator" | "attributes" | "categories" | "misc";
+export type MediaFolder = "attributes" | "categories" | "misc";
 
 /**
  * Uploads one image straight to permanent storage and returns its public URL.

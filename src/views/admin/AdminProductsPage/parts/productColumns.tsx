@@ -55,7 +55,7 @@ export function buildProductColumns({
         ) : (
           <Price
             value={product.effective_price}
-            compareAt={product.compare_at_price}
+            compareAt={product.sale_active ? product.price : null}
             size="sm"
           />
         ),
@@ -85,7 +85,7 @@ export function buildProductColumns({
       header: "Публікація",
       width: "120px",
       render: (product) =>
-        product.published_at ? (
+        product.is_published ? (
           <Badge size="sm">Опубліковано</Badge>
         ) : (
           <Badge variant="warning" size="sm">

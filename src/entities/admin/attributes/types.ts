@@ -18,18 +18,16 @@ export const OPTION_BACKED_TYPES: AttributeType[] = [
   "select",
   "multiselect",
   "color",
-  "image",
 ];
+
+/** Types that may become a variation axis on a product. */
+export const VARIANT_CAPABLE_TYPES: AttributeType[] = ["select", "color"];
 
 export const ATTRIBUTE_TYPE_LABELS: Record<AttributeType, string> = {
   text: "Текст",
-  richtext: "Форматований текст",
   number: "Число",
   boolean: "Так / Ні",
   select: "Вибір одного",
   multiselect: "Вибір кількох",
   color: "Колір",
-  image: "Зображення",
-  url: "Посилання",
-  date: "Дата",
 };

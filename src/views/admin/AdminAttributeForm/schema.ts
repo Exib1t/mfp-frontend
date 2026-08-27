@@ -7,15 +7,11 @@ import {
 
 export const ATTRIBUTE_TYPES = [
   "text",
-  "richtext",
   "number",
   "boolean",
   "select",
   "multiselect",
   "color",
-  "image",
-  "url",
-  "date",
 ] as const;
 
 export const AttributeFormSchema = z.object({

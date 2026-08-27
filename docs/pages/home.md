@@ -22,10 +22,6 @@ Landing page. Brand introduction + conversion to catalog or product.
 - 3–4 key advantages (quality, customization, delivery, etc.)
 - Icon + short text per item
 
-### 4. Configurator teaser *(future)*
-- Preview of configurator feature
-- CTA → product with configurator
-
 ### 5. Inspiration / Gallery
 - Photo grid or masquerade
 - Optional: link to `/blog`

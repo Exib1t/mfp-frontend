@@ -375,7 +375,7 @@ export interface paths {
         patch: operations["ProductsAdminController_update_v1"];
         trace?: never;
     };
-    "/api/v1/admin/products/{id}/options": {
+    "/api/v1/admin/products/{id}/attributes": {
         parameters: {
             query?: never;
             header?: never;
@@ -383,66 +383,13 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
-        /** Create a variation axis (Colour, Size, …) */
-        post: operations["ProductsAdminController_createOption_v1"];
+        /** Replace the product's characteristic set, its axes and their values */
+        put: operations["ProductsAdminController_setAttributes_v1"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/products/{id}/options/{optionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a variation axis */
-        delete: operations["ProductsAdminController_removeOption_v1"];
-        options?: never;
-        head?: never;
-        /** Update a variation axis */
-        patch: operations["ProductsAdminController_updateOption_v1"];
-        trace?: never;
-    };
-    "/api/v1/admin/products/{id}/options/{optionId}/values": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add a choice to a variation axis */
-        post: operations["ProductsAdminController_createOptionValue_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/products/{id}/options/{optionId}/values/{valueId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a choice on a variation axis */
-        delete: operations["ProductsAdminController_removeOptionValue_v1"];
-        options?: never;
-        head?: never;
-        /** Update a choice on a variation axis */
-        patch: operations["ProductsAdminController_updateOptionValue_v1"];
         trace?: never;
     };
     "/api/v1/admin/products/{id}/variants": {
@@ -453,43 +400,11 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
-        /** Create product variant */
-        post: operations["ProductsAdminController_createVariant_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/products/{id}/variants/{variantId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete product variant */
-        delete: operations["ProductsAdminController_removeVariant_v1"];
-        options?: never;
-        head?: never;
-        /** Update product variant */
-        patch: operations["ProductsAdminController_updateVariant_v1"];
-        trace?: never;
-    };
-    "/api/v1/admin/products/{id}/attributes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Replace every attribute value of a product */
-        put: operations["ProductsAdminController_setAttributes_v1"];
+        /**
+         * Replace the whole variant matrix
+         * @description Rows are matched to the stored ones by their set of attribute option ids, so prices and stock survive a regeneration. Combinations that disappear are soft-deleted, never removed.
+         */
+        put: operations["ProductsAdminController_setVariants_v1"];
         post?: never;
         delete?: never;
         options?: never;
@@ -543,6 +458,23 @@ export interface paths {
         put?: never;
         /** Upload a file to temporary storage */
         post: operations["FilesController_upload_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/files/media": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload an image straight to permanent storage */
+        post: operations["FilesController_uploadMedia_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -739,147 +671,6 @@ export interface paths {
         patch: operations["ReviewsAdminController_updateStatus_v1"];
         trace?: never;
     };
-    "/api/v1/configurators": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all active configurators with their groups */
-        get: operations["ConfiguratorController_findAll_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/configurators/{slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get one configurator by slug */
-        get: operations["ConfiguratorController_findOne_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/configurators": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all configurators (admin) */
-        get: operations["ConfiguratorAdminController_findAll_v1"];
-        put?: never;
-        /** Create configurator */
-        post: operations["ConfiguratorAdminController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/configurators/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get configurator by id (admin) */
-        get: operations["ConfiguratorAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Delete configurator */
-        delete: operations["ConfiguratorAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update configurator */
-        patch: operations["ConfiguratorAdminController_update_v1"];
-        trace?: never;
-    };
-    "/api/v1/admin/configurators/{id}/groups": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add a step to a configurator */
-        post: operations["ConfiguratorAdminController_createGroup_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/configurators/{id}/groups/{groupId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a configurator step */
-        delete: operations["ConfiguratorAdminController_removeGroup_v1"];
-        options?: never;
-        head?: never;
-        /** Update a configurator step */
-        patch: operations["ConfiguratorAdminController_updateGroup_v1"];
-        trace?: never;
-    };
-    "/api/v1/admin/configurators/{id}/groups/{groupId}/options": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add a choice to a configurator step */
-        post: operations["ConfiguratorAdminController_createOption_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/configurators/{id}/groups/{groupId}/options/{optionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a configurator choice */
-        delete: operations["ConfiguratorAdminController_removeOption_v1"];
-        options?: never;
-        head?: never;
-        /** Update a configurator choice */
-        patch: operations["ConfiguratorAdminController_updateOption_v1"];
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1036,7 +827,7 @@ export interface components {
             code: string;
             name: string;
             /** @enum {string} */
-            type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+            type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
             unit: string | null;
             group_name: string | null;
             is_filterable: boolean;
@@ -1069,7 +860,7 @@ export interface components {
             code: string;
             name: string;
             /** @enum {string} */
-            type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+            type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
             unit?: string | null;
             group_name?: string | null;
             is_filterable?: boolean;
@@ -1134,21 +925,15 @@ export interface components {
             name: string;
             slug: string;
             sku: string | null;
-            brand: string | null;
             short_description: string | null;
             description: string | null;
             /** @enum {string} */
             status: "in_stock" | "made_to_order" | "out_of_stock";
             is_featured: boolean;
-            currency: string;
+            is_published: boolean;
             price: number;
-            compare_at_price: number | null;
             sale_price: number | null;
             sale_active: boolean;
-            /** Format: date-time */
-            sale_starts_at: string | null;
-            /** Format: date-time */
-            sale_ends_at: string | null;
             effective_price: number;
             price_range: {
                 min: number;
@@ -1160,11 +945,6 @@ export interface components {
                 name: string;
                 slug: string;
             };
-            configurator: {
-                id: number;
-                name: string;
-                slug: string;
-            } | null;
             options: {
                 id: number;
                 name: string;
@@ -1183,10 +963,11 @@ export interface components {
                 sku: string | null;
                 label: string;
                 stock: number;
+                is_active: boolean;
                 is_default: boolean;
                 sort_order: number;
                 price: number;
-                compare_at_price: number | null;
+                price_override: number | null;
                 effective_price: number;
                 sale_active: boolean;
                 option_values: {
@@ -1199,40 +980,17 @@ export interface components {
                     image_url: string | null;
                 }[];
                 image_ids: number[];
-                attributes: {
-                    id: number;
-                    code: string;
-                    name: string;
-                    /** @enum {string} */
-                    type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
-                    unit: string | null;
-                    group_name: string | null;
-                    is_filterable: boolean;
-                    sort_order: number;
-                    value: (string | number | boolean | {
-                        id: number;
-                        label: string;
-                        value: string;
-                        color_hex: string | null;
-                        image_url: string | null;
-                    } | {
-                        id: number;
-                        label: string;
-                        value: string;
-                        color_hex: string | null;
-                        image_url: string | null;
-                    }[]) | null;
-                }[];
             }[];
             attributes: {
                 id: number;
                 code: string;
                 name: string;
                 /** @enum {string} */
-                type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
+                type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
                 unit: string | null;
                 group_name: string | null;
                 is_filterable: boolean;
+                is_variant: boolean;
                 sort_order: number;
                 value: (string | number | boolean | {
                     id: number;
@@ -1248,19 +1006,6 @@ export interface components {
                     image_url: string | null;
                 }[]) | null;
             }[];
-            specs: {
-                [key: string]: (string | number | boolean) | null;
-            };
-            layout: {
-                id: string;
-                /** @enum {string} */
-                type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
-                span: number;
-                enabled: boolean;
-                settings?: {
-                    [key: string]: unknown;
-                };
-            }[] | null;
             images: {
                 id: number;
                 url: string;
@@ -1270,8 +1015,6 @@ export interface components {
             }[];
             meta_title: string | null;
             meta_description: string | null;
-            /** Format: date-time */
-            published_at: string | null;
             /** Format: date-time */
             created_at: string;
             /** Format: date-time */
@@ -1301,7 +1044,6 @@ export interface components {
             name: string;
             slug: string;
             sku?: string | null;
-            brand?: string | null;
             short_description?: string | null;
             description?: string | null;
             category_id: number;
@@ -1311,218 +1053,57 @@ export interface components {
              */
             status: "in_stock" | "made_to_order" | "out_of_stock";
             price: number;
-            compare_at_price?: number | null;
             sale_price?: number | null;
-            /** Format: date-time */
-            sale_starts_at?: string | null;
-            /** Format: date-time */
-            sale_ends_at?: string | null;
-            currency?: string;
             stock?: number;
-            specs?: {
-                [key: string]: (string | number | boolean) | null;
-            } | null;
-            configurator_id?: number | null;
-            layout?: {
-                id: string;
-                /** @enum {string} */
-                type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
-                /** @default 12 */
-                span: number;
-                /** @default true */
-                enabled: boolean;
-                settings?: {
-                    [key: string]: unknown;
-                };
-            }[] | null;
             meta_title?: string | null;
             meta_description?: string | null;
             is_featured?: boolean;
-            /** Format: date-time */
-            published_at?: string | null;
+            is_published?: boolean;
             image_file_ids?: number[];
         };
         UpdateProductDto: {
             name?: string;
             slug?: string;
             sku?: string | null;
-            brand?: string | null;
             short_description?: string | null;
             description?: string | null;
             category_id?: number;
             /** @enum {string} */
             status?: "in_stock" | "made_to_order" | "out_of_stock";
             price?: number;
-            compare_at_price?: number | null;
             sale_price?: number | null;
-            /** Format: date-time */
-            sale_starts_at?: string | null;
-            /** Format: date-time */
-            sale_ends_at?: string | null;
-            currency?: string;
             stock?: number;
-            specs?: {
-                [key: string]: (string | number | boolean) | null;
-            } | null;
-            configurator_id?: number | null;
-            layout?: {
-                id: string;
-                /** @enum {string} */
-                type: "gallery" | "summary" | "description" | "specs" | "reviews" | "richtext";
-                /** @default 12 */
-                span: number;
-                /** @default true */
-                enabled: boolean;
-                settings?: {
-                    [key: string]: unknown;
-                };
-            }[] | null;
             meta_title?: string | null;
             meta_description?: string | null;
             is_featured?: boolean;
-            /** Format: date-time */
-            published_at?: string | null;
+            is_published?: boolean;
             image_file_ids?: number[];
-        };
-        CreateOptionDto: {
-            name: string;
-            sort_order?: number;
-            values?: {
-                label: string;
-                value: string;
-                color_hex?: string | null;
-                /** Format: uri */
-                image_url?: string | null;
-                sort_order?: number;
-            }[];
-        };
-        ProductOptionDto: {
-            id: number;
-            name: string;
-            sort_order: number;
-            values: {
-                id: number;
-                label: string;
-                value: string;
-                color_hex: string | null;
-                image_url: string | null;
-                sort_order: number;
-            }[];
-        };
-        ApiResponseOfProductOptionDto: {
-            data: components["schemas"]["ProductOptionDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateOptionDto: {
-            name?: string;
-            sort_order?: number;
-        };
-        CreateOptionValueDto: {
-            label: string;
-            value: string;
-            color_hex?: string | null;
-            /** Format: uri */
-            image_url?: string | null;
-            sort_order?: number;
-        };
-        ProductOptionValueDto: {
-            id: number;
-            label: string;
-            value: string;
-            color_hex: string | null;
-            image_url: string | null;
-            sort_order: number;
-        };
-        ApiResponseOfProductOptionValueDto: {
-            data: components["schemas"]["ProductOptionValueDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateOptionValueDto: {
-            label?: string;
-            value?: string;
-            color_hex?: string | null;
-            /** Format: uri */
-            image_url?: string | null;
-            sort_order?: number;
-        };
-        CreateVariantDto: {
-            sku?: string | null;
-            price?: number | null;
-            compare_at_price?: number | null;
-            /** @default 0 */
-            stock: number;
-            is_default?: boolean;
-            sort_order?: number;
-            /** @default [] */
-            option_value_ids: number[];
-        };
-        ProductVariantDto: {
-            id: number;
-            sku: string | null;
-            label: string;
-            stock: number;
-            is_default: boolean;
-            sort_order: number;
-            price: number;
-            compare_at_price: number | null;
-            effective_price: number;
-            sale_active: boolean;
-            option_values: {
-                option_id: number;
-                option_name: string;
-                value_id: number;
-                label: string;
-                value: string;
-                color_hex: string | null;
-                image_url: string | null;
-            }[];
-            image_ids: number[];
-            attributes: {
-                id: number;
-                code: string;
-                name: string;
-                /** @enum {string} */
-                type: "text" | "richtext" | "number" | "boolean" | "select" | "multiselect" | "color" | "image" | "url" | "date";
-                unit: string | null;
-                group_name: string | null;
-                is_filterable: boolean;
-                sort_order: number;
-                value: (string | number | boolean | {
-                    id: number;
-                    label: string;
-                    value: string;
-                    color_hex: string | null;
-                    image_url: string | null;
-                } | {
-                    id: number;
-                    label: string;
-                    value: string;
-                    color_hex: string | null;
-                    image_url: string | null;
-                }[]) | null;
-            }[];
-        };
-        ApiResponseOfProductVariantDto: {
-            data: components["schemas"]["ProductVariantDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateVariantDto: {
-            sku?: string | null;
-            price?: number | null;
-            compare_at_price?: number | null;
-            stock?: number;
-            is_default?: boolean;
-            sort_order?: number;
-            option_value_ids?: number[];
         };
         SetProductAttributesDto: {
             attributes: {
                 attribute_id: number;
-                variant_id?: number | null;
-                value: (string | number | boolean | number[]) | null;
+                /** @default false */
+                is_variant: boolean;
+                sort_order?: number;
+                value_text?: string | null;
+                value_number?: number | null;
+                value_bool?: boolean | null;
+                /** @default [] */
+                option_ids: number[];
+            }[];
+        };
+        SetProductVariantsDto: {
+            variants: {
+                attribute_option_ids: number[];
+                sku?: string | null;
+                price?: number | null;
+                /** @default 0 */
+                stock: number;
+                /** @default true */
+                is_active: boolean;
+                /** @default false */
+                is_default: boolean;
+                sort_order?: number;
             }[];
         };
         AddProductImagesDto: {
@@ -1546,6 +1127,14 @@ export interface components {
         };
         ApiResponseOfFileDto: {
             data: components["schemas"]["FileDto"];
+            /** @example 2024-01-01T00:00:00.000Z */
+            timestamp: string;
+        };
+        MediaUrlDto: {
+            url: string;
+        };
+        ApiResponseOfMediaUrlDto: {
+            data: components["schemas"]["MediaUrlDto"];
             /** @example 2024-01-01T00:00:00.000Z */
             timestamp: string;
         };
@@ -1589,9 +1178,6 @@ export interface components {
                 product_name: string | null;
                 variant_label: string | null;
                 sku: string | null;
-                configuration: {
-                    [key: string]: unknown;
-                } | null;
                 variant: {
                     id: number;
                     sku: string | null;
@@ -1692,185 +1278,6 @@ export interface components {
         UpdateReviewStatusDto: {
             /** @enum {string} */
             status: "pending" | "approved" | "rejected";
-        };
-        ConfiguratorDto: {
-            id: number;
-            name: string;
-            slug: string;
-            description: string | null;
-            base_price: number;
-            currency: string;
-            is_active: boolean;
-            groups: {
-                id: number;
-                configurator_id: number;
-                code: string;
-                label: string;
-                description: string | null;
-                /** @enum {string} */
-                ui: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
-                is_multiple: boolean;
-                is_required: boolean;
-                price_modifier: number;
-                sort_order: number;
-                is_active: boolean;
-                options: {
-                    id: number;
-                    group_id: number;
-                    label: string;
-                    value: string;
-                    description: string | null;
-                    price_modifier: number;
-                    image_url: string | null;
-                    color_hex: string | null;
-                    is_default: boolean;
-                    sort_order: number;
-                    is_active: boolean;
-                }[];
-            }[];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ApiArrayResponseOfConfiguratorDto: {
-            data: components["schemas"]["ConfiguratorDto"][];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        ApiResponseOfConfiguratorDto: {
-            data: components["schemas"]["ConfiguratorDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateConfiguratorDto: {
-            name: string;
-            slug: string;
-            description?: string | null;
-            /** @default 0 */
-            base_price: number;
-            /** @default UAH */
-            currency: string;
-            /** @default true */
-            is_active: boolean;
-        };
-        UpdateConfiguratorDto: {
-            name?: string;
-            slug?: string;
-            description?: string | null;
-            base_price?: number;
-            currency?: string;
-            is_active?: boolean;
-        };
-        CreateConfiguratorGroupDto: {
-            code: string;
-            label: string;
-            description?: string | null;
-            /**
-             * @default radio
-             * @enum {string}
-             */
-            ui: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
-            /** @default false */
-            is_multiple: boolean;
-            /** @default true */
-            is_required: boolean;
-            /** @default 0 */
-            price_modifier: number;
-            /** @default 0 */
-            sort_order: number;
-            /** @default true */
-            is_active: boolean;
-        };
-        ConfiguratorGroupDto: {
-            id: number;
-            configurator_id: number;
-            code: string;
-            label: string;
-            description: string | null;
-            /** @enum {string} */
-            ui: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
-            is_multiple: boolean;
-            is_required: boolean;
-            price_modifier: number;
-            sort_order: number;
-            is_active: boolean;
-            options: {
-                id: number;
-                group_id: number;
-                label: string;
-                value: string;
-                description: string | null;
-                price_modifier: number;
-                image_url: string | null;
-                color_hex: string | null;
-                is_default: boolean;
-                sort_order: number;
-                is_active: boolean;
-            }[];
-        };
-        ApiResponseOfConfiguratorGroupDto: {
-            data: components["schemas"]["ConfiguratorGroupDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateConfiguratorGroupDto: {
-            code?: string;
-            label?: string;
-            description?: string | null;
-            /** @enum {string} */
-            ui?: "radio" | "swatch" | "image" | "select" | "checkbox" | "text";
-            is_multiple?: boolean;
-            is_required?: boolean;
-            price_modifier?: number;
-            sort_order?: number;
-            is_active?: boolean;
-        };
-        CreateConfiguratorOptionDto: {
-            label: string;
-            value: string;
-            description?: string | null;
-            /** @default 0 */
-            price_modifier: number;
-            /** Format: uri */
-            image_url?: string | null;
-            color_hex?: string | null;
-            /** @default false */
-            is_default: boolean;
-            /** @default 0 */
-            sort_order: number;
-            /** @default true */
-            is_active: boolean;
-        };
-        ConfiguratorOptionDto: {
-            id: number;
-            group_id: number;
-            label: string;
-            value: string;
-            description: string | null;
-            price_modifier: number;
-            image_url: string | null;
-            color_hex: string | null;
-            is_default: boolean;
-            sort_order: number;
-            is_active: boolean;
-        };
-        ApiResponseOfConfiguratorOptionDto: {
-            data: components["schemas"]["ConfiguratorOptionDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateConfiguratorOptionDto: {
-            label?: string;
-            value?: string;
-            description?: string | null;
-            price_modifier?: number;
-            /** Format: uri */
-            image_url?: string | null;
-            color_hex?: string | null;
-            is_default?: boolean;
-            sort_order?: number;
-            is_active?: boolean;
         };
     };
     responses: never;
@@ -2726,222 +2133,6 @@ export interface operations {
             };
         };
     };
-    ProductsAdminController_createOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateOptionDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductOptionDto"];
-                };
-            };
-        };
-    };
-    ProductsAdminController_removeOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ProductsAdminController_updateOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateOptionDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductOptionDto"];
-                };
-            };
-        };
-    };
-    ProductsAdminController_createOptionValue_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateOptionValueDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductOptionValueDto"];
-                };
-            };
-        };
-    };
-    ProductsAdminController_removeOptionValue_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-                valueId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ProductsAdminController_updateOptionValue_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-                valueId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateOptionValueDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductOptionValueDto"];
-                };
-            };
-        };
-    };
-    ProductsAdminController_createVariant_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateVariantDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductVariantDto"];
-                };
-            };
-        };
-    };
-    ProductsAdminController_removeVariant_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                variantId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ProductsAdminController_updateVariant_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                variantId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateVariantDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductVariantDto"];
-                };
-            };
-        };
-    };
     ProductsAdminController_setAttributes_v1: {
         parameters: {
             query?: never;
@@ -2954,6 +2145,31 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["SetProductAttributesDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
+                };
+            };
+        };
+    };
+    ProductsAdminController_setVariants_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetProductVariantsDto"];
             };
         };
         responses: {
@@ -3060,6 +2276,34 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponseOfFileDto"];
+                };
+            };
+        };
+    };
+    FilesController_uploadMedia_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file: string;
+                    /** @enum {string} */
+                    folder?: "attributes" | "categories" | "misc";
+                };
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponseOfMediaUrlDto"];
                 };
             };
         };
@@ -3398,315 +2642,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponseOfReviewDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorController_findAll_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfConfiguratorDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                slug: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
-                };
-            };
-            /** @description Configurator not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ConfiguratorAdminController_findAll_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfConfiguratorDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorAdminController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateConfiguratorDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
-                };
-            };
-            /** @description Configurator not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ConfiguratorAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Configurator deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ConfiguratorAdminController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateConfiguratorDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorAdminController_createGroup_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateConfiguratorGroupDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorGroupDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorAdminController_removeGroup_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                groupId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Group deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ConfiguratorAdminController_updateGroup_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                groupId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateConfiguratorGroupDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorGroupDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorAdminController_createOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                groupId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateConfiguratorOptionDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorOptionDto"];
-                };
-            };
-        };
-    };
-    ConfiguratorAdminController_removeOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                groupId: number;
-                optionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Option deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ConfiguratorAdminController_updateOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                groupId: number;
-                optionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateConfiguratorOptionDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfConfiguratorOptionDto"];
                 };
             };
         };

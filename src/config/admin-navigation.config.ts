@@ -10,6 +10,5 @@ export const ADMIN_NAVIGATION: AdminNavItem[] = [
   { href: "/admin/attributes", label: "Характеристики" },
   { href: "/admin/orders", label: "Замовлення" },
   { href: "/admin/reviews", label: "Відгуки" },
-  { href: "/admin/configurator", label: "Конфігуратор" },
   { href: "/admin/users", label: "Користувачі" },
 ];

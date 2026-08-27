@@ -24,36 +24,33 @@ export function getVariantImages(
 }
 
 /**
- * The struck-through price for a row: whichever of `compare_at_price` / `price`
- * sits above what is actually charged. Null when there is nothing to strike.
+ * The struck-through price for a row: the listed price, when the buyer is
+ * actually paying less than it. Null when there is nothing to strike.
+ *
+ * There used to be a separate `compare_at_price` — a marketing "was" number
+ * with no effect on what was charged. It is gone: the only price ever struck
+ * through now is one the shop really was asking.
  */
 export function getCompareAtPrice(
   effectivePrice: number,
   price: number,
-  compareAtPrice: number | null,
 ): number | null {
-  const candidate = compareAtPrice ?? price;
-  return candidate > effectivePrice ? candidate : null;
+  return price > effectivePrice ? price : null;
 }
 
 /** Discount percent (rounded) when the buyer pays less than the listed price. */
 export function getDiscountPercent(
   effectivePrice: number,
   price: number,
-  compareAtPrice: number | null,
 ): number | null {
-  const original = getCompareAtPrice(effectivePrice, price, compareAtPrice);
+  const original = getCompareAtPrice(effectivePrice, price);
   if (!original) return null;
   return Math.round((1 - effectivePrice / original) * 100);
 }
 
 /** Discount percent for the product headline price. */
 export function getProductDiscountPercent(product: Product): number | null {
-  return getDiscountPercent(
-    product.effective_price,
-    product.price,
-    product.compare_at_price,
-  );
+  return getDiscountPercent(product.effective_price, product.price);
 }
 
 /** What the buyer pays for the given variant, falling back to the product. */

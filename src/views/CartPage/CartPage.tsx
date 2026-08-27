@@ -9,14 +9,11 @@ import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
 import { getCartItemKey } from "@/entities/cart/types";
-import { useConfiguratorCart } from "@/entities/configurator/ConfiguratorCartContext";
 import { useCreateOrder } from "@/entities/orders/api";
-import { formatPrice } from "@/lib/utils/formatPrice";
 import CartItemRow from "./parts/CartItemRow/CartItemRow";
 import CheckoutForm, {
   type CheckoutFormValues,
 } from "./parts/CheckoutForm/CheckoutForm";
-import ConfiguratorCartItemRow from "./parts/ConfiguratorCartItemRow/ConfiguratorCartItemRow";
 import OrderSummary from "./parts/OrderSummary/OrderSummary";
 
 import "./CartPage.styles.scss";
@@ -27,19 +24,6 @@ function pluralItems(count: number): string {
   if (count === 1) return "товар";
   if (count < 5) return "товари";
   return "товарів";
-}
-
-function buildConfiguratorNotes(
-  configuratorItem: NonNullable<ReturnType<typeof useConfiguratorCart>["item"]>,
-): string {
-  const lines = [
-    `=== ${configuratorItem.configuratorName} ===`,
-    ...configuratorItem.selections.map(
-      (selection) => `${selection.groupLabel}: ${selection.label}`,
-    ),
-    `Сума: ${formatPrice(configuratorItem.total)}`,
-  ];
-  return lines.join("\n");
 }
 
 function CartPage() {
@@ -55,24 +39,13 @@ function CartPage() {
     removeItem,
     clear,
   } = useCart();
-  const { item: configuratorItem, clear: clearConfigurator } =
-    useConfiguratorCart();
   const { toast } = useToast();
   const createOrder = useCreateOrder();
 
-  const hasAnyItems = items.length > 0 || !!configuratorItem;
-
-  const grandTotal = subtotal + (configuratorItem?.total ?? 0);
+  const hasAnyItems = items.length > 0;
 
   const handleCheckoutSubmit = (values: CheckoutFormValues) => {
     if (!hasAnyItems) return;
-
-    const configuratorNotes = configuratorItem
-      ? buildConfiguratorNotes(configuratorItem)
-      : null;
-    const combinedNotes = [configuratorNotes, values.notes]
-      .filter(Boolean)
-      .join("\n\n");
 
     createOrder.mutate(
       {
@@ -82,7 +55,7 @@ function CartPage() {
           guest_phone: values.guest_phone,
           address: values.address,
           payment_method: values.payment_method,
-          notes: combinedNotes || undefined,
+          notes: values.notes || undefined,
           items: items.map((item) =>
             item.variantId != null
               ? { variant_id: item.variantId, quantity: item.quantity }
@@ -93,7 +66,6 @@ function CartPage() {
       {
         onSuccess: (res) => {
           clear();
-          clearConfigurator();
           router.push(`/orders/${res.data.id}`);
         },
         onError: () => {
@@ -127,7 +99,7 @@ function CartPage() {
     );
   }
 
-  const totalItemCount = totalCount + (configuratorItem ? 1 : 0);
+  const totalItemCount = totalCount;
 
   return (
     <div className={BASE_CLASS}>
@@ -143,13 +115,6 @@ function CartPage() {
 
         <div className={`${BASE_CLASS}_layout`}>
           <div className={`${BASE_CLASS}_items`}>
-            {configuratorItem && (
-              <ConfiguratorCartItemRow
-                item={configuratorItem}
-                onRemove={clearConfigurator}
-              />
-            )}
-
             {items.map((item) => (
               <CartItemRow
                 key={getCartItemKey(item)}
@@ -174,9 +139,8 @@ function CartPage() {
             <OrderSummary
               itemsCount={totalCount}
               originalTotal={originalTotal}
-              configuratorTotal={configuratorItem?.total}
               discount={discount}
-              grandTotal={grandTotal}
+              grandTotal={subtotal}
             />
 
             <CheckoutForm

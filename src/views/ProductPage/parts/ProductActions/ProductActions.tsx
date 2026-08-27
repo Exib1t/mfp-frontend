@@ -1,4 +1,4 @@
-import { ChevronLeft, ShoppingBag, Sparkles } from "lucide-react";
+import { ChevronLeft, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/controls/Button/Button";
 import QuantityStepper from "@/components/controls/QuantityStepper/QuantityStepper";
@@ -10,8 +10,6 @@ interface ProductActionsProps {
   canBuy: boolean;
   quantity: number;
   variantStock: number;
-  /** Set when the product is assembled rather than bought off the shelf. */
-  configurator?: { name: string; slug: string } | null;
   onQuantityChange: (quantity: number) => void;
   onAddToCart: () => void;
 }
@@ -22,38 +20,9 @@ function ProductActions({
   canBuy,
   quantity,
   variantStock,
-  configurator = null,
   onQuantityChange,
   onAddToCart,
 }: ProductActionsProps) {
-  // A configurable product is priced by its build, so the plain add-to-cart
-  // would be lying about the total — send the buyer to the builder instead.
-  if (configurator) {
-    return (
-      <div className={`${BASE_CLASS}_actions`}>
-        <Button
-          size="lg"
-          fullWidth
-          as={Link}
-          href={`/configurator/${configurator.slug}`}
-        >
-          <Sparkles size={18} strokeWidth={2} />
-          Зібрати свій
-        </Button>
-        <Button
-          variant="ghost"
-          fullWidth
-          as={Link}
-          href="/products"
-          transitionTypes={["nav-back"]}
-        >
-          <ChevronLeft size={16} strokeWidth={2} />
-          Назад до каталогу
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <>
       {canBuy && (

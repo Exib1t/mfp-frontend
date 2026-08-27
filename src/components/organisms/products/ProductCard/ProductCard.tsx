@@ -123,7 +123,7 @@ function ProductCard({ product, className }: ProductCardProps) {
             <Price
               className={`${BASE_CLASS}_price`}
               value={product.effective_price}
-              compareAt={product.compare_at_price}
+              compareAt={product.sale_active ? product.price : null}
             />
           )}
         </Link>

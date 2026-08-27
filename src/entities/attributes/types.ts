@@ -9,7 +9,6 @@ export const CHOICE_ATTRIBUTE_TYPES: AttributeType[] = [
   "select",
   "multiselect",
   "color",
-  "image",
 ];
 
 /**

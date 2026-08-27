@@ -52,22 +52,6 @@ function AttributeValueInput({
         />
       );
 
-    case "date":
-      return (
-        <Input
-          id={inputId}
-          type="date"
-          value={typeof value === "string" ? value.slice(0, 10) : ""}
-          onChange={(event) =>
-            onChange(
-              event.target.value === ""
-                ? null
-                : new Date(event.target.value).toISOString(),
-            )
-          }
-        />
-      );
-
     case "multiselect": {
       const selected = Array.isArray(value) ? value : [];
       return (
@@ -106,7 +90,6 @@ function AttributeValueInput({
 
     case "select":
     case "color":
-    case "image":
       return (
         <Select
           value={typeof value === "number" ? String(value) : EMPTY_OPTION}
@@ -124,22 +107,11 @@ function AttributeValueInput({
         />
       );
 
-    case "richtext":
-      return (
-        <Input
-          as="textarea"
-          id={inputId}
-          rows={4}
-          value={typeof value === "string" ? value : ""}
-          onChange={(event) => onChange(event.target.value)}
-        />
-      );
-
     default:
       return (
         <Input
           id={inputId}
-          type={attribute.type === "url" ? "url" : "text"}
+          type="text"
           value={typeof value === "string" ? value : ""}
           onChange={(event) => onChange(event.target.value)}
         />

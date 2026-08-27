@@ -14,8 +14,8 @@ const queryClient = new QueryClient({
 });
 
 /**
- * App-wide providers only. Storefront-specific context (cart, configurator)
- * lives in `(shop)/ShopProviders` so it never loads inside the admin panel.
+ * App-wide providers only. Storefront-specific context (the cart) lives in
+ * `(shop)/ShopProviders` so it never loads inside the admin panel.
  */
 const Providers = ({ children }: PropsWithChildren) => {
   return (

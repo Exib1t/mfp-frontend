@@ -16,12 +16,9 @@ import {
 } from "./constants";
 import AttributesTab from "./parts/AttributesTab";
 import GeneralTab from "./parts/GeneralTab";
-import LayoutTab from "./parts/LayoutTab";
 import MediaTab from "./parts/MediaTab";
-import OptionsTab from "./parts/OptionsTab";
 import PricingTab from "./parts/PricingTab";
 import SeoTab from "./parts/SeoTab";
-import VariantsTab from "./parts/VariantsTab";
 import type { ProductFormTab } from "./types";
 import { useProductForm } from "./useProductForm";
 
@@ -42,11 +39,9 @@ function AdminProductForm({ product }: AdminProductFormProps) {
     !product && TABS_REQUIRING_SAVED_PRODUCT.includes(tab);
 
   const tabs = PRODUCT_FORM_TABS.map((item) =>
-    item.id === "options"
-      ? { ...item, badge: product?.options.length }
-      : item.id === "variants"
-        ? { ...item, badge: product?.variants.length }
-        : item,
+    item.id === "attributes"
+      ? { ...item, badge: product?.attributes.length }
+      : item,
   );
 
   return (
@@ -72,8 +67,8 @@ function AdminProductForm({ product }: AdminProductFormProps) {
         {needsSavedProduct ? (
           <AdminCard>
             <Typography variant="body2" color="muted">
-              Спершу збережіть товар — опції, варіанти, характеристики та медіа
-              привʼязуються до вже створеного запису.
+              Спершу збережіть товар — характеристики та медіа привʼязуються
+              до вже створеного запису.
             </Typography>
           </AdminCard>
         ) : (
@@ -109,13 +104,10 @@ function AdminProductForm({ product }: AdminProductFormProps) {
               {tab === "seo" && <SeoTab form={form} />}
             </form>
 
-            {tab === "options" && product && <OptionsTab product={product} />}
-            {tab === "variants" && product && <VariantsTab product={product} />}
             {tab === "attributes" && product && (
               <AttributesTab product={product} />
             )}
             {tab === "media" && product && <MediaTab product={product} />}
-            {tab === "layout" && product && <LayoutTab product={product} />}
           </>
         )}
       </div>

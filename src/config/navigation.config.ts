@@ -16,7 +16,6 @@ export interface NavigationItem {
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   { href: "/", title: "Головна", icon: "house" },
   { href: "/products", title: "Каталог", icon: "layout-grid" },
-  { href: "/configurator", title: "Конфігуратор", icon: "sliders" },
 ];
 
 export const FOOTER_NAV_ITEMS: NavigationItem[] = [

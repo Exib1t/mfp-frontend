@@ -8,7 +8,10 @@ import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import { useCart } from "@/entities/cart/CartContext";
 import { useProduct } from "@/entities/products/api";
-import { resolveLayout, visibleBlocks } from "@/entities/products/layout";
+import {
+  DEFAULT_PRODUCT_LAYOUT,
+  visibleBlocks,
+} from "@/entities/products/layout";
 import type { Product } from "@/entities/products/types";
 import Breadcrumb from "./parts/Breadcrumb/Breadcrumb";
 import ProductBlockRenderer from "./parts/ProductBlockRenderer/ProductBlockRenderer";
@@ -66,9 +69,7 @@ function ProductPageContent({ product }: { product: Product }) {
     toast(`«${product.name}» додано в кошик`, "success");
   };
 
-  // The page is assembled from the product's layout; null falls back to the
-  // default arrangement, so pages that were never customised look unchanged.
-  const blocks = visibleBlocks(resolveLayout(product));
+  const blocks = visibleBlocks(DEFAULT_PRODUCT_LAYOUT);
 
   return (
     <div className={BASE_CLASS}>

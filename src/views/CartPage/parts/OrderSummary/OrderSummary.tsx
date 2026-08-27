@@ -6,7 +6,6 @@ import "../../CartPage.styles.scss";
 interface OrderSummaryProps {
   itemsCount: number;
   originalTotal: number;
-  configuratorTotal?: number;
   discount: number;
   grandTotal: number;
 }
@@ -16,7 +15,6 @@ const BASE_CLASS = "cart-page";
 function OrderSummary({
   itemsCount,
   originalTotal,
-  configuratorTotal,
   discount,
   grandTotal,
 }: OrderSummaryProps) {
@@ -28,16 +26,6 @@ function OrderSummary({
             Товари ({itemsCount})
           </Typography>
           <Typography variant="body2">{formatPrice(originalTotal)}</Typography>
-        </div>
-      )}
-      {configuratorTotal !== undefined && (
-        <div className={`${BASE_CLASS}_summary-row`}>
-          <Typography variant="body2" color="muted">
-            Вігвам (кастомний)
-          </Typography>
-          <Typography variant="body2">
-            {formatPrice(configuratorTotal)}
-          </Typography>
         </div>
       )}
       {discount > 0 && (

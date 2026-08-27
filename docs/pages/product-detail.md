@@ -5,8 +5,7 @@
 
 ## Purpose
 
-Product presentation + option selection + add to cart.  
-Configurator will be embedded here in a future phase.
+Product presentation + option selection + add to cart.
 
 ## Layout
 
@@ -17,7 +16,7 @@ Mobile: media on top, options below.
 
 ### Media
 - Main photo + thumbnail gallery
-- Photo changes based on selected options (even before configurator)
+- Photo changes based on selected options
 
 ### Product info
 - Name, price (updates based on options)
@@ -28,11 +27,6 @@ Mobile: media on top, options below.
 - Quantity selector
 - "Додати в кошик" button
 - "Зібрати комплект" CTA → links to related products in same style *(phase 2)*
-
-### Configurator *(future phase)*
-- Embedded PNG layer preview
-- Replaces static photo gallery when active
-- See: `docs/features/configurator.md`
 
 ### Description tabs
 - Опис / Характеристики / Догляд / Доставка

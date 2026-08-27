@@ -31,16 +31,9 @@ function ProductSummary({
   const { selectedVariant } = purchase;
 
   const effectivePrice = getEffectivePrice(product, selectedVariant);
-  const compareAt = getCompareAtPrice(
-    effectivePrice,
-    selectedVariant?.price ?? product.price,
-    selectedVariant?.compare_at_price ?? product.compare_at_price,
-  );
-  const discount = getDiscountPercent(
-    effectivePrice,
-    selectedVariant?.price ?? product.price,
-    selectedVariant?.compare_at_price ?? product.compare_at_price,
-  );
+  const listedPrice = selectedVariant?.price ?? product.price;
+  const compareAt = getCompareAtPrice(effectivePrice, listedPrice);
+  const discount = getDiscountPercent(effectivePrice, listedPrice);
 
   const hasBadges = discount !== null || product.status !== "in_stock";
 
@@ -99,7 +92,6 @@ function ProductSummary({
         canBuy={purchase.canBuy}
         quantity={purchase.quantity}
         variantStock={purchase.stock}
-        configurator={product.configurator}
         onQuantityChange={purchase.setQuantity}
         onAddToCart={onAddToCart}
       />
