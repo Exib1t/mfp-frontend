@@ -10,9 +10,33 @@ export function isProductAvailableToBuy(product: Product): boolean {
   return product.status !== "out_of_stock";
 }
 
-/** Main cover image url, or null when the product has no images. */
+/**
+ * Whether a gallery entry is a clip rather than a photo.
+ *
+ * Read from the extension rather than from the row: the API grew a `mimetype`
+ * for exactly this, but the generated types only learn about it on the next
+ * `npm run generate` against a backend that has shipped it. The extension is
+ * not a guess — the backend derives the stored key's suffix from the uploaded
+ * mimetype, and only accepts these two containers. Swap this for
+ * `image.mimetype` once the spec is regenerated.
+ *
+ * ponytail: extension sniffing, switch to `image.mimetype` after the next
+ * `npm run generate` against a backend carrying the field.
+ */
+export function isVideoUrl(url: string): boolean {
+  return /\.(mp4|webm)(?:[?#]|$)/i.test(url);
+}
+
+/**
+ * Main cover image url, or null when the product has no photo.
+ *
+ * The *first photo*, not the first entry: a gallery may lead with a clip, and
+ * a card, a cart line and an OG tag all need a still. Every caller that wants
+ * "the one picture for this product" comes through here, so the rule is stated
+ * once.
+ */
 export function getMainImageUrl(product: Product): string | null {
-  return product.images[0]?.url ?? null;
+  return product.images.find((image) => !isVideoUrl(image.url))?.url ?? null;
 }
 
 /** Gallery images for a variant: its own shots first, then the shared ones. */

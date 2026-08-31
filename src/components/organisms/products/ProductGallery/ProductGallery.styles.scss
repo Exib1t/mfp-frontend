@@ -17,6 +17,14 @@
     transition: opacity 150ms ease;
   }
 
+  /* What `next/image fill` sets on its own, for the <video> that replaces it. */
+  &_fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
   &_placeholder {
     aspect-ratio: 4 / 5;
     background: var(--background-variant);

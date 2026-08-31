@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, ViewTransition } from "react";
+import { isVideoUrl } from "@/entities/products/helpers";
 import { cn } from "@/lib/utils/cn";
 
 import "./ProductGallery.styles.scss";
@@ -14,6 +15,12 @@ interface ProductGalleryProps {
 
 const BASE_CLASS = "product-gallery";
 
+/**
+ * The gallery holds photos and clips in one ordered list, the way the admin
+ * arranged it. A clip renders as a `<video>`; everything else goes through
+ * `next/image` as before — the optimiser has nothing to do with a video, and
+ * handing it one blanks the frame.
+ */
 function ProductGallery({ images, name, slug }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = images[activeIndex];
@@ -30,14 +37,25 @@ function ProductGallery({ images, name, slug }: ProductGalleryProps) {
     <div className={BASE_CLASS}>
       <ViewTransition name={`product-image-${slug}`} share="product-image">
         <div className={`${BASE_CLASS}_main`}>
-          <Image
-            className={`${BASE_CLASS}_main-image`}
-            src={activeImage}
-            alt={name}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            loading="eager"
-          />
+          {isVideoUrl(activeImage) ? (
+            // biome-ignore lint/a11y/useMediaCaption: shop-uploaded product footage carries no caption track, and an empty <track> would claim one exists
+            <video
+              className={cn(`${BASE_CLASS}_main-image`, `${BASE_CLASS}_fill`)}
+              src={activeImage}
+              controls
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            <Image
+              className={`${BASE_CLASS}_main-image`}
+              src={activeImage}
+              alt={name}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="eager"
+            />
+          )}
         </div>
       </ViewTransition>
 
@@ -51,16 +69,33 @@ function ProductGallery({ images, name, slug }: ProductGalleryProps) {
                 "-active": idx === activeIndex,
               })}
               onClick={() => setActiveIndex(idx)}
-              aria-label={`Фото ${idx + 1}`}
+              aria-label={
+                isVideoUrl(img) ? `Відео ${idx + 1}` : `Фото ${idx + 1}`
+              }
               aria-current={idx === activeIndex}
             >
-              <Image
-                src={img}
-                alt={`${name} — фото ${idx + 1}`}
-                fill
-                sizes="80px"
-                className={`${BASE_CLASS}_thumb-image`}
-              />
+              {isVideoUrl(img) ? (
+                // Metadata only — the thumbnail needs a poster frame, not the
+                // file. Muted and uncontrolled: this button selects, it does
+                // not play.
+                <video
+                  src={img}
+                  muted
+                  preload="metadata"
+                  className={cn(
+                    `${BASE_CLASS}_thumb-image`,
+                    `${BASE_CLASS}_fill`,
+                  )}
+                />
+              ) : (
+                <Image
+                  src={img}
+                  alt={`${name} — фото ${idx + 1}`}
+                  fill
+                  sizes="80px"
+                  className={`${BASE_CLASS}_thumb-image`}
+                />
+              )}
             </button>
           ))}
         </div>
