@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useAttributes } from "@/entities/attributes/api";
 import {
@@ -19,7 +20,14 @@ const PAGE_SIZE = 24;
  * ever see the current page.
  */
 export function useCatalogFilters() {
-  const [categoryId, setCategoryId] = useState<number | null>(null);
+  // `?category=<id>` deep-links into a filtered catalogue — the admin panel
+  // links here from a category row. Read once, at mount: from then on the
+  // sidebar owns the choice, and rewriting the URL on every click is not what
+  // the rest of the filters do.
+  const categoryParam = useSearchParams().get("category");
+  const [categoryId, setCategoryId] = useState<number | null>(
+    Number(categoryParam) || null,
+  );
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<ProductStatus | null>(null);
   const [priceMin, setPriceMin] = useState<number | null>(null);
