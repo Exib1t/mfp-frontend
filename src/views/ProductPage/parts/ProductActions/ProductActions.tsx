@@ -3,26 +3,43 @@ import Link from "next/link";
 import Button from "@/components/controls/Button/Button";
 import QuantityStepper from "@/components/controls/QuantityStepper/QuantityStepper";
 import Typography from "@/components/controls/Typography/Typography";
+import type { ProductStatus } from "@/entities/products/types";
 
 import "../../ProductPage.styles.scss";
 
 interface ProductActionsProps {
   canBuy: boolean;
+  status: ProductStatus;
   quantity: number;
-  variantStock: number;
+  maxQuantity: number;
+  lowStock: number | null;
   onQuantityChange: (quantity: number) => void;
   onAddToCart: () => void;
 }
 
 const BASE_CLASS = "product-page";
 
+/** What the buy box says about availability under the quantity stepper. */
+function availabilityNote(
+  status: ProductStatus,
+  lowStock: number | null,
+): string | null {
+  if (status === "made_to_order") return "Виготовляємо на замовлення";
+  if (lowStock !== null) return `Залишилось ${lowStock}`;
+  return null;
+}
+
 function ProductActions({
   canBuy,
+  status,
   quantity,
-  variantStock,
+  maxQuantity,
+  lowStock,
   onQuantityChange,
   onAddToCart,
 }: ProductActionsProps) {
+  const note = availabilityNote(status, lowStock);
+
   return (
     <>
       {canBuy && (
@@ -34,12 +51,14 @@ function ProductActions({
             <QuantityStepper
               value={quantity}
               min={1}
-              max={variantStock}
+              max={maxQuantity}
               onChange={onQuantityChange}
             />
-            <Typography variant="caption" color="muted">
-              В наявності: {variantStock}
-            </Typography>
+            {note && (
+              <Typography variant="caption" color="muted">
+                {note}
+              </Typography>
+            )}
           </div>
         </div>
       )}

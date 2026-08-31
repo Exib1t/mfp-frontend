@@ -8,7 +8,8 @@ import {
   facetsToQuery,
 } from "@/entities/attributes/types";
 import { useProducts } from "@/entities/products/api";
-import type { ProductsQuery } from "@/entities/products/types";
+import type { ProductStatus, ProductsQuery } from "@/entities/products/types";
+import { useDebouncedValue } from "@/lib/utils/useDebouncedValue";
 
 const PAGE_SIZE = 24;
 
@@ -19,6 +20,8 @@ const PAGE_SIZE = 24;
  */
 export function useCatalogFilters() {
   const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<ProductStatus | null>(null);
   const [priceMin, setPriceMin] = useState<number | null>(null);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [facets, setFacets] = useState<AttributeFacets>({});
@@ -33,12 +36,17 @@ export function useCatalogFilters() {
     filterableOnly: true,
   });
 
+  // The box updates on every keystroke; the query trails it.
+  const debouncedSearch = useDebouncedValue(search.trim());
+
   const query: ProductsQuery = {
     page,
     limit: PAGE_SIZE,
     sort,
     include_descendants: true,
     ...(categoryId ? { category_id: categoryId } : {}),
+    ...(debouncedSearch ? { search: debouncedSearch } : {}),
+    ...(status ? { status } : {}),
     ...(priceMin !== null ? { min_price: priceMin } : {}),
     ...(priceMax !== null ? { max_price: priceMax } : {}),
     ...(facetsToQuery(facets) ? { attributes: facetsToQuery(facets) } : {}),
@@ -74,10 +82,14 @@ export function useCatalogFilters() {
   const activeCount =
     countActiveFacets(facets) +
     (categoryId !== null ? 1 : 0) +
+    (status !== null ? 1 : 0) +
+    (debouncedSearch ? 1 : 0) +
     (priceMin !== null || priceMax !== null ? 1 : 0);
 
   const reset = () => {
     setCategoryId(null);
+    setSearch("");
+    setStatus(null);
     setPriceMin(null);
     setPriceMax(null);
     setFacets({});
@@ -91,6 +103,8 @@ export function useCatalogFilters() {
     isError,
     attributes,
     categoryId,
+    search,
+    status,
     priceMin,
     priceMax,
     facets,
@@ -99,6 +113,8 @@ export function useCatalogFilters() {
     activeCount,
     hasFilters: activeCount > 0,
     selectCategory: withReset(setCategoryId),
+    setSearch: withReset(setSearch),
+    setStatus: withReset(setStatus),
     setPriceMin: withReset(setPriceMin),
     setPriceMax: withReset(setPriceMax),
     setSort: withReset(setSort),

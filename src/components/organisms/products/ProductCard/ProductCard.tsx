@@ -10,8 +10,11 @@ import Price from "@/components/controls/Price/Price";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
+import { MAX_CARD_SWATCHES } from "@/entities/products/constants";
 import {
-  getFirstAvailableVariant,
+  getColourSwatches,
+  getInitialVariant,
+  getLowStockCount,
   getMainImageUrl,
   getProductDiscountPercent,
   hasPriceRange,
@@ -32,30 +35,28 @@ const BASE_CLASS = "product-card";
 function ProductCard({ product, className }: ProductCardProps) {
   const { addItem } = useCart();
   const { toast } = useToast();
-  const { slug, name, category } = product;
+  const { slug, name, category, status, short_description } = product;
 
   const mainImage = getMainImageUrl(product);
   const discount = getProductDiscountPercent(product);
   const isRange = hasPriceRange(product);
-  const inStock = isProductAvailableToBuy(product);
-  const hasVariants = product.variants.length > 0;
-  const firstVariant = getFirstAvailableVariant(product);
-  const canBuy =
-    inStock && (hasVariants ? firstVariant !== null : product.stock > 0);
+  // Stock is advisory: the status column alone decides whether this sells.
+  const canBuy = isProductAvailableToBuy(product);
+  const lowStock = getLowStockCount(product);
+  const swatches = getColourSwatches(product);
+  const shownSwatches = swatches.slice(0, MAX_CARD_SWATCHES);
+  const hiddenSwatches = swatches.length - shownSwatches.length;
   const href = `/products/${slug}`;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (canBuy) {
-      addItem(product, firstVariant);
-      toast(`«${name}» додано в кошик`, "success");
-    }
+    if (!canBuy) return;
+    addItem(product, getInitialVariant(product));
+    toast(`«${name}» додано в кошик`, "success");
   };
 
   return (
-    <article
-      className={cn(BASE_CLASS, className, { "-out-of-stock": !inStock })}
-    >
+    <article className={cn(BASE_CLASS, className)} data-status={status}>
       <Link
         href={href}
         className={`${BASE_CLASS}_media-link`}
@@ -83,20 +84,23 @@ function ProductCard({ product, className }: ProductCardProps) {
               </div>
             )}
 
-            {(discount !== null || product.status === "made_to_order") && (
-              <div className={`${BASE_CLASS}_badges`}>
-                {discount !== null && (
-                  <Badge variant="error" size="sm">
-                    −{discount}%
-                  </Badge>
-                )}
-                {product.status === "made_to_order" && (
-                  <Badge variant="warning" size="sm">
-                    Під замовлення
-                  </Badge>
-                )}
-              </div>
-            )}
+            <div className={`${BASE_CLASS}_badges`}>
+              {discount !== null && (
+                <Badge variant="error" size="sm">
+                  −{discount}%
+                </Badge>
+              )}
+              {product.is_featured && (
+                <Badge variant="primary" size="sm">
+                  Хіт
+                </Badge>
+              )}
+              {status === "made_to_order" && (
+                <Badge variant="warning" size="sm">
+                  Під замовлення
+                </Badge>
+              )}
+            </div>
           </div>
         </ViewTransition>
       </Link>
@@ -113,6 +117,35 @@ function ProductCard({ product, className }: ProductCardProps) {
           >
             {name}
           </Typography>
+          {short_description && (
+            <Typography
+              variant="body2"
+              color="muted"
+              className={`${BASE_CLASS}_lead`}
+            >
+              {short_description}
+            </Typography>
+          )}
+        </Link>
+
+        {swatches.length > 0 && (
+          <ul className={`${BASE_CLASS}_swatches`}>
+            {shownSwatches.map((swatch) => (
+              <li key={swatch.id}>
+                <span
+                  className={`${BASE_CLASS}_swatch`}
+                  style={{ background: swatch.color_hex }}
+                  title={swatch.label}
+                />
+              </li>
+            ))}
+            {hiddenSwatches > 0 && (
+              <li className={`${BASE_CLASS}_swatch-more`}>+{hiddenSwatches}</li>
+            )}
+          </ul>
+        )}
+
+        <div className={`${BASE_CLASS}_price-row`}>
           {isRange ? (
             <Price
               className={`${BASE_CLASS}_price`}
@@ -126,7 +159,12 @@ function ProductCard({ product, className }: ProductCardProps) {
               compareAt={product.sale_active ? product.price : null}
             />
           )}
-        </Link>
+          {lowStock !== null && (
+            <Typography variant="caption" color="muted">
+              Залишилось {lowStock}
+            </Typography>
+          )}
+        </div>
       </div>
 
       <div className={`${BASE_CLASS}_footer`}>

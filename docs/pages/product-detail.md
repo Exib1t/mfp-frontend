@@ -1,47 +1,55 @@
 # Product Detail Page
 
-**URL:** `/products/[slug]`  
-**File:** `src/pages/ProductPage/ProductPage.tsx` *(to be created)*
+**URL:** `/products/[slug]`
+**Files:** `src/views/ProductPage/` (`ProductPage.tsx`, `useProductPurchase.ts`, `parts/`)
 
 ## Purpose
 
-Product presentation + option selection + add to cart.
+Present one product, pick a variant, add it to the cart.
 
 ## Layout
 
-Two-column on desktop: media (left) + options panel (right).  
-Mobile: media on top, options below.
+One 12-column grid, arranged by `entities/products/layout.ts`. The arrangement
+is fixed for every product — it used to be per-product and editable, and is not
+any more.
 
-## Sections
+| Block | Span | Component |
+|---|---|---|
+| `gallery` | 6 | `ProductGallery`, images of the selected variant first |
+| `summary` | 6 | `ProductSummary` — identity, price, picker, buy box |
+| `description` | 12 | «Опис» — `product.description` through [`RichText`](../components/rich-text.md) |
+| `specs` | 12 | `ProductSpecs` — characteristics grouped by `group_name` |
+| `reviews` | 12 | `ProductReviews` — approved reviews + submit form |
 
-### Media
-- Main photo + thumbnail gallery
-- Photo changes based on selected options
+`description` is admin-authored HTML, so it gets a full-width section of its own
+rather than a column: dropped into the 6-column summary it would push the buy
+box far below the fold. The summary keeps `short_description` as the lead.
 
-### Product info
-- Name, price (updates based on options)
-- Short description
-- Available options:
-  - Fabric color — color swatches
-  - Accessories toggles — checkboxes or chips (подушки, прапорці, килимок, гірлянда)
-- Quantity selector
-- "Додати в кошик" button
-- "Зібрати комплект" CTA → links to related products in same style *(phase 2)*
+## Summary
 
-### Description tabs
-- Опис / Характеристики / Догляд / Доставка
-
-### Related products
-- Same category or same style tag, 4 items
+- Category overline, name, badges (`−N%`, `Хіт`, status when not `in_stock`)
+- Price from the **selected variant**, with the listed price struck through
+  while a sale is running
+- `short_description` as the lead; the long description lives in its own block
+- `VariantPicker` — one row per variation axis (`product.options`), colour
+  values as swatches, everything else as chips. Picking a value moves to the
+  variant that keeps the rest of the selection (`findVariantFor`). A product
+  whose variants carry no axes falls back to a flat list of variant labels.
+- Buy box: quantity stepper capped by `getMaxQuantity`, the note under it says
+  «Виготовляємо на замовлення» for `made_to_order` or «Залишилось N» when the
+  counter is low. The CTA is enabled whenever `status !== "out_of_stock"` —
+  see [Product data model](../data/product.md#availability).
 
 ## Data
 
-- `GET /products/[slug]` — product detail, options, base price
-- `GET /products/[slug]/related` — related products
+- `GET /api/v1/products/{slug}` — the whole product, variants and attributes
+  included; no second request for options or specs.
+- `GET /api/v1/reviews/product/{id}` — approved reviews only.
+- `POST /api/v1/reviews` — creates a `pending` review, invisible until moderated
+  in the admin.
 
 ## Notes
 
-- URL slug must be human-readable (e.g. `/products/vigvam-krémovyi-s-kushlonom`)
-- Price shown always reflects selected options
-- OG image = main product photo
-- Breadcrumb: Головна → Каталог → [product name]
+- Breadcrumb: Головна → Каталог → [name]
+- The card→page image uses a shared view transition (`product-image-{slug}`)
+- Related products: not built — the API has no endpoint for them yet

@@ -1,4 +1,8 @@
-import { DEFAULT_VARIANT_LABEL } from "./constants";
+import {
+  DEFAULT_VARIANT_LABEL,
+  LOW_STOCK_THRESHOLD,
+  MAX_ORDER_QUANTITY,
+} from "./constants";
 import type { Product, ProductVariant } from "./types";
 
 /** Storefront treats anything that isn't explicitly out of stock as buyable. */
@@ -88,12 +92,16 @@ export function getFirstAvailableVariant(
   return product.variants.find((variant) => variant.stock > 0) ?? null;
 }
 
-/** Default selection: the flagged default when buyable, else the first in stock. */
+/**
+ * Default selection: the flagged default, then anything in stock, then the
+ * first variant there is. A zero counter never leaves the picker empty —
+ * the status decides whether the product sells at all.
+ */
 export function getInitialVariant(product: Product): ProductVariant | null {
-  const preferred = product.variants.find(
-    (variant) => variant.is_default && variant.stock > 0,
+  const flagged = product.variants.find((variant) => variant.is_default);
+  return (
+    flagged ?? getFirstAvailableVariant(product) ?? product.variants[0] ?? null
   );
-  return preferred ?? getFirstAvailableVariant(product);
 }
 
 /** Available stock for the variant, or the product's own stock when it has none. */
@@ -102,4 +110,77 @@ export function getAvailableStock(
   variant: ProductVariant | null,
 ): number {
   return variant ? variant.stock : product.stock;
+}
+
+/**
+ * How many of this the buyer may order. A tracked counter caps it; a product
+ * sold without one — made to order, or simply not counted — is capped by the
+ * order limit instead.
+ */
+export function getMaxQuantity(
+  product: Product,
+  variant: ProductVariant | null = null,
+): number {
+  const stock = getAvailableStock(product, variant);
+  return stock > 0 ? stock : MAX_ORDER_QUANTITY;
+}
+
+/** Remaining count worth warning about, or null when there is nothing to say. */
+export function getLowStockCount(
+  product: Product,
+  variant: ProductVariant | null = null,
+): number | null {
+  const stock = getAvailableStock(product, variant);
+  return stock > 0 && stock <= LOW_STOCK_THRESHOLD ? stock : null;
+}
+
+export interface ColourSwatch {
+  id: number;
+  label: string;
+  color_hex: string;
+}
+
+/** One swatch, or nothing when the option carries no colour to paint. */
+function toSwatch(option: {
+  id: number;
+  label: string;
+  color_hex: string | null;
+}): ColourSwatch[] {
+  return option.color_hex
+    ? [{ id: option.id, label: option.label, color_hex: option.color_hex }]
+    : [];
+}
+
+/**
+ * Colours to preview on a card. A product that varies by colour exposes them
+ * as an option (a variant-forming characteristic); one that comes in a single
+ * colour still carries it as a plain `color` attribute, and the card shows
+ * that rather than nothing — most of the catalogue has no variants yet.
+ */
+export function getColourSwatches(product: Product): ColourSwatch[] {
+  const fromOptions = product.options
+    .flatMap((option) => option.values)
+    .flatMap(toSwatch);
+
+  if (fromOptions.length > 0) return dedupeSwatches(fromOptions);
+
+  const fromAttributes = product.attributes
+    .filter((attribute) => attribute.type === "color")
+    .flatMap((attribute) => {
+      const { value } = attribute;
+      if (value === null || typeof value !== "object") return [];
+      return Array.isArray(value) ? value : [value];
+    })
+    .flatMap(toSwatch);
+
+  return dedupeSwatches(fromAttributes);
+}
+
+/** Same colour twice — from two axes, or an attribute repeated — reads as one. */
+function dedupeSwatches(swatches: ColourSwatch[]): ColourSwatch[] {
+  const seen = new Map<string, ColourSwatch>();
+  for (const swatch of swatches) {
+    if (!seen.has(swatch.color_hex)) seen.set(swatch.color_hex, swatch);
+  }
+  return [...seen.values()];
 }

@@ -1,24 +1,25 @@
 "use client";
 
-import { SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import Button from "@/components/controls/Button/Button";
+import IconButton from "@/components/controls/IconButton/IconButton";
+import Input from "@/components/controls/Input/Input";
 import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCategories } from "@/entities/categories/api";
-import type { ProductsQuery } from "@/entities/products/types";
+import { PRODUCT_SORT_LABELS } from "@/entities/products/constants";
+import type { ProductSort } from "@/entities/products/types";
 import FilterSidebar from "./parts/FilterSidebar/FilterSidebar";
 import ProductGrid from "./parts/ProductGrid/ProductGrid";
 import { useCatalogFilters } from "./useCatalogFilters";
 
 import "./ProductsPage.styles.scss";
 
-const SORT_OPTIONS = [
-  { value: "newest", label: "Спочатку нові" },
-  { value: "price_asc", label: "Ціна: від дешевих" },
-  { value: "price_desc", label: "Ціна: від дорогих" },
-  { value: "name_asc", label: "Назва: А–Я" },
-] as const;
+/** Every ordering the API sorts by, labelled once in the entity layer. */
+const SORT_OPTIONS = (Object.keys(PRODUCT_SORT_LABELS) as ProductSort[]).map(
+  (value) => ({ value, label: PRODUCT_SORT_LABELS[value] }),
+);
 
 /** Bounds for the price slider. Server-side filtering means the page never
  *  sees the whole catalogue, so these stay fixed rather than derived. */
@@ -47,6 +48,33 @@ function ProductsPage() {
           <Typography variant="h1" as="h1">
             Каталог
           </Typography>
+          <div className={`${BASE_CLASS}_search`}>
+            <Search
+              className={`${BASE_CLASS}_search-icon`}
+              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
+            />
+            <Input
+              className={`${BASE_CLASS}_search-input`}
+              type="search"
+              value={state.search}
+              placeholder="Пошук товарів"
+              aria-label="Пошук товарів"
+              onChange={(event) => state.setSearch(event.target.value)}
+            />
+            {state.search && (
+              <IconButton
+                variant="ghost"
+                size="sm"
+                className={`${BASE_CLASS}_search-clear`}
+                aria-label="Очистити пошук"
+                onClick={() => state.setSearch("")}
+              >
+                <X size={14} strokeWidth={2} />
+              </IconButton>
+            )}
+          </div>
           <button
             type="button"
             className={`${BASE_CLASS}_filter-toggle`}
@@ -90,10 +118,8 @@ function ProductsPage() {
               </Typography>
               <Select
                 value={state.sort}
-                options={[...SORT_OPTIONS]}
-                onChange={(value) =>
-                  state.setSort(value as NonNullable<ProductsQuery["sort"]>)
-                }
+                options={SORT_OPTIONS}
+                onChange={state.setSort}
                 aria-label="Сортування"
               />
             </div>

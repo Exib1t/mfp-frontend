@@ -10,9 +10,45 @@
   /* ─── Header ─────────────────────────────────────── */
 
   &_header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
     margin-bottom: 40px;
     padding-bottom: 24px;
     border-bottom: 2px solid var(--foreground);
+  }
+
+  /* ─── Search ─────────────────────────────────────── */
+
+  &_search {
+    position: relative;
+    flex: 1;
+    max-width: 360px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  &_search-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+
+  &_search-input {
+    width: 100%;
+    padding-left: 36px;
+    padding-right: 36px;
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+
+  &_search-clear {
+    position: absolute;
+    right: 4px;
   }
 
   /* ─── Layout ─────────────────────────────────────── */
@@ -110,6 +146,40 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+  }
+
+  /* ─── Availability chips ─────────────────────────── */
+
+  &_chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &_chip {
+    padding: 6px 12px;
+    border: 1.5px solid var(--foreground);
+    background: var(--background);
+    font-family: var(--font-inter), sans-serif;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+
+    /* One step of indent per level of nesting. */
+    &[data-level="1"] {
+      padding-left: 24px;
+    }
+
+    &[data-level="2"] {
+      padding-left: 38px;
+    }
+
+    &[data-active="true"] {
+      background: var(--foreground);
+      color: var(--background);
+    }
   }
 
   &_cat-item {

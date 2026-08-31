@@ -9,7 +9,7 @@
   &_block {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     margin-top: 32px;
   }
 
@@ -121,11 +121,6 @@
 
   /* ─── Description ────────────────────────────────── */
 
-  &_description {
-    color: var(--color-muted);
-    line-height: var(--line-height-relaxed);
-  }
-
   /* ─── Actions ────────────────────────────────────── */
 
   &_actions {
@@ -167,10 +162,49 @@
       color: var(--background);
     }
 
-    &.-disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      text-decoration: line-through;
+    /* Sold out on this axis — still sellable, the status decides that, so
+       it stays clickable and only reads as thinned out. */
+    &.-depleted:not(.-active) {
+      opacity: 0.55;
+    }
+  }
+
+  /* ─── Variation axes ─────────────────────────────── */
+
+  &_options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &_option {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &_option-values {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &_swatch {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 2px solid var(--foreground);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: box-shadow 150ms ease;
+
+    &.-active {
+      box-shadow: 0 0 0 3px var(--background), 0 0 0 5px var(--foreground);
+    }
+
+    &.-depleted:not(.-active) {
+      opacity: 0.55;
     }
   }
 

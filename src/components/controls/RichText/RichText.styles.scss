@@ -1,0 +1,85 @@
+/**
+ * Admin-authored markup carries no classes, so this block styles raw elements.
+ * Every rule stays scoped under `.rich-text` — nothing here leaks outside it.
+ */
+.rich-text {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--foreground);
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin: 0 0 16px;
+  }
+
+  h2,
+  h3,
+  h4 {
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    margin: 32px 0 12px;
+  }
+
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+
+  h4 {
+    font-size: var(--font-size-lg);
+  }
+
+  strong,
+  b {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  em,
+  i {
+    font-style: italic;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 16px;
+    padding-left: 22px;
+  }
+
+  li {
+    margin-bottom: 6px;
+
+    /* The editor wraps every list item's text in a paragraph. */
+    p {
+      margin: 0;
+    }
+  }
+
+  blockquote {
+    margin: 24px 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--foreground);
+    color: var(--color-muted);
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

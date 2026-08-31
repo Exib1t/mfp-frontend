@@ -72,7 +72,7 @@
 
   /* ─── Out of stock ───────────────────────────────── */
 
-  &.-out-of-stock &_image-wrap::after {
+  &[data-status="out_of_stock"] &_image-wrap::after {
     content: "Немає в наявності";
     position: absolute;
     inset: 0;
@@ -91,13 +91,16 @@
 
   &_body {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 12px;
+    gap: 10px;
   }
 
   &_body-link {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 16px 16px 12px;
     text-decoration: none;
     color: inherit;
 
@@ -111,11 +114,50 @@
     transition: color 150ms ease;
   }
 
+  /* Two lines of the short description, whatever its length. */
+  &_lead {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ─── Colour swatches ────────────────────────────── */
+
+  &_swatches {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &_swatch {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--foreground);
+    border-radius: 50%;
+  }
+
+  &_swatch-more {
+    font-family: var(--font-inter), sans-serif;
+    font-size: var(--font-size-xs);
+    color: var(--color-muted);
+  }
+
   /* ─── Price ──────────────────────────────────────── */
 
   /* Sizing and colours come from the shared `Price` control. */
-  &_price {
-    margin-top: 8px;
+  &_price-row {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   /* ─── Footer / CTA ───────────────────────────────── */

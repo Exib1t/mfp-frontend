@@ -2,9 +2,13 @@ import { RotateCcw, X } from "lucide-react";
 import Button from "@/components/controls/Button/Button";
 import IconButton from "@/components/controls/IconButton/IconButton";
 import Typography from "@/components/controls/Typography/Typography";
+import { buildCategoryTree } from "@/entities/categories/helpers";
 import type { Category } from "@/entities/categories/types";
+import { PRODUCT_STATUS_LABELS } from "@/entities/products/constants";
+import type { ProductStatus } from "@/entities/products/types";
 import type { useCatalogFilters } from "../../useCatalogFilters";
 import AttributeFilter from "../AttributeFilter/AttributeFilter";
+import CategoryTree from "../CategoryTree/CategoryTree";
 import PriceRangeFilter from "../PriceRangeFilter/PriceRangeFilter";
 
 import "../../ProductsPage.styles.scss";
@@ -19,6 +23,13 @@ interface FilterSidebarProps {
 }
 
 const BASE_CLASS = "products-page";
+
+/** Availability filter values, in the order the sidebar offers them. */
+const STATUS_FILTERS: (ProductStatus | null)[] = [
+  null,
+  "in_stock",
+  "made_to_order",
+];
 
 function FilterSidebar({
   categories,
@@ -53,24 +64,41 @@ function FilterSidebar({
               type="button"
               className={`${BASE_CLASS}_cat-item`}
               data-active={state.categoryId === null}
+              data-level={0}
               onClick={() => state.selectCategory(null)}
             >
               <span>Усі</span>
             </button>
           </li>
-          {categories.map((category) => (
-            <li key={category.id}>
-              <button
-                type="button"
-                className={`${BASE_CLASS}_cat-item`}
-                data-active={state.categoryId === category.id}
-                onClick={() => state.selectCategory(category.id)}
-              >
-                <span>{category.name}</span>
-              </button>
-            </li>
-          ))}
         </ul>
+        <CategoryTree
+          nodes={buildCategoryTree(categories)}
+          selectedId={state.categoryId}
+          onSelect={state.selectCategory}
+        />
+      </div>
+
+      <div className={`${BASE_CLASS}_sidebar-section`}>
+        <Typography
+          variant="overline"
+          color="muted"
+          className={`${BASE_CLASS}_sidebar-title`}
+        >
+          Наявність
+        </Typography>
+        <div className={`${BASE_CLASS}_chips`}>
+          {STATUS_FILTERS.map((value) => (
+            <button
+              key={value ?? "all"}
+              type="button"
+              className={`${BASE_CLASS}_chip`}
+              data-active={state.status === value}
+              onClick={() => state.setStatus(value)}
+            >
+              {value === null ? "Усі" : PRODUCT_STATUS_LABELS[value]}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={`${BASE_CLASS}_sidebar-section`}>

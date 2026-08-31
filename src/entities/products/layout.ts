@@ -29,6 +29,7 @@ export const PRODUCT_GRID_COLUMNS = 12;
 export const DEFAULT_PRODUCT_LAYOUT: ProductBlock[] = [
   { id: "gallery", type: "gallery", span: 6, enabled: true },
   { id: "summary", type: "summary", span: 6, enabled: true },
+  { id: "description", type: "description", span: 12, enabled: true },
   { id: "specs", type: "specs", span: 12, enabled: true },
   { id: "reviews", type: "reviews", span: 12, enabled: true },
 ];

@@ -40,7 +40,7 @@ function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
     effective_price: effectivePrice,
     price_range: { min: effectivePrice, max: effectivePrice },
     stock: 0,
-    category: { id: 1, name: "Одяг", slug: "odyag" },
+    category: { id: 1, name: "Одяг", slug: "odyag", deleted_at: null },
     options: [],
     attributes: [],
     images: [],
@@ -48,6 +48,7 @@ function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
     meta_description: null,
     created_at: NOW,
     updated_at: NOW,
+    deleted_at: null,
     ...seed,
     variants: variantSeeds.map((variant) =>
       makeVariant(variant, effectivePrice),
@@ -63,6 +64,33 @@ export const SAMPLE_PRODUCTS: Product[] = [
     slug: "suknya-vyshyta-kalyna",
     short_description: "Ніжна вишита сукня з натурального льону.",
     price: 1200,
+    is_featured: true,
+    stock: 3,
+    options: [
+      {
+        id: 10,
+        name: "Колір",
+        sort_order: 0,
+        values: [
+          {
+            id: 100,
+            label: "Молочний",
+            value: "molochnyi",
+            color_hex: "#dec395",
+            image_url: null,
+            sort_order: 0,
+          },
+          {
+            id: 101,
+            label: "Шавлія",
+            value: "shavliia",
+            color_hex: "#9caf88",
+            image_url: null,
+            sort_order: 1,
+          },
+        ],
+      },
+    ],
     variantSeeds: [
       { id: 1, label: "Білий / M", stock: 5, is_default: true },
       { id: 2, label: "Шавлія / L", stock: 2, price: 1350 },
@@ -77,6 +105,15 @@ export const SAMPLE_PRODUCTS: Product[] = [
     sale_price: 1600,
     sale_active: true,
     status: "made_to_order",
+    price_range: { min: 1600, max: 2100 },
     variantSeeds: [{ id: 3, label: "Синій / L", stock: 3, is_default: true }],
+  }),
+  makeProduct({
+    id: 3,
+    name: "Вігвам «Молочний»",
+    slug: "vihvam-molochnyi",
+    short_description: "Розпродано — картка в стані «немає в наявності».",
+    price: 4000,
+    status: "out_of_stock",
   }),
 ];

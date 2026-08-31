@@ -13,6 +13,7 @@ import {
   getBasePrice,
   getEffectivePrice,
   getMainImageUrl,
+  getMaxQuantity,
   getVariantLabel,
 } from "@/entities/products/helpers";
 import type { Product, ProductVariant } from "@/entities/products/types";
@@ -85,7 +86,9 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 
       addItem(product, variant, quantity = 1) {
         setItems((prev) => {
-          const maxStock = variant ? variant.stock : product.stock;
+          // Not the raw counter: a product sold without one (made to order,
+          // or simply uncounted) still takes an order, capped by the limit.
+          const maxStock = getMaxQuantity(product, variant);
           const newKey = getCartItemKey({
             variantId: variant?.id ?? null,
             productId: product.id,

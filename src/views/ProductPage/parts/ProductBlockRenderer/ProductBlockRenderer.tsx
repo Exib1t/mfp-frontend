@@ -1,5 +1,6 @@
 "use client";
 
+import RichText from "@/components/controls/RichText/RichText";
 import Typography from "@/components/controls/Typography/Typography";
 import ProductGallery from "@/components/organisms/products/ProductGallery/ProductGallery";
 import ProductReviews from "@/components/organisms/products/ProductReviews/ProductReviews";
@@ -53,7 +54,8 @@ function ProductBlockRenderer({
           <Typography variant="h4" as="h2">
             Опис
           </Typography>
-          <Typography variant="body1">{product.description}</Typography>
+          {/* Admin-authored markup, not plain text — see `RichText`. */}
+          <RichText html={product.description} />
         </section>
       ) : null;
 

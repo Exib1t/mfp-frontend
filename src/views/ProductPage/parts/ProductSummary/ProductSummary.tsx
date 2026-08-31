@@ -35,7 +35,8 @@ function ProductSummary({
   const compareAt = getCompareAtPrice(effectivePrice, listedPrice);
   const discount = getDiscountPercent(effectivePrice, listedPrice);
 
-  const hasBadges = discount !== null || product.status !== "in_stock";
+  const hasBadges =
+    discount !== null || product.is_featured || product.status !== "in_stock";
 
   return (
     <div className={`${BASE_CLASS}_info`}>
@@ -53,6 +54,11 @@ function ProductSummary({
           {discount !== null && (
             <Badge variant="error" size="sm">
               −{discount}%
+            </Badge>
+          )}
+          {product.is_featured && (
+            <Badge variant="primary" size="sm">
+              Хіт
             </Badge>
           )}
           {product.status !== "in_stock" && (
@@ -76,22 +82,19 @@ function ProductSummary({
         </Typography>
       )}
 
-      {product.description && (
-        <Typography variant="body1" className={`${BASE_CLASS}_description`}>
-          {product.description}
-        </Typography>
-      )}
-
       <VariantPicker
+        options={product.options}
         variants={product.variants}
-        selectedVariantId={purchase.selectedVariantId}
+        selectedVariant={selectedVariant}
         onSelect={purchase.selectVariant}
       />
 
       <ProductActions
         canBuy={purchase.canBuy}
+        status={product.status}
         quantity={purchase.quantity}
-        variantStock={purchase.stock}
+        maxQuantity={purchase.maxQuantity}
+        lowStock={purchase.lowStock}
         onQuantityChange={purchase.setQuantity}
         onAddToCart={onAddToCart}
       />

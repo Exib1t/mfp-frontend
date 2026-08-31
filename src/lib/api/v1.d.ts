@@ -4,2646 +4,3344 @@
  */
 
 export interface paths {
-    "/api/v1/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Login with email and password */
-        post: operations["AuthController_login_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/api/v1/auth/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/auth/refresh": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Refresh access token */
-        post: operations["AuthController_refresh_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Login with email and password */
+    post: operations["AuthController_login_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/auth/refresh": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/auth/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get current authenticated user */
-        get: operations["AuthController_me_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Refresh access token */
+    post: operations["AuthController_refresh_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/auth/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Logout and invalidate refresh token */
-        post: operations["AuthController_logout_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get current authenticated user */
+    get: operations["AuthController_me_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/auth/logout": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all users (admin) */
-        get: operations["UsersAdminController_findAll_v1"];
-        put?: never;
-        /** Create user */
-        post: operations["UsersAdminController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Logout and invalidate refresh token */
+    post: operations["AuthController_logout_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/users": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/users/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get user by id (admin) */
-        get: operations["UsersAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Delete user */
-        delete: operations["UsersAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update user */
-        patch: operations["UsersAdminController_update_v1"];
-        trace?: never;
+    /**
+     * Get all users (admin)
+     * @description `deleted=only` returns the archive instead of the live list: the deleted accounts, newest tombstone first.
+     */
+    get: operations["UsersAdminController_findAll_v1"];
+    put?: never;
+    /** Create user */
+    post: operations["UsersAdminController_create_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/users/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/categories": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all categories */
-        get: operations["CategoriesController_findAll_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get user by id (admin) */
+    get: operations["UsersAdminController_findOne_v1"];
+    put?: never;
+    post?: never;
+    /** Delete user */
+    delete: operations["UsersAdminController_remove_v1"];
+    options?: never;
+    head?: never;
+    /** Update user */
+    patch: operations["UsersAdminController_update_v1"];
+    trace?: never;
+  };
+  "/api/v1/admin/users/{id}/restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/categories/tree": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get categories as a nested tree (each node carries `children`) */
-        get: operations["CategoriesController_findTree_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore a soft-deleted user
+     * @description Answers the 409 returned when a create reuses the email of a deleted account. Restoring brings the old password hash and role back, so the optional body is where a new password or role is set in the same request.
+     */
+    post: operations["UsersAdminController_restore_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/users/bulk-delete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/categories/{slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get category by slug */
-        get: operations["CategoriesController_findOne_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Delete several users in one call
+     * @description All or nothing: an id that is already gone fails the whole request, so a stale selection never deletes half of itself. The signed-in account is rejected outright.
+     */
+    post: operations["UsersAdminController_removeMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/users/bulk-restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/categories": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all categories (admin) */
-        get: operations["CategoriesAdminController_findAll_v1"];
-        put?: never;
-        /** Create category */
-        post: operations["CategoriesAdminController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore several soft-deleted users in one call
+     * @description All or nothing: an id that is live again fails the whole request, so a selection made against a stale archive never restores half of itself. Every account comes back with the role and password it had.
+     */
+    post: operations["UsersAdminController_restoreMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/categories": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/categories/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get category by id (admin) */
-        get: operations["CategoriesAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Delete category */
-        delete: operations["CategoriesAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update category */
-        patch: operations["CategoriesAdminController_update_v1"];
-        trace?: never;
+    /** Get all categories */
+    get: operations["CategoriesController_findAll_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/categories/tree": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/attributes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get attribute definitions (optionally scoped to a category) */
-        get: operations["AttributesController_findAll_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get categories as a nested tree (each node carries `children`) */
+    get: operations["CategoriesController_findTree_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/categories/{slug}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/attributes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all attributes (admin) */
-        get: operations["AttributesAdminController_findAll_v1"];
-        put?: never;
-        /** Create attribute */
-        post: operations["AttributesAdminController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get category by slug */
+    get: operations["CategoriesController_findOne_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/categories": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/attributes/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get attribute by id (admin) */
-        get: operations["AttributesAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Delete attribute */
-        delete: operations["AttributesAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update attribute */
-        patch: operations["AttributesAdminController_update_v1"];
-        trace?: never;
+    /**
+     * Get all categories (admin)
+     * @description `deleted=only` returns the archive instead of the live list: the deleted categories, newest tombstone first. They come back flat — a tombstone belongs to no tree.
+     */
+    get: operations["CategoriesAdminController_findAll_v1"];
+    put?: never;
+    /** Create category */
+    post: operations["CategoriesAdminController_create_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/categories/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/attributes/{id}/options": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add an option to a select-like attribute */
-        post: operations["AttributesAdminController_createOption_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get category by id (admin) */
+    get: operations["CategoriesAdminController_findOne_v1"];
+    put?: never;
+    post?: never;
+    /** Delete category */
+    delete: operations["CategoriesAdminController_remove_v1"];
+    options?: never;
+    head?: never;
+    /** Update category */
+    patch: operations["CategoriesAdminController_update_v1"];
+    trace?: never;
+  };
+  "/api/v1/admin/categories/{id}/restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/attributes/{id}/options/{optionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete an attribute option */
-        delete: operations["AttributesAdminController_removeOption_v1"];
-        options?: never;
-        head?: never;
-        /** Update an attribute option */
-        patch: operations["AttributesAdminController_updateOption_v1"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore a soft-deleted category
+     * @description Answers the 409 returned when a create reuses the slug of a deleted category. The optional body is applied on top of the restored row, so the values typed into the create form are not lost.
+     */
+    post: operations["CategoriesAdminController_restore_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/categories/bulk-delete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/categories/{categoryId}/attributes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Attributes wired to a category */
-        get: operations["CategoryAttributesAdminController_findAll_v1"];
-        /** Replace the attribute set of a category */
-        put: operations["CategoryAttributesAdminController_set_v1"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Delete several categorys in one call
+     * @description All or nothing: an id that is already gone fails the whole request, so a stale selection never deletes half of itself.
+     */
+    post: operations["CategoriesAdminController_removeMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/categories/bulk-restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/products": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Browse published products */
-        get: operations["ProductsController_findAll_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore several soft-deleted categories in one call
+     * @description All or nothing: an id that is live again fails the whole request, so a selection made against a stale archive never restores half of itself. A parent inside the same selection is restored along with its children; a parent outside it blocks the call (`RESTORE_BLOCKED`).
+     */
+    post: operations["CategoriesAdminController_restoreMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/attributes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/products/{slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get product by slug */
-        get: operations["ProductsController_findOne_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get attribute definitions (optionally scoped to a category) */
+    get: operations["AttributesController_findAll_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/attributes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/products": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all products (admin, incl. drafts) */
-        get: operations["ProductsAdminController_findAll_v1"];
-        put?: never;
-        /** Create product */
-        post: operations["ProductsAdminController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * Get all attributes (admin)
+     * @description `deleted=only` returns the archive instead of the live dictionary: the deleted characteristics, newest tombstone first.
+     */
+    get: operations["AttributesAdminController_findAll_v1"];
+    put?: never;
+    /** Create attribute */
+    post: operations["AttributesAdminController_create_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/attributes/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/products/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get product by id (admin) */
-        get: operations["ProductsAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Delete product */
-        delete: operations["ProductsAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update product */
-        patch: operations["ProductsAdminController_update_v1"];
-        trace?: never;
+    /** Get attribute by id (admin) */
+    get: operations["AttributesAdminController_findOne_v1"];
+    put?: never;
+    post?: never;
+    /** Delete attribute */
+    delete: operations["AttributesAdminController_remove_v1"];
+    options?: never;
+    head?: never;
+    /** Update attribute */
+    patch: operations["AttributesAdminController_update_v1"];
+    trace?: never;
+  };
+  "/api/v1/admin/attributes/{id}/restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/products/{id}/attributes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Replace the product's characteristic set, its axes and their values */
-        put: operations["ProductsAdminController_setAttributes_v1"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore a soft-deleted attribute
+     * @description Answers the 409 returned when a create reuses the code of a deleted attribute. The optional body is applied on top of the restored row, so the values typed into the create form are not lost.
+     */
+    post: operations["AttributesAdminController_restore_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/attributes/bulk-delete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/products/{id}/variants": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Replace the whole variant matrix
-         * @description Rows are matched to the stored ones by their set of attribute option ids, so prices and stock survive a regeneration. Combinations that disappear are soft-deleted, never removed.
-         */
-        put: operations["ProductsAdminController_setVariants_v1"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Delete several attributes in one call
+     * @description All or nothing: an id that is already gone fails the whole request, so a stale selection never deletes half of itself.
+     */
+    post: operations["AttributesAdminController_removeMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/attributes/bulk-restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/products/{id}/images": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Append uploaded files to the gallery (keeps existing images) */
-        post: operations["ProductsAdminController_addImages_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore several soft-deleted attributes in one call
+     * @description All or nothing: an id that is live again fails the whole request, so a selection made against a stale archive never restores half of itself. Options, category wiring and stored product values come back with each row.
+     */
+    post: operations["AttributesAdminController_restoreMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/attributes/{id}/options": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/products/{id}/images/{imageId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a single product image */
-        delete: operations["ProductsAdminController_removeImage_v1"];
-        options?: never;
-        head?: never;
-        /** Update one image (alt, order, variant binding) */
-        patch: operations["ProductsAdminController_updateImage_v1"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Add an option to a select-like attribute */
+    post: operations["AttributesAdminController_createOption_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/attributes/{id}/options/{optionId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/files/upload": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Upload a file to temporary storage */
-        post: operations["FilesController_upload_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete an attribute option */
+    delete: operations["AttributesAdminController_removeOption_v1"];
+    options?: never;
+    head?: never;
+    /** Update an attribute option */
+    patch: operations["AttributesAdminController_updateOption_v1"];
+    trace?: never;
+  };
+  "/api/v1/admin/categories/{categoryId}/attributes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/files/media": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Upload an image straight to permanent storage */
-        post: operations["FilesController_uploadMedia_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Attributes wired to a category */
+    get: operations["CategoryAttributesAdminController_findAll_v1"];
+    /** Replace the attribute set of a category */
+    put: operations["CategoryAttributesAdminController_set_v1"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/products": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/orders": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create order */
-        post: operations["OrdersController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Browse published products */
+    get: operations["ProductsController_findAll_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/products/{slug}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/orders/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get order by id */
-        get: operations["OrdersController_findOne_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get product by slug */
+    get: operations["ProductsController_findOne_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/orders": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get orders (admin, filtered + paginated) */
-        get: operations["OrdersAdminController_findAll_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * Get all products (admin, incl. drafts)
+     * @description `deleted=only` returns the archive instead of the live list: the deleted products, filters and paging unchanged.
+     */
+    get: operations["ProductsAdminController_findAll_v1"];
+    put?: never;
+    /** Create product */
+    post: operations["ProductsAdminController_create_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/orders/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Order counts and revenue per status */
-        get: operations["OrdersAdminController_stats_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get product by id (admin) */
+    get: operations["ProductsAdminController_findOne_v1"];
+    put?: never;
+    post?: never;
+    /** Delete product */
+    delete: operations["ProductsAdminController_remove_v1"];
+    options?: never;
+    head?: never;
+    /** Update product */
+    patch: operations["ProductsAdminController_update_v1"];
+    trace?: never;
+  };
+  "/api/v1/admin/products/{id}/restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/orders/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get order by id (admin) */
-        get: operations["OrdersAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Archive an order (soft delete) */
-        delete: operations["OrdersAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update customer, delivery or notes */
-        patch: operations["OrdersAdminController_update_v1"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore a soft-deleted product
+     * @description Answers the 409 returned when a create reuses the slug of a deleted product. The optional body is applied on top of the restored row, so the values typed into the create form are not lost.
+     */
+    post: operations["ProductsAdminController_restore_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/bulk-delete": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/orders/{id}/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update order status */
-        patch: operations["OrdersAdminController_updateStatus_v1"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Delete several products in one call
+     * @description All or nothing: an id that is already gone fails the whole request, so a stale selection never deletes half of itself.
+     */
+    post: operations["ProductsAdminController_removeMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/bulk-restore": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/reviews/product/{productId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get approved reviews for a product */
-        get: operations["ReviewsController_findByProduct_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Restore several soft-deleted products in one call
+     * @description All or nothing: an id that is live again fails the whole request, so a selection made against a stale archive never restores half of itself. A product filed under a deleted category blocks the call (`RESTORE_BLOCKED`).
+     */
+    post: operations["ProductsAdminController_restoreMany_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/{id}/attributes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/reviews": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Submit a review */
-        post: operations["ReviewsController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    /** Replace the product's characteristic set, its axes and their values */
+    put: operations["ProductsAdminController_setAttributes_v1"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/{id}/variants": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/reviews": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all reviews (admin) */
-        get: operations["ReviewsAdminController_findAll_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    /**
+     * Replace the whole variant matrix
+     * @description Rows are matched to the stored ones by their set of attribute option ids, so prices and stock survive a regeneration. Combinations that disappear are soft-deleted, never removed.
+     */
+    put: operations["ProductsAdminController_setVariants_v1"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/{id}/images": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/reviews/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get review by id (admin) */
-        get: operations["ReviewsAdminController_findOne_v1"];
-        put?: never;
-        post?: never;
-        /** Delete review */
-        delete: operations["ReviewsAdminController_remove_v1"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Append uploaded files to the gallery (keeps existing images) */
+    post: operations["ProductsAdminController_addImages_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/products/{id}/images/{imageId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/v1/admin/reviews/{id}/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update review status */
-        patch: operations["ReviewsAdminController_updateStatus_v1"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete a single product image */
+    delete: operations["ProductsAdminController_removeImage_v1"];
+    options?: never;
+    head?: never;
+    /** Update one image (alt, order, variant binding) */
+    patch: operations["ProductsAdminController_updateImage_v1"];
+    trace?: never;
+  };
+  "/api/v1/files/upload": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get?: never;
+    put?: never;
+    /** Upload a file to temporary storage */
+    post: operations["FilesController_upload_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/files/media": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Upload an image straight to permanent storage */
+    post: operations["FilesController_uploadMedia_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/orders": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create order */
+    post: operations["OrdersController_create_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/orders/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get order by id */
+    get: operations["OrdersController_findOne_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/orders": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get orders (admin, filtered + paginated) */
+    get: operations["OrdersAdminController_findAll_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/orders/stats": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Order counts and revenue per status */
+    get: operations["OrdersAdminController_stats_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/orders/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get order by id (admin) */
+    get: operations["OrdersAdminController_findOne_v1"];
+    put?: never;
+    post?: never;
+    /** Archive an order (soft delete) */
+    delete: operations["OrdersAdminController_remove_v1"];
+    options?: never;
+    head?: never;
+    /** Update customer, delivery or notes */
+    patch: operations["OrdersAdminController_update_v1"];
+    trace?: never;
+  };
+  "/api/v1/admin/orders/{id}/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update order status */
+    patch: operations["OrdersAdminController_updateStatus_v1"];
+    trace?: never;
+  };
+  "/api/v1/reviews/product/{productId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get approved reviews for a product */
+    get: operations["ReviewsController_findByProduct_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/reviews": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Submit a review */
+    post: operations["ReviewsController_create_v1"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/reviews": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get all reviews (admin) */
+    get: operations["ReviewsAdminController_findAll_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/reviews/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get review by id (admin) */
+    get: operations["ReviewsAdminController_findOne_v1"];
+    put?: never;
+    post?: never;
+    /** Delete review */
+    delete: operations["ReviewsAdminController_remove_v1"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/reviews/{id}/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update review status */
+    patch: operations["ReviewsAdminController_updateStatus_v1"];
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        LoginDto: {
-            /** Format: email */
-            email: string;
-            password: string;
-        };
-        LoginResponseDto: {
-            user: {
-                id: number;
-                email: string;
-                first_name: string;
-                last_name: string;
-                /** @enum {string} */
-                role: "admin" | "user";
-                /** Format: date-time */
-                created_at: string;
-            };
-            access_token: string;
-            refresh_token: string;
-            access_expires_at: string;
-        };
-        ApiResponseOfLoginResponseDto: {
-            data: components["schemas"]["LoginResponseDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        RefreshDto: {
-            refresh_token: string;
-        };
-        RefreshResponseDto: {
-            access_token: string;
-            access_expires_at: string;
-        };
-        ApiResponseOfRefreshResponseDto: {
-            data: components["schemas"]["RefreshResponseDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        AuthUserDto: {
-            id: number;
-            email: string;
-            first_name: string;
-            last_name: string;
-            /** @enum {string} */
-            role: "admin" | "user";
-            /** Format: date-time */
-            created_at: string;
-        };
-        ApiResponseOfAuthUserDto: {
-            data: components["schemas"]["AuthUserDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        LogoutDto: {
-            refresh_token: string;
-        };
-        UserDto: {
-            id: number;
-            email: string;
-            first_name: string;
-            last_name: string;
-            /** @enum {string} */
-            role: "admin" | "user";
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ApiArrayResponseOfUserDto: {
-            data: components["schemas"]["UserDto"][];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        ApiResponseOfUserDto: {
-            data: components["schemas"]["UserDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateUserDto: {
-            /** Format: email */
-            email: string;
-            password: string;
-            first_name: string;
-            last_name: string;
-            /**
-             * @default user
-             * @enum {string}
-             */
-            role: "admin" | "user";
-        };
-        UpdateUserDto: {
-            /** Format: email */
-            email?: string;
-            password?: string;
-            first_name?: string;
-            last_name?: string;
-            /** @enum {string} */
-            role?: "admin" | "user";
-        };
-        CategoryDto: {
-            id: number;
-            name: string;
-            slug: string;
-            description: string | null;
-            parent_id: number | null;
-            image_url: string | null;
-            meta_title: string | null;
-            meta_description: string | null;
-            sort_order: number;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ApiArrayResponseOfCategoryDto: {
-            data: components["schemas"]["CategoryDto"][];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        ApiResponseOfCategoryDto: {
-            data: components["schemas"]["CategoryDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateCategoryDto: {
-            name: string;
-            slug: string;
-            description?: string | null;
-            parent_id?: number | null;
-            /** Format: uri */
-            image_url?: string | null;
-            meta_title?: string | null;
-            meta_description?: string | null;
-            /** @default 0 */
-            sort_order: number;
-        };
-        UpdateCategoryDto: {
-            name?: string;
-            slug?: string;
-            description?: string | null;
-            parent_id?: number | null;
-            /** Format: uri */
-            image_url?: string | null;
-            meta_title?: string | null;
-            meta_description?: string | null;
-            /** @default 0 */
-            sort_order: number;
-        };
-        AttributeDto: {
-            id: number;
-            code: string;
-            name: string;
-            /** @enum {string} */
-            type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
-            unit: string | null;
-            group_name: string | null;
-            is_filterable: boolean;
-            is_visible: boolean;
-            sort_order: number;
-            options: {
-                id: number;
-                label: string;
-                value: string;
-                color_hex: string | null;
-                image_url: string | null;
-                sort_order: number;
-            }[];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ApiArrayResponseOfAttributeDto: {
-            data: components["schemas"]["AttributeDto"][];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        ApiResponseOfAttributeDto: {
-            data: components["schemas"]["AttributeDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateAttributeDto: {
-            code: string;
-            name: string;
-            /** @enum {string} */
-            type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
-            unit?: string | null;
-            group_name?: string | null;
-            is_filterable?: boolean;
-            is_visible?: boolean;
-            sort_order?: number;
-            options?: {
-                label: string;
-                value: string;
-                color_hex?: string | null;
-                /** Format: uri */
-                image_url?: string | null;
-                sort_order?: number;
-            }[];
-        };
-        UpdateAttributeDto: {
-            code?: string;
-            name?: string;
-            unit?: string | null;
-            group_name?: string | null;
-            is_filterable?: boolean;
-            is_visible?: boolean;
-            sort_order?: number;
-        };
-        CreateAttributeOptionDto: {
-            label: string;
-            value: string;
-            color_hex?: string | null;
-            /** Format: uri */
-            image_url?: string | null;
-            sort_order?: number;
-        };
-        AttributeOptionDto: {
-            id: number;
-            label: string;
-            value: string;
-            color_hex: string | null;
-            image_url: string | null;
-            sort_order: number;
-        };
-        ApiResponseOfAttributeOptionDto: {
-            data: components["schemas"]["AttributeOptionDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateAttributeOptionDto: {
-            label?: string;
-            value?: string;
-            color_hex?: string | null;
-            /** Format: uri */
-            image_url?: string | null;
-            sort_order?: number;
-        };
-        SetCategoryAttributesDto: {
-            attributes: {
-                attribute_id: number;
-                is_required?: boolean;
-                sort_order?: number;
-            }[];
-        };
-        ProductDto: {
-            id: number;
-            name: string;
-            slug: string;
-            sku: string | null;
-            short_description: string | null;
-            description: string | null;
-            /** @enum {string} */
-            status: "in_stock" | "made_to_order" | "out_of_stock";
-            is_featured: boolean;
-            is_published: boolean;
-            price: number;
-            sale_price: number | null;
-            sale_active: boolean;
-            effective_price: number;
-            price_range: {
-                min: number;
-                max: number;
-            };
-            stock: number;
-            category: {
-                id: number;
-                name: string;
-                slug: string;
-            };
-            options: {
-                id: number;
-                name: string;
-                sort_order: number;
-                values: {
-                    id: number;
-                    label: string;
-                    value: string;
-                    color_hex: string | null;
-                    image_url: string | null;
-                    sort_order: number;
-                }[];
-            }[];
-            variants: {
-                id: number;
-                sku: string | null;
-                label: string;
-                stock: number;
-                is_active: boolean;
-                is_default: boolean;
-                sort_order: number;
-                price: number;
-                price_override: number | null;
-                effective_price: number;
-                sale_active: boolean;
-                option_values: {
-                    option_id: number;
-                    option_name: string;
-                    value_id: number;
-                    label: string;
-                    value: string;
-                    color_hex: string | null;
-                    image_url: string | null;
-                }[];
-                image_ids: number[];
-            }[];
-            attributes: {
-                id: number;
-                code: string;
-                name: string;
-                /** @enum {string} */
-                type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
-                unit: string | null;
-                group_name: string | null;
-                is_filterable: boolean;
-                is_variant: boolean;
-                sort_order: number;
-                value: (string | number | boolean | {
-                    id: number;
-                    label: string;
-                    value: string;
-                    color_hex: string | null;
-                    image_url: string | null;
-                } | {
-                    id: number;
-                    label: string;
-                    value: string;
-                    color_hex: string | null;
-                    image_url: string | null;
-                }[]) | null;
-            }[];
-            images: {
-                id: number;
-                url: string;
-                alt: string | null;
-                variant_id: number | null;
-                sort_order: number;
-            }[];
-            meta_title: string | null;
-            meta_description: string | null;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        PaginationMeta: {
-            total: number;
-            page: number;
-            limit: number;
-            pages: number;
-        };
-        PaginatedProductDto: {
-            items: components["schemas"]["ProductDto"][];
-            meta: components["schemas"]["PaginationMeta"];
-        };
-        ApiPaginatedResponseOfProductDto: {
-            data: components["schemas"]["PaginatedProductDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        ApiResponseOfProductDto: {
-            data: components["schemas"]["ProductDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateProductDto: {
-            name: string;
-            slug: string;
-            sku?: string | null;
-            short_description?: string | null;
-            description?: string | null;
-            category_id: number;
-            /**
-             * @default in_stock
-             * @enum {string}
-             */
-            status: "in_stock" | "made_to_order" | "out_of_stock";
-            price: number;
-            sale_price?: number | null;
-            stock?: number;
-            meta_title?: string | null;
-            meta_description?: string | null;
-            is_featured?: boolean;
-            is_published?: boolean;
-            image_file_ids?: number[];
-        };
-        UpdateProductDto: {
-            name?: string;
-            slug?: string;
-            sku?: string | null;
-            short_description?: string | null;
-            description?: string | null;
-            category_id?: number;
-            /** @enum {string} */
-            status?: "in_stock" | "made_to_order" | "out_of_stock";
-            price?: number;
-            sale_price?: number | null;
-            stock?: number;
-            meta_title?: string | null;
-            meta_description?: string | null;
-            is_featured?: boolean;
-            is_published?: boolean;
-            image_file_ids?: number[];
-        };
-        SetProductAttributesDto: {
-            attributes: {
-                attribute_id: number;
-                /** @default false */
-                is_variant: boolean;
-                sort_order?: number;
-                value_text?: string | null;
-                value_number?: number | null;
-                value_bool?: boolean | null;
-                /** @default [] */
-                option_ids: number[];
-            }[];
-        };
-        SetProductVariantsDto: {
-            variants: {
-                attribute_option_ids: number[];
-                sku?: string | null;
-                price?: number | null;
-                /** @default 0 */
-                stock: number;
-                /** @default true */
-                is_active: boolean;
-                /** @default false */
-                is_default: boolean;
-                sort_order?: number;
-            }[];
-        };
-        AddProductImagesDto: {
-            file_ids: number[];
-            variant_id?: number | null;
-        };
-        UpdateProductImageDto: {
-            alt?: string | null;
-            sort_order?: number;
-            variant_id?: number | null;
-        };
-        FileDto: {
-            id: number;
-            original_name: string;
-            size: number;
-            ext: string;
-            mimetype: string;
-            s3_url: string;
-            /** Format: date-time */
-            created_at: string;
-        };
-        ApiResponseOfFileDto: {
-            data: components["schemas"]["FileDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        MediaUrlDto: {
-            url: string;
-        };
-        ApiResponseOfMediaUrlDto: {
-            data: components["schemas"]["MediaUrlDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateOrderDto: {
-            guest_name: string;
-            /** Format: email */
-            guest_email: string;
-            guest_phone: string;
-            address: string;
-            nova_poshta_ref?: string;
-            /** @enum {string} */
-            payment_method: "online" | "cash_on_delivery";
-            notes?: string;
-            items: {
-                variant_id?: number;
-                product_id?: number;
-                quantity: number;
-            }[];
-        };
-        OrderDto: {
-            id: number;
-            guest_name: string;
-            guest_email: string;
-            guest_phone: string;
-            address: string;
-            nova_poshta_ref: string | null;
-            /** @enum {string} */
-            payment_method: "online" | "cash_on_delivery";
-            /** @enum {string} */
-            payment_status: "pending" | "paid" | "failed";
-            /** @enum {string} */
-            status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
-            total_price: number;
-            notes: string | null;
-            items: {
-                id: number;
-                variant_id: number | null;
-                product_id: number | null;
-                quantity: number;
-                price: number;
-                product_name: string | null;
-                variant_label: string | null;
-                sku: string | null;
-                variant: {
-                    id: number;
-                    sku: string | null;
-                    stock: number;
-                } | null;
-                product: {
-                    id: number;
-                    name: string;
-                    slug: string;
-                } | null;
-            }[];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ApiResponseOfOrderDto: {
-            data: components["schemas"]["OrderDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        PaginatedOrderDto: {
-            items: components["schemas"]["OrderDto"][];
-            meta: components["schemas"]["PaginationMeta"];
-        };
-        ApiPaginatedResponseOfOrderDto: {
-            data: components["schemas"]["PaginatedOrderDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        OrderStatsDto: {
-            by_status: {
-                /** @enum {string} */
-                status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
-                orders: number;
-                revenue: number;
-            }[];
-            total_orders: number;
-            total_revenue: number;
-        };
-        ApiResponseOfOrderStatsDto: {
-            data: components["schemas"]["OrderStatsDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateOrderStatusDto: {
-            /** @enum {string} */
-            status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
-            /** @enum {string} */
-            payment_status?: "pending" | "paid" | "failed";
-        };
-        UpdateOrderDto: {
-            guest_name?: string;
-            /** Format: email */
-            guest_email?: string;
-            guest_phone?: string;
-            address?: string;
-            nova_poshta_ref?: string | null;
-            notes?: string | null;
-        };
-        ReviewDto: {
-            id: number;
-            product_id: number;
-            product: {
-                id: number;
-                name: string;
-                slug: string;
-            } | null;
-            author_name: string;
-            author_email: string | null;
-            rating: number;
-            body: string;
-            /** @enum {string} */
-            status: "pending" | "approved" | "rejected";
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-        };
-        ApiArrayResponseOfReviewDto: {
-            data: components["schemas"]["ReviewDto"][];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        CreateReviewDto: {
-            product_id: number;
-            author_name: string;
-            /** Format: email */
-            author_email?: string;
-            rating: number;
-            body: string;
-        };
-        ApiResponseOfReviewDto: {
-            data: components["schemas"]["ReviewDto"];
-            /** @example 2024-01-01T00:00:00.000Z */
-            timestamp: string;
-        };
-        UpdateReviewStatusDto: {
-            /** @enum {string} */
-            status: "pending" | "approved" | "rejected";
-        };
+  schemas: {
+    LoginDto: {
+      /** Format: email */
+      email: string;
+      password: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    LoginResponseDto: {
+      user: {
+        id: number;
+        email: string;
+        first_name: string;
+        last_name: string;
+        /** @enum {string} */
+        role: "admin" | "user";
+        /** Format: date-time */
+        created_at: string;
+      };
+      access_token: string;
+      refresh_token: string;
+      access_expires_at: string;
+    };
+    ApiResponseOfLoginResponseDto: {
+      data: components["schemas"]["LoginResponseDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    RefreshDto: {
+      refresh_token: string;
+    };
+    RefreshResponseDto: {
+      access_token: string;
+      access_expires_at: string;
+    };
+    ApiResponseOfRefreshResponseDto: {
+      data: components["schemas"]["RefreshResponseDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    AuthUserDto: {
+      id: number;
+      email: string;
+      first_name: string;
+      last_name: string;
+      /** @enum {string} */
+      role: "admin" | "user";
+      /** Format: date-time */
+      created_at: string;
+    };
+    ApiResponseOfAuthUserDto: {
+      data: components["schemas"]["AuthUserDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    LogoutDto: {
+      refresh_token: string;
+    };
+    UserDto: {
+      id: number;
+      email: string;
+      first_name: string;
+      last_name: string;
+      /** @enum {string} */
+      role: "admin" | "user";
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      /** Format: date-time */
+      deleted_at: string | null;
+    };
+    ApiArrayResponseOfUserDto: {
+      data: components["schemas"]["UserDto"][];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    ApiResponseOfUserDto: {
+      data: components["schemas"]["UserDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateUserDto: {
+      /** Format: email */
+      email: string;
+      password: string;
+      first_name: string;
+      last_name: string;
+      /**
+       * @default user
+       * @enum {string}
+       */
+      role: "admin" | "user";
+    };
+    UpdateUserDto: {
+      /** Format: email */
+      email?: string;
+      password?: string;
+      first_name?: string;
+      last_name?: string;
+      /** @enum {string} */
+      role?: "admin" | "user";
+    };
+    BulkIdsDto: {
+      ids: number[];
+    };
+    CategoryDto: {
+      id: number;
+      name: string;
+      slug: string;
+      description: string | null;
+      parent_id: number | null;
+      image_url: string | null;
+      meta_title: string | null;
+      meta_description: string | null;
+      sort_order: number;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      /** Format: date-time */
+      deleted_at: string | null;
+    };
+    ApiArrayResponseOfCategoryDto: {
+      data: components["schemas"]["CategoryDto"][];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    ApiResponseOfCategoryDto: {
+      data: components["schemas"]["CategoryDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateCategoryDto: {
+      name: string;
+      slug: string;
+      description?: string | null;
+      parent_id?: number | null;
+      /** Format: uri */
+      image_url?: string | null;
+      meta_title?: string | null;
+      meta_description?: string | null;
+      /** @default 0 */
+      sort_order: number;
+    };
+    UpdateCategoryDto: {
+      name?: string;
+      slug?: string;
+      description?: string | null;
+      parent_id?: number | null;
+      /** Format: uri */
+      image_url?: string | null;
+      meta_title?: string | null;
+      meta_description?: string | null;
+      /** @default 0 */
+      sort_order: number;
+    };
+    AttributeDto: {
+      id: number;
+      code: string;
+      name: string;
+      /** @enum {string} */
+      type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
+      unit: string | null;
+      group_name: string | null;
+      is_filterable: boolean;
+      is_visible: boolean;
+      sort_order: number;
+      options: {
+        id: number;
+        label: string;
+        value: string;
+        color_hex: string | null;
+        image_url: string | null;
+        sort_order: number;
+      }[];
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      /** Format: date-time */
+      deleted_at: string | null;
+    };
+    ApiArrayResponseOfAttributeDto: {
+      data: components["schemas"]["AttributeDto"][];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    ApiResponseOfAttributeDto: {
+      data: components["schemas"]["AttributeDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateAttributeDto: {
+      code: string;
+      name: string;
+      /** @enum {string} */
+      type: "text" | "number" | "boolean" | "select" | "multiselect" | "color";
+      unit?: string | null;
+      group_name?: string | null;
+      is_filterable?: boolean;
+      is_visible?: boolean;
+      sort_order?: number;
+      options?: {
+        label: string;
+        value: string;
+        color_hex?: string | null;
+        /** Format: uri */
+        image_url?: string | null;
+        sort_order?: number;
+      }[];
+    };
+    UpdateAttributeDto: {
+      code?: string;
+      name?: string;
+      unit?: string | null;
+      group_name?: string | null;
+      is_filterable?: boolean;
+      is_visible?: boolean;
+      sort_order?: number;
+    };
+    CreateAttributeOptionDto: {
+      label: string;
+      value: string;
+      color_hex?: string | null;
+      /** Format: uri */
+      image_url?: string | null;
+      sort_order?: number;
+    };
+    AttributeOptionDto: {
+      id: number;
+      label: string;
+      value: string;
+      color_hex: string | null;
+      image_url: string | null;
+      sort_order: number;
+    };
+    ApiResponseOfAttributeOptionDto: {
+      data: components["schemas"]["AttributeOptionDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    UpdateAttributeOptionDto: {
+      label?: string;
+      value?: string;
+      color_hex?: string | null;
+      /** Format: uri */
+      image_url?: string | null;
+      sort_order?: number;
+    };
+    SetCategoryAttributesDto: {
+      attributes: {
+        attribute_id: number;
+        is_required?: boolean;
+        sort_order?: number;
+      }[];
+    };
+    ProductDto: {
+      id: number;
+      name: string;
+      slug: string;
+      sku: string | null;
+      short_description: string | null;
+      description: string | null;
+      /** @enum {string} */
+      status: "in_stock" | "made_to_order" | "out_of_stock";
+      is_featured: boolean;
+      is_published: boolean;
+      price: number;
+      sale_price: number | null;
+      sale_active: boolean;
+      effective_price: number;
+      price_range: {
+        min: number;
+        max: number;
+      };
+      stock: number;
+      category: {
+        id: number;
+        name: string;
+        slug: string;
+        /** Format: date-time */
+        deleted_at: string | null;
+      };
+      options: {
+        id: number;
+        name: string;
+        sort_order: number;
+        values: {
+          id: number;
+          label: string;
+          value: string;
+          color_hex: string | null;
+          image_url: string | null;
+          sort_order: number;
+        }[];
+      }[];
+      variants: {
+        id: number;
+        sku: string | null;
+        label: string;
+        stock: number;
+        is_active: boolean;
+        is_default: boolean;
+        sort_order: number;
+        price: number;
+        price_override: number | null;
+        effective_price: number;
+        sale_active: boolean;
+        option_values: {
+          option_id: number;
+          option_name: string;
+          value_id: number;
+          label: string;
+          value: string;
+          color_hex: string | null;
+          image_url: string | null;
+        }[];
+        image_ids: number[];
+      }[];
+      attributes: {
+        id: number;
+        code: string;
+        name: string;
+        /** @enum {string} */
+        type:
+          | "text"
+          | "number"
+          | "boolean"
+          | "select"
+          | "multiselect"
+          | "color";
+        unit: string | null;
+        group_name: string | null;
+        is_filterable: boolean;
+        is_variant: boolean;
+        sort_order: number;
+        value:
+          | (
+              | string
+              | number
+              | boolean
+              | {
+                  id: number;
+                  label: string;
+                  value: string;
+                  color_hex: string | null;
+                  image_url: string | null;
+                }
+              | {
+                  id: number;
+                  label: string;
+                  value: string;
+                  color_hex: string | null;
+                  image_url: string | null;
+                }[]
+            )
+          | null;
+      }[];
+      images: {
+        id: number;
+        url: string;
+        alt: string | null;
+        variant_id: number | null;
+        sort_order: number;
+      }[];
+      meta_title: string | null;
+      meta_description: string | null;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      /** Format: date-time */
+      deleted_at: string | null;
+    };
+    PaginationMeta: {
+      total: number;
+      page: number;
+      limit: number;
+      pages: number;
+    };
+    PaginatedProductDto: {
+      items: components["schemas"]["ProductDto"][];
+      meta: components["schemas"]["PaginationMeta"];
+    };
+    ApiPaginatedResponseOfProductDto: {
+      data: components["schemas"]["PaginatedProductDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    ApiResponseOfProductDto: {
+      data: components["schemas"]["ProductDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateProductDto: {
+      name: string;
+      slug: string;
+      sku?: string | null;
+      short_description?: string | null;
+      description?: string | null;
+      category_id: number;
+      /**
+       * @default in_stock
+       * @enum {string}
+       */
+      status: "in_stock" | "made_to_order" | "out_of_stock";
+      price: number;
+      sale_price?: number | null;
+      stock?: number;
+      meta_title?: string | null;
+      meta_description?: string | null;
+      is_featured?: boolean;
+      is_published?: boolean;
+      image_file_ids?: number[];
+    };
+    UpdateProductDto: {
+      name?: string;
+      slug?: string;
+      sku?: string | null;
+      short_description?: string | null;
+      description?: string | null;
+      category_id?: number;
+      /** @enum {string} */
+      status?: "in_stock" | "made_to_order" | "out_of_stock";
+      price?: number;
+      sale_price?: number | null;
+      stock?: number;
+      meta_title?: string | null;
+      meta_description?: string | null;
+      is_featured?: boolean;
+      is_published?: boolean;
+      image_file_ids?: number[];
+    };
+    SetProductAttributesDto: {
+      attributes: {
+        attribute_id: number;
+        /** @default false */
+        is_variant: boolean;
+        sort_order?: number;
+        value_text?: string | null;
+        value_number?: number | null;
+        value_bool?: boolean | null;
+        /** @default [] */
+        option_ids: number[];
+      }[];
+    };
+    SetProductVariantsDto: {
+      variants: {
+        attribute_option_ids: number[];
+        sku?: string | null;
+        price?: number | null;
+        /** @default 0 */
+        stock: number;
+        /** @default true */
+        is_active: boolean;
+        /** @default false */
+        is_default: boolean;
+        sort_order?: number;
+      }[];
+    };
+    AddProductImagesDto: {
+      file_ids: number[];
+      variant_id?: number | null;
+    };
+    UpdateProductImageDto: {
+      alt?: string | null;
+      sort_order?: number;
+      variant_id?: number | null;
+    };
+    FileDto: {
+      id: number;
+      original_name: string;
+      size: number;
+      ext: string;
+      mimetype: string;
+      s3_url: string;
+      /** Format: date-time */
+      created_at: string;
+    };
+    ApiResponseOfFileDto: {
+      data: components["schemas"]["FileDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    MediaUrlDto: {
+      url: string;
+    };
+    ApiResponseOfMediaUrlDto: {
+      data: components["schemas"]["MediaUrlDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateOrderDto: {
+      guest_name: string;
+      /** Format: email */
+      guest_email: string;
+      guest_phone: string;
+      address: string;
+      nova_poshta_ref?: string;
+      /** @enum {string} */
+      payment_method: "online" | "cash_on_delivery";
+      notes?: string;
+      items: {
+        variant_id?: number;
+        product_id?: number;
+        quantity: number;
+      }[];
+    };
+    OrderDto: {
+      id: number;
+      guest_name: string;
+      guest_email: string;
+      guest_phone: string;
+      address: string;
+      nova_poshta_ref: string | null;
+      /** @enum {string} */
+      payment_method: "online" | "cash_on_delivery";
+      /** @enum {string} */
+      payment_status: "pending" | "paid" | "failed";
+      /** @enum {string} */
+      status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
+      total_price: number;
+      notes: string | null;
+      items: {
+        id: number;
+        variant_id: number | null;
+        product_id: number | null;
+        quantity: number;
+        price: number;
+        product_name: string | null;
+        variant_label: string | null;
+        sku: string | null;
+        variant: {
+          id: number;
+          sku: string | null;
+          stock: number;
+        } | null;
+        product: {
+          id: number;
+          name: string;
+          slug: string;
+        } | null;
+      }[];
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    ApiResponseOfOrderDto: {
+      data: components["schemas"]["OrderDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    PaginatedOrderDto: {
+      items: components["schemas"]["OrderDto"][];
+      meta: components["schemas"]["PaginationMeta"];
+    };
+    ApiPaginatedResponseOfOrderDto: {
+      data: components["schemas"]["PaginatedOrderDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    OrderStatsDto: {
+      by_status: {
+        /** @enum {string} */
+        status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
+        orders: number;
+        revenue: number;
+      }[];
+      total_orders: number;
+      total_revenue: number;
+    };
+    ApiResponseOfOrderStatsDto: {
+      data: components["schemas"]["OrderStatsDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    UpdateOrderStatusDto: {
+      /** @enum {string} */
+      status: "new" | "processing" | "shipped" | "delivered" | "cancelled";
+      /** @enum {string} */
+      payment_status?: "pending" | "paid" | "failed";
+    };
+    UpdateOrderDto: {
+      guest_name?: string;
+      /** Format: email */
+      guest_email?: string;
+      guest_phone?: string;
+      address?: string;
+      nova_poshta_ref?: string | null;
+      notes?: string | null;
+    };
+    ReviewDto: {
+      id: number;
+      product_id: number;
+      product: {
+        id: number;
+        name: string;
+        slug: string;
+      } | null;
+      author_name: string;
+      author_email: string | null;
+      rating: number;
+      body: string;
+      /** @enum {string} */
+      status: "pending" | "approved" | "rejected";
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    ApiArrayResponseOfReviewDto: {
+      data: components["schemas"]["ReviewDto"][];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateReviewDto: {
+      product_id: number;
+      author_name: string;
+      /** Format: email */
+      author_email?: string;
+      rating: number;
+      body: string;
+    };
+    ApiResponseOfReviewDto: {
+      data: components["schemas"]["ReviewDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    UpdateReviewStatusDto: {
+      /** @enum {string} */
+      status: "pending" | "approved" | "rejected";
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    AuthController_login_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LoginDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfLoginResponseDto"];
-                };
-            };
-            /** @description Invalid credentials */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  AuthController_login_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    AuthController_refresh_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RefreshDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfRefreshResponseDto"];
-                };
-            };
-            /** @description Invalid or expired refresh token */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDto"];
+      };
     };
-    AuthController_me_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfAuthUserDto"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfLoginResponseDto"];
         };
+      };
+      /** @description Invalid credentials */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    AuthController_logout_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LogoutDto"];
-            };
-        };
-        responses: {
-            /** @description Logged out successfully */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  AuthController_refresh_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    UsersAdminController_findAll_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfUserDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RefreshDto"];
+      };
     };
-    UsersAdminController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateUserDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfRefreshResponseDto"];
         };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfUserDto"];
-                };
-            };
+      };
+      /** @description Invalid or expired refresh token */
+      401: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
     };
-    UsersAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfUserDto"];
-                };
-            };
-            /** @description User not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  AuthController_me_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    UsersAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description User deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAuthUserDto"];
         };
+      };
     };
-    UsersAdminController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfUserDto"];
-                };
-            };
-        };
+  };
+  AuthController_logout_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CategoriesController_findAll_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LogoutDto"];
+      };
     };
-    CategoriesController_findTree_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description Logged out successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    CategoriesController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                slug: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
-                };
-            };
-            /** @description Category not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  UsersAdminController_findAll_v1: {
+    parameters: {
+      query?: {
+        deleted?: "none" | "only";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CategoriesAdminController_findAll_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfUserDto"];
         };
+      };
     };
-    CategoriesAdminController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCategoryDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
-                };
-            };
-        };
+  };
+  UsersAdminController_create_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CategoriesAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
-                };
-            };
-            /** @description Category not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateUserDto"];
+      };
     };
-    CategoriesAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Category deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfUserDto"];
         };
+      };
     };
-    CategoriesAdminController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateCategoryDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
-                };
-            };
-        };
+  };
+  UsersAdminController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    AttributesController_findAll_v1: {
-        parameters: {
-            query?: {
-                category_id?: number;
-                is_filterable?: boolean;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfUserDto"];
         };
+      };
+      /** @description User not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    AttributesAdminController_findAll_v1: {
-        parameters: {
-            query?: {
-                category_id?: number;
-                is_filterable?: boolean;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
-                };
-            };
-        };
+  };
+  UsersAdminController_remove_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    AttributesAdminController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description User deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateAttributeDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    AttributesAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
-                };
-            };
-            /** @description Attribute not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  UsersAdminController_update_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    AttributesAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateUserDto"];
+      };
     };
-    AttributesAdminController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateAttributeDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfUserDto"];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
-                };
-            };
-        };
+      };
     };
-    AttributesAdminController_createOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateAttributeOptionDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfAttributeOptionDto"];
-                };
-            };
-        };
+  };
+  UsersAdminController_restore_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    AttributesAdminController_removeOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["UpdateUserDto"];
+      };
     };
-    AttributesAdminController_updateOption_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                optionId: number;
-            };
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateAttributeOptionDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfUserDto"];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfAttributeOptionDto"];
-                };
-            };
+      };
+      /** @description User not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
+      /** @description User is not deleted */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    CategoryAttributesAdminController_findAll_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                categoryId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
-                };
-            };
-        };
+  };
+  UsersAdminController_removeMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CategoryAttributesAdminController_set_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                categoryId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetCategoryAttributesDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
     };
-    ProductsController_findAll_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                category_id?: number;
-                include_descendants?: boolean | ("0" | "1" | "true" | "false");
-                status?: "in_stock" | "made_to_order" | "out_of_stock";
-                search?: string;
-                min_price?: number;
-                max_price?: number;
-                is_featured?: boolean | ("0" | "1" | "true" | "false");
-                in_stock?: boolean | ("0" | "1" | "true" | "false");
-                sort?: "newest" | "oldest" | "price_asc" | "price_desc" | "name_asc" | "name_desc";
-                /** @description Facets keyed by attribute code: attributes[color]=red,blue or attributes[width_cm]=80..120 */
-                attributes?: {
-                    [key: string]: string;
-                };
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
-                };
-            };
+        content?: never;
+      };
+      /** @description The selection includes yourself */
+      400: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
+      /** @description One of the ids does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    ProductsController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                slug: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-            /** @description Product not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  UsersAdminController_restoreMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    ProductsAdminController_findAll_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                category_id?: number;
-                include_descendants?: boolean | ("0" | "1" | "true" | "false");
-                status?: "in_stock" | "made_to_order" | "out_of_stock";
-                search?: string;
-                min_price?: number;
-                max_price?: number;
-                is_featured?: boolean | ("0" | "1" | "true" | "false");
-                in_stock?: boolean | ("0" | "1" | "true" | "false");
-                sort?: "newest" | "oldest" | "price_asc" | "price_desc" | "name_asc" | "name_desc";
-                attributes?: {
-                    [key: string]: string;
-                };
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
     };
-    ProductsAdminController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateProductDto"];
-            };
+        content?: never;
+      };
+      /** @description One of the ids does not exist or is not deleted */
+      404: {
+        headers: {
+          [name: string]: unknown;
         };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    ProductsAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-            /** @description Product not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CategoriesController_findAll_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    ProductsAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
         };
+      };
     };
-    ProductsAdminController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateProductDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-        };
+  };
+  CategoriesController_findTree_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    ProductsAdminController_setAttributes_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetProductAttributesDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-        };
+      };
     };
-    ProductsAdminController_setVariants_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SetProductVariantsDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-        };
+  };
+  CategoriesController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
     };
-    ProductsAdminController_addImages_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AddProductImagesDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
         };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
+      };
+      /** @description Category not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
     };
-    ProductsAdminController_removeImage_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                imageId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CategoriesAdminController_findAll_v1: {
+    parameters: {
+      query?: {
+        deleted?: "none" | "only";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    ProductsAdminController_updateImage_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-                imageId: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateProductImageDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfCategoryDto"];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfProductDto"];
-                };
-            };
-        };
+      };
     };
-    FilesController_upload_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": {
-                    /** Format: binary */
-                    file: string;
-                };
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfFileDto"];
-                };
-            };
-        };
+  };
+  CategoriesAdminController_create_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    FilesController_uploadMedia_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": {
-                    /** Format: binary */
-                    file: string;
-                    /** @enum {string} */
-                    folder?: "attributes" | "categories" | "misc";
-                };
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfMediaUrlDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCategoryDto"];
+      };
     };
-    OrdersController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateOrderDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
         };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfOrderDto"];
-                };
-            };
-        };
+      };
     };
-    OrdersController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfOrderDto"];
-                };
-            };
-            /** @description Order not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CategoriesAdminController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    OrdersAdminController_findAll_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                status?: "new" | "processing" | "shipped" | "delivered" | "cancelled";
-                payment_status?: "pending" | "paid" | "failed";
-                payment_method?: "online" | "cash_on_delivery";
-                search?: string;
-                created_from?: string;
-                created_to?: string;
-                sort?: "newest" | "oldest" | "total_desc" | "total_asc";
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiPaginatedResponseOfOrderDto"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
         };
+      };
+      /** @description Category not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    OrdersAdminController_stats_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfOrderStatsDto"];
-                };
-            };
-        };
+  };
+  CategoriesAdminController_remove_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    OrdersAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Category deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfOrderDto"];
-                };
-            };
-            /** @description Order not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+        content?: never;
+      };
     };
-    OrdersAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Order archived */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CategoriesAdminController_update_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    OrdersAdminController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateOrderDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfOrderDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateCategoryDto"];
+      };
     };
-    OrdersAdminController_updateStatus_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateOrderStatusDto"];
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfOrderDto"];
-                };
-            };
-        };
+      };
     };
-    ReviewsController_findByProduct_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                productId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfReviewDto"];
-                };
-            };
-        };
+  };
+  CategoriesAdminController_restore_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    ReviewsController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateReviewDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfReviewDto"];
-                };
-            };
-        };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["UpdateCategoryDto"];
+      };
     };
-    ReviewsAdminController_findAll_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-                product_id?: number;
-                status?: "pending" | "approved" | "rejected";
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiArrayResponseOfReviewDto"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfCategoryDto"];
         };
+      };
+      /** @description Category not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Category is not deleted, or its parent is deleted and has to be restored first (`RESTORE_BLOCKED`) */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    ReviewsAdminController_findOne_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfReviewDto"];
-                };
-            };
-            /** @description Review not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CategoriesAdminController_removeMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    ReviewsAdminController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Review deleted */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
     };
-    ReviewsAdminController_updateStatus_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateReviewStatusDto"];
-            };
+        content?: never;
+      };
+      /** @description One of the ids does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown;
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiResponseOfReviewDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
+  };
+  CategoriesAdminController_restoreMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
+    };
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description One of the ids does not exist or is not deleted */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A parent outside the selection is deleted */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesController_findAll_v1: {
+    parameters: {
+      query?: {
+        category_id?: number;
+        is_filterable?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+        };
+      };
+    };
+  };
+  AttributesAdminController_findAll_v1: {
+    parameters: {
+      query?: {
+        category_id?: number;
+        is_filterable?: boolean;
+        deleted?: "none" | "only";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+        };
+      };
+    };
+  };
+  AttributesAdminController_create_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAttributeDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+        };
+      };
+    };
+  };
+  AttributesAdminController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+        };
+      };
+      /** @description Attribute not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesAdminController_remove_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesAdminController_update_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateAttributeDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+        };
+      };
+    };
+  };
+  AttributesAdminController_restore_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["UpdateAttributeDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAttributeDto"];
+        };
+      };
+      /** @description Attribute not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Attribute is not deleted */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesAdminController_removeMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
+    };
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description One of the ids does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesAdminController_restoreMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
+    };
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description One of the ids does not exist or is not deleted */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesAdminController_createOption_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAttributeOptionDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAttributeOptionDto"];
+        };
+      };
+    };
+  };
+  AttributesAdminController_removeOption_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+        optionId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  AttributesAdminController_updateOption_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+        optionId: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateAttributeOptionDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfAttributeOptionDto"];
+        };
+      };
+    };
+  };
+  CategoryAttributesAdminController_findAll_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        categoryId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+        };
+      };
+    };
+  };
+  CategoryAttributesAdminController_set_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        categoryId: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetCategoryAttributesDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfAttributeDto"];
+        };
+      };
+    };
+  };
+  ProductsController_findAll_v1: {
+    parameters: {
+      query?: {
+        page?: number;
+        limit?: number;
+        category_id?: number;
+        include_descendants?: boolean | ("0" | "1" | "true" | "false");
+        status?: "in_stock" | "made_to_order" | "out_of_stock";
+        search?: string;
+        min_price?: number;
+        max_price?: number;
+        is_featured?: boolean | ("0" | "1" | "true" | "false");
+        in_stock?: boolean | ("0" | "1" | "true" | "false");
+        sort?:
+          | "newest"
+          | "oldest"
+          | "price_asc"
+          | "price_desc"
+          | "name_asc"
+          | "name_desc";
+        /** @description Facets keyed by attribute code: attributes[color]=red,blue or attributes[width_cm]=80..120 */
+        attributes?: {
+          [key: string]: string;
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+      /** @description Product not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_findAll_v1: {
+    parameters: {
+      query?: {
+        page?: number;
+        limit?: number;
+        category_id?: number;
+        include_descendants?: boolean | ("0" | "1" | "true" | "false");
+        status?: "in_stock" | "made_to_order" | "out_of_stock";
+        search?: string;
+        min_price?: number;
+        max_price?: number;
+        is_featured?: boolean | ("0" | "1" | "true" | "false");
+        in_stock?: boolean | ("0" | "1" | "true" | "false");
+        sort?:
+          | "newest"
+          | "oldest"
+          | "price_asc"
+          | "price_desc"
+          | "name_asc"
+          | "name_desc";
+        attributes?: {
+          [key: string]: string;
+        };
+        deleted?: "none" | "only";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsAdminController_create_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateProductDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsAdminController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+      /** @description Product not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_remove_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_update_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateProductDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsAdminController_restore_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["UpdateProductDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+      /** @description Product not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Product is not deleted, or its category is deleted and has to be restored first (`RESTORE_BLOCKED`) */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_removeMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
+    };
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description One of the ids does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_restoreMany_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BulkIdsDto"];
+      };
+    };
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description One of the ids does not exist or is not deleted */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description A category is deleted */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_setAttributes_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetProductAttributesDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsAdminController_setVariants_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SetProductVariantsDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsAdminController_addImages_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AddProductImagesDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  ProductsAdminController_removeImage_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+        imageId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ProductsAdminController_updateImage_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+        imageId: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateProductImageDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+        };
+      };
+    };
+  };
+  FilesController_upload_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /** Format: binary */
+          file: string;
+        };
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfFileDto"];
+        };
+      };
+    };
+  };
+  FilesController_uploadMedia_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /** Format: binary */
+          file: string;
+          /** @enum {string} */
+          folder?: "attributes" | "categories" | "misc";
+        };
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfMediaUrlDto"];
+        };
+      };
+    };
+  };
+  OrdersController_create_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateOrderDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfOrderDto"];
+        };
+      };
+    };
+  };
+  OrdersController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfOrderDto"];
+        };
+      };
+      /** @description Order not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  OrdersAdminController_findAll_v1: {
+    parameters: {
+      query?: {
+        page?: number;
+        limit?: number;
+        status?: "new" | "processing" | "shipped" | "delivered" | "cancelled";
+        payment_status?: "pending" | "paid" | "failed";
+        payment_method?: "online" | "cash_on_delivery";
+        search?: string;
+        created_from?: string;
+        created_to?: string;
+        sort?: "newest" | "oldest" | "total_desc" | "total_asc";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiPaginatedResponseOfOrderDto"];
+        };
+      };
+    };
+  };
+  OrdersAdminController_stats_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfOrderStatsDto"];
+        };
+      };
+    };
+  };
+  OrdersAdminController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfOrderDto"];
+        };
+      };
+      /** @description Order not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  OrdersAdminController_remove_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Order archived */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  OrdersAdminController_update_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateOrderDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfOrderDto"];
+        };
+      };
+    };
+  };
+  OrdersAdminController_updateStatus_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateOrderStatusDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfOrderDto"];
+        };
+      };
+    };
+  };
+  ReviewsController_findByProduct_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        productId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfReviewDto"];
+        };
+      };
+    };
+  };
+  ReviewsController_create_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateReviewDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfReviewDto"];
+        };
+      };
+    };
+  };
+  ReviewsAdminController_findAll_v1: {
+    parameters: {
+      query?: {
+        page?: number;
+        limit?: number;
+        product_id?: number;
+        status?: "pending" | "approved" | "rejected";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiArrayResponseOfReviewDto"];
+        };
+      };
+    };
+  };
+  ReviewsAdminController_findOne_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfReviewDto"];
+        };
+      };
+      /** @description Review not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ReviewsAdminController_remove_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Review deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ReviewsAdminController_updateStatus_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateReviewStatusDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ApiResponseOfReviewDto"];
+        };
+      };
+    };
+  };
 }

@@ -4,127 +4,93 @@
 
 ## Purpose
 
-Display a single product in a grid. Clickable → `/products/[slug]`.
+One product in a grid — catalogue, home page row, search results. Links to
+`/products/[slug]`; adds to the cart without leaving the grid.
 
 ## Props
 
 | Prop | Type | Description |
 |---|---|---|
-| `product` | `Product` | From `entities/products/models.ts` |
+| `product` | `Product` | `ProductDto` as served by the public API |
 | `className` | `string` | Optional extension |
 
 ## Visual structure
 
 ```
 ┌─────────────────────────┐
+│  [−20%] [Хіт]           │  ← badges overlay the image, top-left
+│        IMAGE            │  ← 4:5, cover, scales 1.04 on hover
 │                         │
-│        IMAGE            │  ← square-ish ratio ~4:5
-│                         │
-│  [badge]      [status]  │  ← overlaid on image
-│                         │
-├─────────────────────────│
-│  Category name          │  ← overline variant, muted
-│  Product name           │  ← subtitle1, bold
-│                         │
-│  1 200 ₴  ~~1 500 ₴~~  │  ← price row
-│                         │
-│  [Обрати]               │  ← ghost/secondary button, appears on hover
+├─────────────────────────┤
+│  ВІГВАМИ                │  ← category, overline / muted
+│  Молочний вігвам        │  ← subtitle1, h3
+│  Затишний дитячий…      │  ← short_description, clamped to 2 lines
+│  ● ● ●                  │  ← colour swatches, up to 5 then "+N"
+│  4 000 ₴   Залишилось 3 │  ← price row, low-stock note on the right
+├─────────────────────────┤
+│  [ В кошик ]            │  ← appears on hover
 └─────────────────────────┘
 ```
 
-## Image area
+## Data rules
 
-- Aspect ratio: `4 / 5`
-- Object-fit: cover
-- On missing image: placeholder with brand glyph (✦)
-- On hover: subtle scale `1.04`, `overflow: hidden` on wrap
-- Transition: `400ms ease`
+All derived through `entities/products/helpers` — the card computes nothing of
+its own.
 
-## Badges (top-left overlay)
+| Element | Rule |
+|---|---|
+| Image | `images[0].url`, else the `✦` placeholder |
+| Badges | `−N%` when discounted, `Хіт` when `is_featured`, `Під замовлення` when `status === "made_to_order"` |
+| Swatches | `getColourSwatches` — the colour axis, or the plain `color` attribute; `MAX_CARD_SWATCHES` (5) shown, the rest collapse into `+N` |
+| Price | `price_range.min !== max` → `від {min}`; otherwise `effective_price` with `price` struck through while `sale_active` |
+| Low stock | `Залишилось N` when `0 < stock ≤ LOW_STOCK_THRESHOLD` |
+| CTA | Enabled ⇔ `isProductAvailableToBuy` — **the status decides, not the counter** |
+| Add to cart | `addItem(product, getInitialVariant(product))`, then a success toast |
 
-Shown from `product.badges[]`:
-
-| Badge value | Label | Variant |
-|---|---|---|
-| `new` | Новинка | primary |
-| `sale` | −N% (computed from price/salePrice) | error |
-| `bestseller` | Хіт | warning |
-| `limited` | Останні | warning |
-
-Multiple badges stack vertically.
-
-## Status (bottom-left overlay on image)
-
-Derived from `product.inStock`:
-- `true` → не показуємо (default = in stock)
-- `false` → "Немає в наявності" (muted overlay)
-
-## Price row
-
-- `salePrice` set → `salePrice` bold + `price` struck-through muted
-- No `salePrice` → `price` only
-- Format: `1 200 ₴` (space as thousands separator)
-
-## CTA button
-
-- Hidden by default
-- Appears on card hover (opacity + translateY transition)
-- Text: "Обрати"
-- Variant: `secondary`, size: `sm`
-- Full width
+`status === "out_of_stock"` also veils the image with «Немає в наявності» and
+the button reads the same.
 
 ## DOM structure
 
 ```html
-<article class="product-card" data-in-stock="true|false">
-  <a class="product-card_link" href="/products/[slug]">
-
+<article class="product-card" data-status="in_stock|made_to_order|out_of_stock">
+  <a class="product-card_media-link">
     <div class="product-card_image-wrap">
       <img class="product-card_image" />
-      <div class="product-card_badges">
-        <span class="badge" data-variant="primary">Новинка</span>
-      </div>
+      <div class="product-card_badges">…</div>
     </div>
-
-    <div class="product-card_body">
-      <span class="typography" data-variant="overline" data-color="muted">Вігвами</span>
-      <h3 class="typography" data-variant="subtitle1">Назва товару</h3>
-      <div class="product-card_price">...</div>
-    </div>
-
-    <div class="product-card_footer">
-      <button class="button" data-variant="secondary" data-size="sm">Обрати</button>
-    </div>
-
   </a>
+
+  <div class="product-card_body">
+    <a class="product-card_body-link">
+      <span class="typography" data-variant="overline">Категорія</span>
+      <h3 class="typography" data-variant="subtitle1">Назва</h3>
+      <p class="typography product-card_lead">Короткий опис</p>
+    </a>
+    <ul class="product-card_swatches"><li><span class="product-card_swatch" /></li></ul>
+    <div class="product-card_price-row">…</div>
+  </div>
+
+  <div class="product-card_footer"><button class="button">В кошик</button></div>
 </article>
 ```
 
+The media link and the body link are separate anchors — the CTA sits outside
+both, so a click on it never navigates.
+
 ## Hover states
 
-- Card: `box-shadow` offset (brutalist, matches Button style) + slight lift `translateY(-2px)`
-- Image: `scale(1.04)` inside `overflow:hidden` wrap
-- CTA button: fade in + `translateY(0)` from `translateY(4px)`
-- Transition: `200ms ease` for card, `400ms ease` for image
+- Card: `translate(-2px, -2px)` + `4px 4px 0` shadow (brutalist, matches Button)
+- Image: `scale(1.04)` inside the `overflow: hidden` wrap, `400ms`
+- Footer: fades in from `translateY(6px)`, `200ms`
 
 ## CSS conventions
 
-Follows [CSS Conventions](../css-conventions.md):
-- `product-card_element` for sub-elements
-- `data-*` for value props
-- `-modifier` for booleans (e.g. `.-out-of-stock`)
+Follows [CSS Conventions](../css-conventions.md): `product-card_element` for
+sub-elements, `-modifier` for booleans, `data-*` for value props — the status
+is a value, so it is `data-status`, and the out-of-stock veil hangs off it.
 
 ```tsx
-const BASE_CLASS = "product-card"; // defined before component function
-
-className={cn(BASE_CLASS, className, { "-out-of-stock": !inStock })}
+const BASE_CLASS = "product-card"; // directly before the component function
+className={cn(BASE_CLASS, className)} data-status={status}
 ```
-
-`BASE_CLASS` constant placed directly before the component function. All `cn()` calls use `BASE_CLASS` as first argument — never a raw string literal.
-
-## Notes
-
-- Uses `Typography` and `Badge` components
-- Uses `Button` component for CTA
-- `<article>` + `<a>` wrap = semantic, entire card clickable
-- `formatPrice(n)` util needed: `1200 → "1 200 ₴"`
