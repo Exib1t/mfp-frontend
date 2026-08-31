@@ -23,6 +23,25 @@ const BASE_CLASS = "product-gallery";
  */
 function ProductGallery({ images, name, slug }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  /**
+   * The list is rebuilt when the buyer picks a different variant, and an index
+   * into the old one means nothing in the new. Left alone it shows the wrong
+   * picture — or, when the new variant has fewer entries, points past the end
+   * and draws the "no photos" placeholder over a product that has plenty.
+   *
+   * Compared by content, not by identity: the caller maps a fresh array on
+   * every render, so an identity check would snap back to the first photo on
+   * every thumbnail click.
+   */
+  const signature = images.join("|");
+  const [shownSignature, setShownSignature] = useState(signature);
+
+  if (shownSignature !== signature) {
+    setShownSignature(signature);
+    setActiveIndex(0);
+  }
+
   const activeImage = images[activeIndex];
 
   if (!activeImage) {
