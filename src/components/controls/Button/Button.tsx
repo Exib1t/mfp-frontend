@@ -50,7 +50,9 @@ function Button<E extends ElementType = "button">({
     <Component
       className={cn(BASE_CLASS, className, {
         "-loading": loading,
-        "-disabled": isDisabled,
+        // Not `isDisabled`: a loading button is inert (the DOM attribute and
+        // `.-loading` see to that) but it must not also look greyed out.
+        "-disabled": disabled,
         "-full-width": fullWidth,
         "-active": isActive,
       })}

@@ -1,12 +1,12 @@
 .toaster {
   position: fixed;
-  top: calc(var(--header-height) + 16px);
-  right: 16px;
+  top: calc(var(--header-height) + var(--space-4));
+  right: var(--space-4);
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: min(360px, calc(100vw - 32px));
+  gap: var(--space-3);
+  width: min(360px, calc(100vw - var(--space-8)));
   pointer-events: none;
 }
 
@@ -14,55 +14,57 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border: 2px solid var(--foreground);
-  background: var(--background);
-  box-shadow: 4px 4px 0 0 var(--foreground);
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
   pointer-events: auto;
+
+  background: var(--srf-default);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   animation: toast-in 180ms ease;
 
   &_message {
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--foreground);
-    line-height: var(--line-height-snug);
+    font: var(--typo-body-sm);
+    color: var(--text-default);
   }
 
   &_close {
     display: inline-flex;
     flex-shrink: 0;
-    padding: 2px;
-    border: none;
-    background: none;
-    color: var(--color-muted);
+    padding: var(--space-1);
     cursor: pointer;
-    transition: color 120ms ease;
+
+    color: var(--text-muted);
+    background: none;
+    border-radius: var(--radius-sm);
+    transition:
+      color 120ms ease,
+      background-color 120ms ease;
 
     &:hover {
-      color: var(--foreground);
+      color: var(--text-default);
+      background: var(--bgd-hover);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
   }
 
-  /* Variant accent: a thick left border in the variant color. */
+  /* Variant accent: a thick left edge in the variant colour. Everything else
+     stays neutral, so a stack of toasts reads as one column. */
   &[data-variant="success"] {
-    border-left-width: 6px;
-    border-left-color: var(--color-success);
+    border-left: 4px solid var(--success-default);
   }
 
   &[data-variant="error"] {
-    border-left-width: 6px;
-    border-left-color: var(--color-error);
+    border-left: 4px solid var(--danger-default);
   }
 
   &[data-variant="info"] {
-    border-left-width: 6px;
-    border-left-color: var(--primary);
-  }
-
-  @media (max-width: 560px) {
-    box-shadow: 3px 3px 0 0 var(--foreground);
+    border-left: 4px solid var(--primary-default);
   }
 }
 

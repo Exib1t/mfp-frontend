@@ -1,102 +1,92 @@
+/*
+ * Every variant resolves to one `--typo-*` shorthand, so a size, a weight and
+ * a line-height are never picked apart and can never drift out of step. The
+ * variant names are the storefront's own — `h1`…`h6` carry document structure
+ * a tool has no use for — but each one lands on a step of the admin's scale.
+ */
+
 .typography {
-  font-family: var(--font-inter), serif;
+  font: var(--typography-font);
+  text-align: var(--typography-align);
+  color: var(--typography-color, inherit);
 
   /* ─── Variants ───────────────────────────────────── */
 
+  /* Display: the three steps that exist above the admin's largest title. */
   &[data-variant="h1"] {
-    font-size: var(--font-size-5xl);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-tight);
+    --typography-font: var(--typo-display-lg);
     letter-spacing: var(--letter-spacing-tight);
   }
 
   &[data-variant="h2"] {
-    font-size: var(--font-size-4xl);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-tight);
+    --typography-font: var(--typo-display-md);
     letter-spacing: var(--letter-spacing-tight);
   }
 
   &[data-variant="h3"] {
-    font-size: var(--font-size-3xl);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-snug);
+    --typography-font: var(--typo-display-sm);
   }
 
+  /* Title: shared with the admin, unchanged. */
   &[data-variant="h4"] {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-snug);
+    --typography-font: var(--typo-title-lg);
   }
 
   &[data-variant="h5"] {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-snug);
+    --typography-font: var(--typo-title-md);
   }
 
   &[data-variant="h6"] {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-snug);
+    --typography-font: var(--typo-title-sm);
   }
 
   &[data-variant="subtitle1"] {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--line-height-normal);
+    --typography-font: var(--typo-body-lg);
   }
 
   &[data-variant="subtitle2"] {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--line-height-normal);
+    --typography-font: var(--typo-label-md);
   }
 
   &[data-variant="body1"] {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-relaxed);
+    --typography-font: var(--typo-body-md);
   }
 
   &[data-variant="body2"] {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-relaxed);
+    --typography-font: var(--typo-body-sm);
   }
 
   &[data-variant="caption"] {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-normal);
+    --typography-font: var(--typo-caption);
   }
 
+  /* The one place the system still tracks wide: uppercase at 12px needs it
+     to stay readable. */
   &[data-variant="overline"] {
-    font-size: var(--font-size-xs);
+    --typography-font: var(--typo-caption);
     font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-normal);
     letter-spacing: var(--letter-spacing-wider);
     text-transform: uppercase;
   }
 
   &[data-variant="label"] {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--line-height-normal);
+    --typography-font: var(--typo-label-sm);
   }
 
   /* ─── Colors ─────────────────────────────────────── */
 
-  &[data-color="foreground"] { color: var(--foreground); }
-  &[data-color="primary"]    { color: var(--primary); }
-  &[data-color="muted"]      { color: var(--color-muted); }
-  &[data-color="error"]      { color: var(--color-error); }
-  &[data-color="success"]    { color: var(--color-success); }
-  &[data-color="warning"]    { color: var(--color-warning); }
-  &[data-color="background"] { color: var(--background); }
+  &[data-color="foreground"] { --typography-color: var(--text-default); }
+  &[data-color="primary"]    { --typography-color: var(--primary-text); }
+  &[data-color="muted"]      { --typography-color: var(--text-muted); }
+  &[data-color="error"]      { --typography-color: var(--danger-text); }
+  &[data-color="success"]    { --typography-color: var(--success-text); }
+  &[data-color="warning"]    { --typography-color: var(--warning-text); }
+  &[data-color="background"] { --typography-color: var(--text-white); }
 
   /* ─── Weight overrides ───────────────────────────── */
 
+  /* These must follow the variants: the `font:` shorthand above resets weight,
+     so a rule declared before it would be overwritten, not applied. */
   &[data-weight="regular"]  { font-weight: var(--font-weight-regular); }
   &[data-weight="medium"]   { font-weight: var(--font-weight-medium); }
   &[data-weight="semibold"] { font-weight: var(--font-weight-semibold); }
@@ -104,10 +94,10 @@
 
   /* ─── Alignment ──────────────────────────────────── */
 
-  &[data-align="left"]    { text-align: left; }
-  &[data-align="center"]  { text-align: center; }
-  &[data-align="right"]   { text-align: right; }
-  &[data-align="justify"] { text-align: justify; }
+  &[data-align="left"]    { --typography-align: left; }
+  &[data-align="center"]  { --typography-align: center; }
+  &[data-align="right"]   { --typography-align: right; }
+  &[data-align="justify"] { --typography-align: justify; }
 
   /* ─── Boolean modifiers ──────────────────────────── */
 

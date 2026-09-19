@@ -47,8 +47,10 @@ its own.
 | CTA | Enabled ⇔ `isProductAvailableToBuy` — **the status decides, not the counter** |
 | Add to cart | `addItem(product, getInitialVariant(product))`, then a success toast |
 
-`status === "out_of_stock"` also veils the image with «Немає в наявності» and
-the button reads the same.
+`status === "out_of_stock"` adds a badge to the stack, like every other status,
+and desaturates the photo. It used to lay «Немає в наявності» across the middle
+of the image as well — with the disabled CTA below saying the same words, the
+state was announced three times on one card.
 
 ## DOM structure
 
@@ -80,15 +82,18 @@ both, so a click on it never navigates.
 
 ## Hover states
 
-- Card: `translate(-2px, -2px)` + `4px 4px 0` shadow (brutalist, matches Button)
+- Card: `translateY(-2px)` + `--shadow-md`, border goes `--border-subtle` →
+  `--border-default`. The lift is the whole interaction — no offset, no shift —
+  so a grid of cards never jitters as the pointer crosses it.
 - Image: `scale(1.04)` inside the `overflow: hidden` wrap, `400ms`
-- Footer: fades in from `translateY(6px)`, `200ms`
+- Footer: always visible. It used to fade in on hover, which left the primary
+  action unreachable on a touch screen.
 
 ## CSS conventions
 
 Follows [CSS Conventions](../css-conventions.md): `product-card_element` for
 sub-elements, `-modifier` for booleans, `data-*` for value props — the status
-is a value, so it is `data-status`, and the out-of-stock veil hangs off it.
+is a value, so it is `data-status`, and the out-of-stock desaturation hangs off it.
 
 ```tsx
 const BASE_CLASS = "product-card"; // directly before the component function

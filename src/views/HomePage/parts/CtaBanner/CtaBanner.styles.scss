@@ -1,32 +1,47 @@
+/*
+ * The one inverted block on the page. It takes the darkest neutral rather than
+ * the primary ramp, so the primary button inside it stays the loudest thing in
+ * the band.
+ */
+
 .cta-banner {
-  background: var(--foreground);
-  color: var(--background);
-  border-top: 2px solid var(--foreground);
+  background: var(--n-900);
 
   &_inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 48px;
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: var(--space-12) 0 var(--space-20);
+    gap: var(--space-12);
+  }
+
+  &_panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-12);
+    border-radius: var(--radius-2xl);
+
+    gap: var(--space-12);
   }
 
   &_text {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     max-width: 560px;
+    gap: var(--space-3);
   }
 
   &_overline {
-    color: var(--primary);
+    color: var(--p-300);
   }
 
   &_title,
   &_subtitle {
-    color: var(--background);
+    color: var(--text-white);
   }
 
   &_btn {
@@ -35,8 +50,14 @@
 
   @media (max-width: 768px) {
     &_inner {
-      flex-direction: column;
+      padding-inline: var(--space-4);
+    }
+
+    &_panel {
       align-items: flex-start;
+      flex-direction: column;
+      padding: var(--space-8) var(--space-6);
+      gap: var(--space-6);
     }
 
     &_btn {

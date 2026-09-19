@@ -4,6 +4,7 @@ import IconButton from "@/components/controls/IconButton/IconButton";
 import Typography from "@/components/controls/Typography/Typography";
 import { buildCategoryTree } from "@/entities/categories/helpers";
 import type { Category } from "@/entities/categories/types";
+import { isFilterableAttribute } from "@/entities/attributes/types";
 import { PRODUCT_STATUS_LABELS } from "@/entities/products/constants";
 import type { ProductStatus } from "@/entities/products/types";
 import type { useCatalogFilters } from "../../useCatalogFilters";
@@ -23,6 +24,14 @@ interface FilterSidebarProps {
 }
 
 const BASE_CLASS = "products-page";
+
+/*
+ * How many attribute facets stand open before the rest fold away. With every
+ * facet expanded the column ran past 1200px for a catalogue of one product;
+ * the first few cover what most buyers narrow by, and anything already picked
+ * opens regardless of where it sits.
+ */
+const OPEN_FACET_COUNT = 3;
 
 /** Availability filter values, in the order the sidebar offers them. */
 const STATUS_FILTERS: (ProductStatus | null)[] = [
@@ -119,16 +128,23 @@ function FilterSidebar({
         />
       </div>
 
-      {state.attributes.map((attribute) => (
-        <div key={attribute.id} className={`${BASE_CLASS}_sidebar-section`}>
-          <AttributeFilter
-            attribute={attribute}
-            picked={state.facets[attribute.code] ?? []}
-            onToggle={(value) => state.toggleFacet(attribute.code, value)}
-            onRange={(range) => state.setRangeFacet(attribute.code, range)}
-          />
-        </div>
-      ))}
+      {state.attributes
+        .filter(isFilterableAttribute)
+        .map((attribute, index) => {
+          const picked = state.facets[attribute.code] ?? [];
+
+          return (
+            <div key={attribute.id} className={`${BASE_CLASS}_sidebar-section`}>
+              <AttributeFilter
+                attribute={attribute}
+                picked={picked}
+                defaultOpen={index < OPEN_FACET_COUNT || picked.length > 0}
+                onToggle={(value) => state.toggleFacet(attribute.code, value)}
+                onRange={(range) => state.setRangeFacet(attribute.code, range)}
+              />
+            </div>
+          );
+        })}
 
       {state.hasFilters && (
         <Button variant="ghost" size="sm" onClick={state.reset}>

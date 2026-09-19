@@ -1,15 +1,18 @@
 .product-gallery {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 
-  /* ─── Main image ─────────────────────────────────── */
+  /* ─── Main image ──────────────────────────────── */
 
   &_main {
     position: relative;
     aspect-ratio: 4 / 5;
     overflow: hidden;
-    border: 2px solid var(--foreground);
+
+    background: var(--bgd-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
   &_main-image {
@@ -26,42 +29,51 @@
   }
 
   &_placeholder {
-    aspect-ratio: 4 / 5;
-    background: var(--background-variant);
     display: flex;
     align-items: center;
     justify-content: center;
+    aspect-ratio: 4 / 5;
+
     font-size: var(--font-size-4xl);
-    color: var(--color-muted);
-    border: 2px solid var(--foreground);
+    color: var(--border-default);
+    background: var(--bgd-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
-  /* ─── Thumbnails ─────────────────────────────────── */
+  /* ─── Thumbnails ──────────────────────────────── */
 
   &_thumbs {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
   &_thumb {
     position: relative;
+    flex-shrink: 0;
     width: 72px;
     aspect-ratio: 4 / 5;
     overflow: hidden;
-    border: 2px solid transparent;
-    cursor: pointer;
     padding: 0;
-    background: none;
-    flex-shrink: 0;
+    cursor: pointer;
+
+    background: var(--bgd-variant);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
     transition: border-color 150ms ease;
 
     &:hover {
-      border-color: var(--color-muted);
+      border-color: var(--border-default);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
 
     &.-active {
-      border-color: var(--foreground);
+      border-color: var(--primary-default);
     }
   }
 
@@ -70,7 +82,24 @@
     transition: opacity 150ms ease;
 
     .product-gallery_thumb:not(.-active) & {
-      opacity: 0.65;
+      opacity: 0.7;
     }
+  }
+
+  /* A frame from a clip looks like a photo — the badge is what says it moves. */
+  &_thumb-play {
+    position: absolute;
+    right: var(--space-1);
+    bottom: var(--space-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+
+    color: var(--text-white);
+    background: color-mix(in srgb, var(--n-950) 55%, transparent);
+    border-radius: var(--radius-pill);
   }
 }

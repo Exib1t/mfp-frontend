@@ -1,18 +1,52 @@
+/*
+ * The admin splits this in two — an InputBox that owns the frame and a bare
+ * field inside it — because its forms hang icons, clear buttons and steppers
+ * off the frame. Storefront forms are a name, an email and an address, so the
+ * field is its own frame here. The geometry and states are the admin's.
+ */
+
 .input {
   width: 100%;
-  padding: 10px 12px;
-  border: 2px solid var(--foreground);
-  background: var(--background);
-  font-family: var(--font-inter), sans-serif;
-  font-size: var(--font-size-sm);
-  color: var(--foreground);
+  min-height: var(--control-height-md);
+  padding: var(--control-padding-y-md) var(--control-padding-x-md);
+
+  font: var(--control-font-md);
+  color: var(--text-default);
+  background: var(--srf-variant);
+  border: 1px solid var(--border-default);
+  border-radius: var(--control-radius-md);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:hover:not(:disabled, [aria-invalid="true"]) {
+    background: var(--srf-hover);
+  }
 
   &:focus {
     outline: none;
-    border-color: var(--primary);
+    background: var(--srf-default);
+    border-color: var(--primary-default);
+    box-shadow: var(--focus-ring);
+  }
+
+  /* React Hook Form marks the field, so the error state needs no extra class. */
+  &[aria-invalid="true"] {
+    border-color: var(--danger-default);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
   &:is(textarea) {
     resize: vertical;
+    /* A textarea grows, so it cannot centre on a control height. */
+    min-height: calc(var(--control-height-lg) * 2);
   }
 }

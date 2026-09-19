@@ -1,117 +1,136 @@
 .footer {
-  background: var(--background-variant);
-  border-top: 2px solid var(--foreground);
-  padding: 48px 0 0;
-  font-family: var(--font-inter), serif;
+  padding: var(--space-12) 0 0;
+  font-family: var(--font-family-onest);
+  background: var(--srf-default);
+  border-top: 1px solid var(--border-subtle);
 
   &_inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 48px;
+    gap: var(--space-12);
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
   }
 
   &_brand {
     &_tagline {
-      margin-top: 12px;
-      font-size: var(--font-size-sm);
-      color: var(--color-muted);
+      margin-top: var(--space-3);
+      font: var(--typo-body-sm);
       line-height: var(--line-height-relaxed);
+      color: var(--text-muted);
     }
   }
 
   &_nav {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3);
+
+    /*
+     * NavLink is shaped for the header bar, where a tinted pill marks both
+     * hover and the page you are on. In this column that pill stretched edge to
+     * edge and read as a highlighted row. Here the link keeps its own width and
+     * carries no fill at all — hover and current page are colour alone, which
+     * is what the contact links beside it already do, so the whole footer
+     * behaves as one directory rather than two.
+     */
+    .nav-link {
+      align-self: flex-start;
+      padding-inline: 0;
+
+      &:hover,
+      &.-active {
+        color: var(--primary-text);
+        background: none;
+      }
+    }
 
     &_title {
-      font-size: var(--font-size-xs);
+      margin-bottom: var(--space-1);
+      font: var(--typo-caption);
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-wider);
       text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 4px;
+      color: var(--text-muted);
     }
   }
 
   &_contacts {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-3);
 
     &_title {
-      font-size: var(--font-size-xs);
+      margin-bottom: var(--space-1);
+      font: var(--typo-caption);
       font-weight: var(--font-weight-semibold);
       letter-spacing: var(--letter-spacing-wider);
       text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 4px;
+      color: var(--text-muted);
     }
 
     &_link {
-      font-size: var(--font-size-sm);
-      color: var(--foreground);
+      font: var(--typo-body-sm);
       text-decoration: none;
+      color: var(--text-variant);
       transition: color 150ms ease;
 
       &:hover {
-        color: var(--primary);
+        color: var(--primary-text);
       }
     }
   }
 
   &_socials {
     display: flex;
-    gap: 12px;
-    margin-top: 8px;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
   }
 
   &_social_icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1.5px solid var(--foreground);
-    color: var(--foreground);
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+
     text-decoration: none;
+    color: var(--text-variant);
+    background: var(--srf-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--control-radius-md);
     transition:
-      background-color 120ms ease,
-      color 120ms ease,
-      transform 100ms ease,
-      box-shadow 100ms ease;
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
 
     &:hover {
-      background: var(--foreground);
-      color: var(--background);
-      transform: translate(-2px, -2px);
-      box-shadow: 2px 2px 0 0 var(--primary);
+      color: var(--primary-text);
+      background: var(--primary-surface);
+      border-color: var(--primary-border);
     }
 
-    &:active {
-      transform: translate(0, 0);
-      box-shadow: none;
-      transition-duration: 60ms;
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
   }
 
   &_bottom {
-    margin-top: 48px;
-    padding: 16px 2rem;
-    border-top: 1.5px solid var(--foreground);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: var(--page-max-width);
+    margin-top: var(--space-12);
     margin-inline: auto;
+    padding: var(--space-4) var(--page-padding-x);
+    border-top: 1px solid var(--border-subtle);
   }
 
   &_copyright {
-    font-size: var(--font-size-xs);
-    color: var(--color-muted);
+    font: var(--typo-caption);
+    color: var(--text-muted);
   }
 
   /* ─── Responsive ─────────────────────────────────── */
@@ -119,12 +138,12 @@
   @media (max-width: 768px) {
     &_inner {
       grid-template-columns: 1fr;
-      gap: 32px;
+      gap: var(--space-8);
     }
 
     &_bottom {
       flex-direction: column;
-      gap: 8px;
+      gap: var(--space-2);
       text-align: center;
     }
   }

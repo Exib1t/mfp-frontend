@@ -1,13 +1,19 @@
+/*
+ * The page alternates surface and ground down its whole length — hero, white,
+ * tint, white, tint, white. Stats used to be tinted like the section under it,
+ * so the two ran together as a single band with a row of cards floating in the
+ * middle of it. On white the figures need no card of their own either.
+ */
 .stats-section {
-  border-bottom: 2px solid var(--foreground);
-  background: var(--background);
+  background: var(--srf-default);
 
   &_list {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: var(--space-20) var(--page-padding-x);
     list-style: none;
   }
 
@@ -15,10 +21,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 36px 24px;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-6);
     text-align: center;
-    border-left: 2px solid var(--foreground);
+
+    /* A hairline between figures, not a box around each — four bordered cards
+       holding two words apiece read as empty containers. */
+    border-left: 1px solid var(--border-subtle);
 
     &:first-child {
       border-left: none;
@@ -27,6 +36,7 @@
 
   &_value {
     line-height: 1;
+    color: var(--primary-text);
   }
 
   &_label {
@@ -36,25 +46,18 @@
   @media (max-width: 768px) {
     &_list {
       grid-template-columns: repeat(2, 1fr);
+      row-gap: var(--space-8);
+      padding-block: var(--space-16);
     }
 
-    &_item:nth-child(2) {
-      border-left: 2px solid var(--foreground);
-    }
-
-    &_item:nth-child(3) {
+    /* Two per row: the rule belongs between the columns, not before every
+       third figure. */
+    &_item {
       border-left: none;
-      border-top: 2px solid var(--foreground);
     }
 
-    &_item:nth-child(4) {
-      border-top: 2px solid var(--foreground);
-    }
-  }
-
-  @media (max-width: 480px) {
-    &_list {
-      grid-template-columns: repeat(2, 1fr);
+    &_item:nth-child(even) {
+      border-left: 1px solid var(--border-subtle);
     }
   }
 }

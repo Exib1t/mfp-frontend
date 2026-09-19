@@ -3,6 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/controls/Button/Button";
+import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import Typography from "@/components/controls/Typography/Typography";
 import { useOrder } from "@/entities/orders/api";
 import { DEFAULT_VARIANT_LABEL } from "@/entities/products/constants";
@@ -27,7 +28,7 @@ function OrderPage({ orderId }: OrderPageProps) {
   if (isLoading) {
     return (
       <div className={BASE_CLASS}>
-        <div className={`${BASE_CLASS}_skeleton`} />
+        <Skeleton className={`${BASE_CLASS}_skeleton`} />
       </div>
     );
   }

@@ -42,4 +42,4 @@ className={cn(BASE_CLASS, className)}
 ## Notes
 
 - Deliberately has no `width`/`height`/`variant` props — every call site needs a different shape (card, image, text block), so sizing stays the caller's job via `className`, same as any other `cn()` extension point in this codebase.
-- Animation (`skeleton-pulse`) and base color (`--background-variant`) live once in `Skeleton.styles.scss` instead of being redefined per view.
+- Animation (`skeleton-sweep`) and base color (`--bgd-variant`) live once in `Skeleton.styles.scss` instead of being redefined per view. The sweep is a moving highlight rather than a pulse, so a column of placeholders does not throb in unison.

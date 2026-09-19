@@ -1,10 +1,10 @@
 .products-page {
-  padding: calc(var(--header-height) + 48px) 0 80px;
+  padding: calc(var(--header-height) + var(--space-12)) 0 var(--space-20);
 
   &_inner {
-    max-width: 1280px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 var(--page-padding-x);
   }
 
   /* ─── Header ─────────────────────────────────────── */
@@ -12,34 +12,35 @@
   &_header {
     display: flex;
     align-items: center;
-    gap: 24px;
-    margin-bottom: 40px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid var(--foreground);
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   /* ─── Search ─────────────────────────────────────── */
 
   &_search {
     position: relative;
+    display: flex;
+    align-items: center;
     flex: 1;
     max-width: 360px;
     margin-left: auto;
-    display: flex;
-    align-items: center;
   }
 
   &_search-icon {
     position: absolute;
-    left: 12px;
-    color: var(--color-muted);
+    left: var(--control-padding-x-md);
+    color: var(--text-muted);
     pointer-events: none;
   }
 
+  /* Room for the icon on the left and the clear button on the right. */
   &_search-input {
     width: 100%;
-    padding-left: 36px;
-    padding-right: 36px;
+    padding-left: calc(var(--control-padding-x-md) + var(--control-icon-md) + var(--space-2));
+    padding-right: calc(var(--control-height-sm) + var(--space-1));
 
     &::-webkit-search-cancel-button {
       display: none;
@@ -48,55 +49,67 @@
 
   &_search-clear {
     position: absolute;
-    right: 4px;
+    right: var(--space-1);
   }
 
   /* ─── Layout ─────────────────────────────────────── */
 
   &_layout {
     display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 48px;
+    /* 280, not 240: the paired от/до fields split the column between them, and
+       at 240 each landed on 80px — too narrow for a five-figure price, and
+       enough to wrap the longer category names onto a second line. */
+    grid-template-columns: 280px 1fr;
+    gap: var(--space-10);
     align-items: start;
   }
 
   /* ─── Filter toggle (mobile only) ───────────────── */
 
   &_filter-toggle {
+    position: relative;
     display: none;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: var(--foreground);
-    color: var(--background);
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    position: relative;
     flex-shrink: 0;
+    gap: var(--control-gap-md);
+    min-height: var(--control-height-md);
+    padding: 0 var(--button-padding-x-md);
+    cursor: pointer;
+
+    font: var(--control-label-font-md);
+    color: var(--on-primary);
+    background: var(--primary-default);
+    border-radius: var(--control-radius-md);
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
   }
 
+  /* A count on a filled button: it inverts, so it reads against the fill it
+     sits on rather than borrowing the page surface. */
   &_filter-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-width: 18px;
     height: 18px;
-    padding: 0 5px;
-    font-size: var(--font-size-xs);
-    color: var(--background);
-    background: var(--primary);
-    border-radius: 9px;
+    padding: 0 var(--space-1);
+
+    font: var(--typo-caption);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-text);
+    background: var(--on-primary);
+    border-radius: var(--radius-pill);
   }
 
   &_pagination {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding-top: 8px;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
   }
 
   /* ─── Backdrop (mobile) ──────────────────────────── */
@@ -105,8 +118,8 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(23, 23, 23, 0.4);
     z-index: 40;
+    background: var(--overlay);
   }
 
   /* ─── Sidebar close btn (mobile) ────────────────── */
@@ -114,38 +127,49 @@
   &_sidebar-close {
     display: none;
     align-self: flex-end;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-2);
   }
 
   /* ─── Sidebar ────────────────────────────────────── */
 
+  /*
+   * Sticky, but never its own scroll area. Collapsing the facets is what keeps
+   * this column short enough to stick; capping its height on top of that added
+   * a nested scrollbar to claw back a hundred-odd pixels, and a panel that
+   * swallows the wheel is worse than one that scrolls with the page.
+   */
   &_sidebar {
     position: sticky;
-    top: calc(var(--header-height) + 24px);
+    top: calc(var(--header-height) + var(--space-6));
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: var(--space-6);
+    padding: var(--space-5);
+
+    background: var(--srf-default);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
   &_sidebar-section {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   &_sidebar-title {
     display: block;
-    padding-bottom: 8px;
-    border-bottom: 1.5px solid rgba(23, 23, 23, 0.15);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   &_cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
   }
 
   /* ─── Availability chips ─────────────────────────── */
@@ -153,32 +177,40 @@
   &_chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--space-2);
   }
 
   &_chip {
-    padding: 6px 12px;
-    border: 1.5px solid var(--foreground);
-    background: var(--background);
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    color: var(--foreground);
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-height-sm);
+    padding: 0 var(--control-padding-x-sm);
     cursor: pointer;
-    transition: background-color 150ms ease, color 150ms ease;
 
-    /* One step of indent per level of nesting. */
-    &[data-level="1"] {
-      padding-left: 24px;
+    font: var(--typo-label-sm);
+    color: var(--text-variant);
+    background: var(--srf-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+
+    &:hover[data-active="false"] {
+      color: var(--text-default);
+      background: var(--srf-hover);
     }
 
-    &[data-level="2"] {
-      padding-left: 38px;
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
 
     &[data-active="true"] {
-      background: var(--foreground);
-      color: var(--background);
+      color: var(--primary-text);
+      background: var(--primary-surface);
+      border-color: var(--primary-default);
     }
   }
 
@@ -187,34 +219,50 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 7px 10px;
-    background: none;
-    border: none;
+    min-height: var(--control-height-sm);
+    padding: 0 var(--control-padding-x-sm);
     cursor: pointer;
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--foreground);
+
+    font: var(--typo-label-sm);
     text-align: left;
-    transition: background-color 150ms ease, color 150ms ease;
+    color: var(--text-variant);
+    background: none;
+    border-radius: var(--radius-sm);
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
 
     &:hover {
-      background: var(--background-variant);
+      color: var(--text-default);
+      background: var(--srf-hover);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
 
     &[data-active="true"] {
-      background: var(--foreground);
-      color: var(--background);
+      color: var(--primary-text);
+      background: var(--primary-surface);
+    }
+
+    /* One step of indent per level of nesting. */
+    &[data-level="1"] {
+      padding-left: var(--space-6);
+    }
+
+    &[data-level="2"] {
+      padding-left: var(--space-10);
     }
   }
 
   &_cat-count {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-regular);
-    opacity: 0.5;
+    font: var(--typo-caption);
+    color: var(--text-muted);
 
     [data-active="true"] & {
-      opacity: 0.6;
+      color: inherit;
     }
   }
 
@@ -222,9 +270,9 @@
 
   &_range-wrap {
     position: relative;
-    height: 20px;
     display: flex;
     align-items: center;
+    height: var(--space-5);
 
     // Full track
     &::before {
@@ -233,10 +281,10 @@
       top: 50%;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 4px;
       transform: translateY(-50%);
-      background: var(--background-variant);
-      border-radius: 2px;
+      background: var(--bgd-hover);
+      border-radius: var(--radius-pill);
       pointer-events: none;
     }
 
@@ -247,10 +295,10 @@
       top: 50%;
       left: var(--min-pct);
       right: calc(100% - var(--max-pct));
-      height: 3px;
+      height: 4px;
       transform: translateY(-50%);
-      background: var(--foreground);
-      border-radius: 2px;
+      background: var(--primary-default);
+      border-radius: var(--radius-pill);
       pointer-events: none;
     }
   }
@@ -258,7 +306,7 @@
   &_range-input {
     position: absolute;
     width: 100%;
-    height: 20px;
+    height: var(--space-5);
     appearance: none;
     background: transparent;
     pointer-events: none;
@@ -269,31 +317,29 @@
       pointer-events: all;
       width: 16px;
       height: 16px;
-      border-radius: 50%;
-      background: var(--foreground);
-      border: 2px solid var(--background);
-      box-shadow: 0 0 0 1.5px var(--foreground);
       cursor: pointer;
-      transition: box-shadow 150ms ease;
 
-      &:hover {
-        box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.15);
-      }
+      background: var(--srf-default);
+      border: 2px solid var(--primary-default);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 150ms ease;
     }
 
     &::-moz-range-thumb {
       pointer-events: all;
       width: 16px;
       height: 16px;
-      border-radius: 50%;
-      background: var(--foreground);
-      border: 2px solid var(--background);
-      box-shadow: 0 0 0 1.5px var(--foreground);
       cursor: pointer;
+
+      background: var(--srf-default);
+      border: 2px solid var(--primary-default);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
     }
 
     &:focus-visible::-webkit-slider-thumb {
-      box-shadow: 0 0 0 3px var(--primary);
+      box-shadow: var(--focus-ring);
     }
 
     &:nth-child(1) { z-index: 2; }
@@ -303,14 +349,12 @@
   &_price-vals {
     display: flex;
     justify-content: space-between;
-    margin-top: 8px;
+    margin-top: var(--space-2);
   }
 
   &_price-val {
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-muted);
+    font: var(--typo-caption);
+    color: var(--text-muted);
   }
 
   /* ─── Main ───────────────────────────────────────── */
@@ -318,16 +362,16 @@
   &_main {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: var(--space-6);
   }
 
   &_toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1.5px solid rgba(23, 23, 23, 0.15);
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   /* ─── Grid ───────────────────────────────────────── */
@@ -335,18 +379,18 @@
   &_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: var(--space-6);
   }
 
   &_skeleton {
     aspect-ratio: 3 / 4;
-    border: 2px solid var(--foreground);
+    border-radius: var(--radius-xl);
   }
 
   /* ─── Empty state ────────────────────────────────── */
 
   &_empty {
-    padding: 80px 0;
+    padding: var(--space-20) 0;
     text-align: center;
   }
 
@@ -359,12 +403,27 @@
   }
 
   @media (max-width: 768px) {
-    padding: calc(var(--header-height) + 32px) 0 60px;
+    padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-16);
 
+    &_inner {
+      padding: 0 var(--space-4);
+    }
+
+    /* The search field gets its own row: sharing one with the title and the
+       filter button left it about three characters wide. */
     &_header {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    &_search {
+      order: 1;
+      flex-basis: 100%;
+      max-width: none;
+      margin-left: 0;
     }
 
     &_filter-toggle {
@@ -384,13 +443,15 @@
       top: 0;
       left: 0;
       bottom: 0;
+      z-index: 50;
       width: 300px;
       max-width: 85vw;
-      z-index: 50;
-      background: var(--background);
-      border-right: 2px solid var(--foreground);
-      padding: 24px 20px;
       overflow-y: auto;
+      padding: var(--space-6) var(--space-5);
+
+      border: none;
+      border-radius: 0;
+      box-shadow: var(--shadow-lg);
       transform: translateX(-110%);
       transition: transform 250ms ease;
 

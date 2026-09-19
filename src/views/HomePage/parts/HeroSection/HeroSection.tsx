@@ -45,9 +45,7 @@ function HeroSection() {
         <ul className={`${BASE_CLASS}_trust`}>
           {TRUST_ITEMS.map((item) => (
             <li key={item} className={`${BASE_CLASS}_trust-item`}>
-              <span className={`${BASE_CLASS}_trust-mark`} aria-hidden="true">
-                ✦
-              </span>
+              <span className={`${BASE_CLASS}_trust-mark`} aria-hidden="true" />
               {item}
             </li>
           ))}

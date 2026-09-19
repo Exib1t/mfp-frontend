@@ -1,10 +1,10 @@
 .cart-page {
-  padding: calc(var(--header-height) + 48px) 0 80px;
+  padding: calc(var(--header-height) + var(--space-12)) 0 var(--space-20);
 
   &_inner {
-    max-width: 1200px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 var(--page-padding-x);
   }
 
   /* ─── Header ─────────────────────────────────────── */
@@ -12,10 +12,10 @@
   &_header {
     display: flex;
     align-items: baseline;
-    gap: 16px;
-    margin-bottom: 40px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid var(--foreground);
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   /* ─── Layout ─────────────────────────────────────── */
@@ -23,37 +23,49 @@
   &_layout {
     display: grid;
     grid-template-columns: 1fr 360px;
-    gap: 48px;
+    gap: var(--space-12);
     align-items: start;
   }
 
   /* ─── Items ──────────────────────────────────────── */
 
+  /*
+   * The rows are a card, not a ruled list — but the drawer reuses `_item`
+   * inside its own panel, so the surface lives on the list and the row keeps
+   * only its divider.
+   */
   &_items {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    padding: 0 var(--space-6);
+
+    background: var(--srf-default);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
   &_item {
     display: grid;
     grid-template-columns: 120px 1fr auto;
-    gap: 24px;
+    gap: var(--space-6);
     align-items: start;
-    padding: 24px 0;
-    border-bottom: 1.5px solid rgba(23, 23, 23, 0.1);
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--border-subtle);
 
-    &:first-child {
-      border-top: 1.5px solid rgba(23, 23, 23, 0.1);
+    &:last-child {
+      border-bottom: none;
     }
   }
 
   &_item-image-wrap {
     position: relative;
+    flex-shrink: 0;
     aspect-ratio: 4 / 5;
     overflow: hidden;
-    border: 1.5px solid var(--foreground);
-    flex-shrink: 0;
+
+    background: var(--bgd-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
   }
 
   &_item-image {
@@ -63,7 +75,7 @@
   &_item-body {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
     min-width: 0;
   }
 
@@ -72,7 +84,7 @@
     color: inherit;
 
     &:hover h3 {
-      color: var(--primary);
+      color: var(--primary-text);
     }
   }
 
@@ -84,8 +96,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    margin-top: 8px;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
   }
 
   /* ─── Item price ─────────────────────────────────── */
@@ -94,59 +106,62 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    gap: var(--space-1);
   }
 
   &_item-price {
-    font-family: var(--font-inter), serif;
+    font-family: var(--font-family-onest);
     font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
-    color: var(--foreground);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
 
     &[data-sale="true"] {
-      color: var(--color-error);
+      color: var(--danger-text);
     }
   }
 
   &_item-price-original {
-    font-family: var(--font-inter), serif;
+    font-family: var(--font-family-onest);
     font-size: var(--font-size-sm);
-    color: var(--color-muted);
+    color: var(--text-muted);
     text-decoration: line-through;
   }
 
   /* ─── Remove btn ─────────────────────────────────── */
 
   &_item-remove {
-    color: var(--color-muted);
-    margin-top: 2px;
+    margin-top: var(--space-1);
 
     &:hover {
-      color: var(--color-error);
+      color: var(--danger-text);
     }
   }
 
   /* ─── Summary ────────────────────────────────────── */
 
   &_summary {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-6));
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    border: 2px solid var(--foreground);
-    padding: 28px;
-    position: sticky;
-    top: calc(var(--header-height) + 24px);
+    gap: var(--space-4);
+    padding: var(--space-6);
+
+    background: var(--srf-default);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
   }
 
   &_summary-title {
-    padding-bottom: 16px;
-    border-bottom: 1.5px solid var(--foreground);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   &_summary-rows {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-3);
   }
 
   &_summary-row {
@@ -155,9 +170,9 @@
     align-items: baseline;
 
     &.-total {
-      padding-top: 12px;
-      border-top: 1.5px solid var(--foreground);
-      margin-top: 4px;
+      margin-top: var(--space-1);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--border-subtle);
     }
   }
 
@@ -167,10 +182,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--background-variant);
+
     font-size: var(--font-size-2xl);
-    color: var(--color-muted);
-    opacity: 0.5;
+    color: var(--border-default);
+    background: var(--bgd-variant);
   }
 
   /* ─── Checkout form ──────────────────────────────── */
@@ -178,8 +193,8 @@
   &_form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding-top: 8px;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
   }
 
   /* ─── Responsive ─────────────────────────────────── */
@@ -195,11 +210,19 @@
   }
 
   @media (max-width: 560px) {
-    padding: calc(var(--header-height) + 24px) 0 60px;
+    padding: calc(var(--header-height) + var(--space-6)) 0 var(--space-16);
+
+    &_inner {
+      padding: 0 var(--space-4);
+    }
+
+    &_items {
+      padding: 0 var(--space-4);
+    }
 
     &_item {
       grid-template-columns: 90px 1fr auto;
-      gap: 16px;
+      gap: var(--space-4);
     }
   }
 }

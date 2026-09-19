@@ -1,9 +1,11 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import Typography from "@/components/controls/Typography/Typography";
 import {
   type Attribute,
   CHOICE_ATTRIBUTE_TYPES,
+  isFilterableAttribute,
 } from "@/entities/attributes/types";
 import { cn } from "@/lib/utils/cn";
 import NumberRangeFacet from "./NumberRangeFacet";
@@ -15,6 +17,12 @@ interface AttributeFilterProps {
   picked: string[];
   onToggle: (value: string) => void;
   onRange: (range: string | null) => void;
+  /**
+   * Whether the facet starts expanded. Set once, at mount — after that the
+   * `<details>` element owns its own state and React must not fight the
+   * buyer over it.
+   */
+  defaultOpen?: boolean;
 }
 
 const BASE_CLASS = "attribute-filter";
@@ -25,29 +33,33 @@ function AttributeFilter({
   picked,
   onToggle,
   onRange,
+  defaultOpen = true,
 }: AttributeFilterProps) {
   const isChoice = CHOICE_ATTRIBUTE_TYPES.includes(attribute.type);
 
-  // Nothing to offer: a select with no options, or a type we cannot filter.
-  if (isChoice && attribute.options.length === 0) return null;
-  if (
-    !isChoice &&
-    attribute.type !== "number" &&
-    attribute.type !== "boolean"
-  ) {
-    return null;
-  }
+  /* The sidebar filters these out before it lays sections out; this is the
+     backstop for any other caller. */
+  if (!isFilterableAttribute(attribute)) return null;
 
   return (
-    <div className={BASE_CLASS}>
-      <Typography
-        variant="overline"
-        color="muted"
-        className={`${BASE_CLASS}_title`}
-      >
-        {attribute.name}
-        {attribute.unit ? `, ${attribute.unit}` : ""}
-      </Typography>
+    <details className={BASE_CLASS} {...(defaultOpen && { open: true })}>
+      <summary className={`${BASE_CLASS}_summary`}>
+        <Typography
+          variant="overline"
+          color="muted"
+          as="span"
+          className={`${BASE_CLASS}_title`}
+        >
+          {attribute.name}
+          {attribute.unit ? `, ${attribute.unit}` : ""}
+        </Typography>
+        <ChevronDown
+          className={`${BASE_CLASS}_chevron`}
+          size={14}
+          strokeWidth={2}
+          aria-hidden="true"
+        />
+      </summary>
 
       {attribute.type === "number" && (
         <NumberRangeFacet value={picked[0] ?? null} onChange={onRange} />
@@ -97,7 +109,7 @@ function AttributeFilter({
           ))}
         </div>
       )}
-    </div>
+    </details>
   );
 }
 

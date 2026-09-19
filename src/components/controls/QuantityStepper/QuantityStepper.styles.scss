@@ -1,20 +1,48 @@
+/*
+ * One frame with two buttons and a readout, sized off the control scale so it
+ * matches the Input and Button it sits beside in the cart row.
+ */
+
 .quantity-stepper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  border: 2px solid var(--foreground);
+  overflow: hidden;
+
+  background: var(--srf-default);
+  border: 1px solid var(--border-default);
+  border-radius: var(--control-radius-md);
+
+  &:focus-within {
+    border-color: var(--primary-default);
+    box-shadow: var(--focus-ring);
+  }
 
   &_btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border: none;
+    flex-shrink: 0;
+    height: 100%;
     cursor: pointer;
-    color: var(--foreground);
-    transition: background-color 120ms ease;
+
+    color: var(--text-variant);
+    background: transparent;
+    transition:
+      background-color 120ms ease,
+      color 120ms ease;
 
     &:hover:not(:disabled) {
-      background: var(--background-variant);
+      color: var(--text-default);
+      background: var(--srf-hover);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--srf-active);
+    }
+
+    /* The frame already draws a focus ring for the whole control. */
+    &:focus-visible {
+      outline: none;
     }
 
     &:disabled {
@@ -27,38 +55,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-inter), sans-serif;
-    font-weight: var(--font-weight-semibold);
     user-select: none;
-    border-left: 2px solid var(--foreground);
-    border-right: 2px solid var(--foreground);
+
+    color: var(--text-default);
+    /* Hairlines, not a second frame — the outer border already boxes this in. */
+    border-left: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
   }
 
   /* ─── Sizes ─────────────────────────────────────── */
 
   &[data-size="sm"] {
-    .quantity-stepper_btn {
-      width: 32px;
-      height: 32px;
+    height: var(--control-height-sm);
+
+    & .quantity-stepper_btn {
+      width: var(--control-height-sm);
     }
 
-    .quantity-stepper_value {
-      width: 40px;
-      height: 32px;
-      font-size: var(--font-size-base);
+    & .quantity-stepper_value {
+      min-width: var(--control-height-md);
+      font: var(--typo-label-sm);
     }
   }
 
   &[data-size="md"] {
-    .quantity-stepper_btn {
-      width: 36px;
-      height: 36px;
+    height: var(--control-height-md);
+
+    & .quantity-stepper_btn {
+      width: var(--control-height-md);
     }
 
-    .quantity-stepper_value {
-      min-width: 40px;
-      height: 36px;
-      font-size: var(--font-size-md);
+    & .quantity-stepper_value {
+      min-width: var(--control-height-lg);
+      font: var(--typo-label-md);
     }
   }
 }

@@ -1,92 +1,93 @@
 .order-page {
   max-width: 720px;
   margin: 0 auto;
-  padding: calc(var(--header-height) + 56px) 2rem 80px;
+  padding: calc(var(--header-height) + var(--space-16)) var(--page-padding-x) var(--space-20);
 
   &_inner {
     display: flex;
     flex-direction: column;
-    gap: 28px;
     align-items: stretch;
+    gap: var(--space-8);
   }
 
   &_head {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3);
     text-align: center;
   }
 
   &_icon {
-    color: var(--color-success);
+    color: var(--success-default);
   }
 
   &_card {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    border: 2px solid var(--foreground);
-    padding: 24px;
+    gap: var(--space-4);
+    padding: var(--space-6);
+
+    background: var(--srf-default);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
   &_items {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   &_item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--background-variant);
+    gap: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
 
     &:last-child {
-      border-bottom: none;
       padding-bottom: 0;
+      border-bottom: none;
     }
   }
 
   &_item-info {
     display: flex;
     align-items: baseline;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   &_total {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    padding-top: 14px;
-    border-top: 2px solid var(--foreground);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-default);
   }
 
   &_rows {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   &_state {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    padding: 80px 0;
+    gap: var(--space-6);
+    padding: var(--space-20) 0;
     text-align: center;
   }
 
   &_skeleton {
     min-height: 360px;
-    border: 2px solid var(--foreground);
-    background: var(--background-variant);
-    opacity: 0.4;
+    border-radius: var(--radius-xl);
   }
 
   @media (max-width: 560px) {
-    padding: calc(var(--header-height) + 32px) 1rem 60px;
+    padding: calc(var(--header-height) + var(--space-8)) var(--space-4) var(--space-16);
   }
 }

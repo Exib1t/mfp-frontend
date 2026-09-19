@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Inter } from "next/font/google";
+import { Onest } from "next/font/google";
 import Providers from "@/app/Providers";
 
 import "../assets/styles/main.scss";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+/**
+ * The whole system is one family — the admin panel's. Cyrillic is not optional
+ * here: the catalogue, every product name and the entire UI are Ukrainian.
+ */
+const onest = Onest({
+  variable: "--font-onest",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <html lang="uk" className={`${geistSans.variable} ${inter.variable}`}>
+      <html lang="uk" className={onest.variable}>
         <body>{children}</body>
       </html>
     </Providers>

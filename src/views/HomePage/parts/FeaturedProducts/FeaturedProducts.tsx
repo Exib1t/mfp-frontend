@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import Typography from "@/components/controls/Typography/Typography";
 import ProductCard from "@/components/organisms/products/ProductCard/ProductCard";
 import { useProducts } from "@/entities/products/api";
@@ -38,7 +39,7 @@ function FeaturedProducts() {
         ) : isLoading ? (
           <div className={`${BASE_CLASS}_grid`}>
             {SKELETON_KEYS.map((key) => (
-              <div key={key} className={`${BASE_CLASS}_skeleton`} />
+              <Skeleton key={key} className={`${BASE_CLASS}_skeleton`} />
             ))}
           </div>
         ) : (

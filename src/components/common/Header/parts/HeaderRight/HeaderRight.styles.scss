@@ -3,45 +3,62 @@
   align-items: center;
   justify-content: flex-end;
   flex: 1;
-  gap: 8px;
+  gap: var(--space-2);
 
   &_cart {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border: none;
-    background: none;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
     cursor: pointer;
-    color: var(--foreground);
-    transition: color 200ms ease;
+
+    color: var(--text-variant);
+    background: none;
+    border-radius: var(--control-radius-md);
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
 
     &:hover {
-      color: var(--primary);
+      color: var(--text-default);
+      background: var(--bgd-hover);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
 
     &.-active {
-      color: var(--primary);
+      color: var(--primary-text);
+      background: var(--primary-surface);
     }
   }
 
+  /*
+   * The count sits on the icon, so it cannot take the Badge's padding — it is
+   * a fixed dot that grows only when the number needs two digits. 10px is
+   * below the 12px floor on purpose: it is a counter, not text to read.
+   */
   &_cart-badge {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
     min-width: 16px;
     height: 16px;
-    padding: 0 4px;
-    border-radius: 999px;
-    background: var(--primary);
-    color: #fff;
+    padding: 0 var(--space-1);
+    pointer-events: none;
+
+    font-family: var(--font-family-onest);
     font-size: 10px;
     font-weight: var(--font-weight-semibold);
     line-height: 16px;
     text-align: center;
-    pointer-events: none;
+    color: var(--on-primary);
+    background: var(--primary-default);
+    border: 1px solid var(--srf-default);
+    border-radius: var(--radius-pill);
   }
 }
