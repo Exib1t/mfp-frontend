@@ -12,6 +12,22 @@ export const CHOICE_ATTRIBUTE_TYPES: AttributeType[] = [
 ];
 
 /**
+ * Whether an attribute can narrow the catalogue at all.
+ *
+ * A choice attribute with fewer than two options cannot: every product already
+ * carries the single value, so "Матеріал каркаса: Дерево" costs a row of
+ * sidebar and returns the same result set. Types outside this list have no
+ * facet UI to render.
+ */
+export function isFilterableAttribute(attribute: Attribute): boolean {
+  if (CHOICE_ATTRIBUTE_TYPES.includes(attribute.type)) {
+    return attribute.options.length > 1;
+  }
+
+  return attribute.type === "number" || attribute.type === "boolean";
+}
+
+/**
  * Active facets, keyed by attribute code. Option-backed attributes hold the
  * chosen values; a number attribute holds a single `min..max` entry.
  */

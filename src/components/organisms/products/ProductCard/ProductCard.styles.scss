@@ -1,21 +1,26 @@
+/*
+ * A surface card on the tinted page ground: a subtle border at rest, a lifted
+ * shadow on hover. The lift is the whole interaction — no offset, no shift —
+ * so a grid of cards never jitters as the pointer crosses it.
+ */
+
 .product-card {
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--foreground);
-  background: var(--background);
+  overflow: hidden;
+
+  background: var(--srf-default);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
   transition:
     transform 200ms ease,
+    border-color 200ms ease,
     box-shadow 200ms ease;
 
   &:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 0 var(--foreground);
-  }
-
-  &:active:not(:has(button:active)) {
-    transition-duration: 60ms;
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 0 var(--foreground);
+    transform: translateY(-2px);
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-md);
   }
 
   /* ─── Image ──────────────────────────────────────── */
@@ -30,14 +35,14 @@
     position: relative;
     aspect-ratio: 4 / 5;
     overflow: hidden;
-    background: var(--background-variant);
+    background: var(--bgd-variant);
   }
 
   &_image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
     transition: transform 400ms ease;
   }
 
@@ -46,45 +51,39 @@
   }
 
   &_placeholder {
-    width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 
   &_placeholder-glyph {
-    font-size: 3rem;
-    color: var(--color-muted);
-    opacity: 0.4;
+    font-size: var(--font-size-3xl);
+    color: var(--border-default);
   }
 
   /* ─── Badges ─────────────────────────────────────── */
 
   &_badges {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: var(--space-3);
+    left: var(--space-3);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--space-2);
   }
 
   /* ─── Out of stock ───────────────────────────────── */
 
-  &[data-status="out_of_stock"] &_image-wrap::after {
-    content: "Немає в наявності";
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.72);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-inter), serif;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-muted);
-    letter-spacing: var(--letter-spacing-wide);
+  /*
+   * The status is a badge in the stack above and a disabled CTA below; the
+   * photo only has to look unavailable, not repeat the words a third time
+   * across the middle of itself.
+   */
+  &[data-status="out_of_stock"] &_image {
+    filter: grayscale(0.55);
+    opacity: 0.72;
   }
 
   /* ─── Body ───────────────────────────────────────── */
@@ -93,19 +92,19 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 16px 16px 12px;
-    gap: 10px;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-4) var(--space-3);
   }
 
   &_body-link {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-1);
     text-decoration: none;
     color: inherit;
 
     &:hover h3 {
-      color: var(--primary);
+      color: var(--primary-text);
     }
   }
 
@@ -129,7 +128,7 @@
   &_swatches {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -139,14 +138,15 @@
     display: block;
     width: 16px;
     height: 16px;
-    border: 1px solid var(--foreground);
-    border-radius: 50%;
+    /* A hairline, not an outline: a pale fabric still needs an edge, but the
+       border must not read louder than the colour it contains. */
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-pill);
   }
 
   &_swatch-more {
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-xs);
-    color: var(--color-muted);
+    font: var(--typo-caption);
+    color: var(--text-muted);
   }
 
   /* ─── Price ──────────────────────────────────────── */
@@ -157,43 +157,44 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   /* ─── Footer / CTA ───────────────────────────────── */
 
+  /*
+   * The old card hid this row until hover. On a touch screen there is no
+   * hover, so the primary action was unreachable — it stays visible now.
+   */
   &_footer {
-    padding: 0 12px 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-      opacity 200ms ease,
-      transform 200ms ease;
-  }
-
-  &:hover &_footer {
-    opacity: 1;
-    transform: translateY(0);
+    gap: var(--space-3);
+    padding: 0 var(--space-4) var(--space-4);
   }
 
   &_details-link {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-muted);
-    text-decoration: none;
+    gap: var(--space-1);
+
+    font: var(--typo-label-sm);
     white-space: nowrap;
-    transition: color 150ms ease, gap 150ms ease;
+    text-decoration: none;
+    color: var(--text-muted);
+    transition:
+      color 150ms ease,
+      gap 150ms ease;
 
     &:hover {
-      color: var(--foreground);
-      gap: 7px;
+      color: var(--primary-text);
+      gap: var(--space-2);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--focus-ring);
     }
   }
 }

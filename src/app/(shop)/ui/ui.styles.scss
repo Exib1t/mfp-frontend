@@ -1,54 +1,55 @@
 .ui-page {
-  padding: 80px 0;
+  padding: calc(var(--header-height) + var(--space-10)) 0 var(--space-20);
 
   &_inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
   }
 
   &_heading {
-    margin-bottom: 4px;
+    margin-bottom: var(--space-1);
   }
 }
 
 .ui-section {
-  margin-top: 56px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
+  margin-top: var(--space-16);
 
   &_title {
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--foreground);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   &_body {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--space-5);
   }
 }
 
 .ui-row {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 
   &_label {
+    font: var(--typo-caption);
+    letter-spacing: var(--letter-spacing-wider);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.7rem;
+    color: var(--text-muted);
   }
 
   &_items {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3);
   }
 }
 
@@ -58,7 +59,7 @@
 .ui-section .ui-row_items:has(.typography[data-variant="subtitle2"]) {
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 /* Truncate demo */
@@ -66,20 +67,21 @@
   max-width: 300px;
 }
 
-/* Dark bg demo */
+/* Dark bg demo — the same inverted neutral the CTA band uses. */
 .ui-dark-bg {
-  background: var(--foreground);
-  color: var(--background);
-  padding: 24px;
   display: flex;
-  gap: 12px;
   flex-wrap: wrap;
-  border: 2px solid var(--foreground);
+  gap: var(--space-3);
+  padding: var(--space-6);
+
+  color: var(--text-white);
+  background: var(--n-900);
+  border-radius: var(--radius-xl);
 }
 
 /* ProductCard grid */
 .ui-product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 24px;
+  gap: var(--space-6);
 }

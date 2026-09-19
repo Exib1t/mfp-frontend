@@ -8,6 +8,7 @@ import Input from "@/components/controls/Input/Input";
 import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCategories } from "@/entities/categories/api";
+import { useCatalogPriceMax } from "@/entities/products/api";
 import { PRODUCT_SORT_LABELS } from "@/entities/products/constants";
 import type { ProductSort } from "@/entities/products/types";
 import FilterSidebar from "./parts/FilterSidebar/FilterSidebar";
@@ -21,10 +22,16 @@ const SORT_OPTIONS = (Object.keys(PRODUCT_SORT_LABELS) as ProductSort[]).map(
   (value) => ({ value, label: PRODUCT_SORT_LABELS[value] }),
 );
 
-/** Bounds for the price slider. Server-side filtering means the page never
- *  sees the whole catalogue, so these stay fixed rather than derived. */
 const PRICE_BOUND_MIN = 0;
-const PRICE_BOUND_MAX = 10000;
+
+/**
+ * Stands in only until the real ceiling arrives, and while the catalogue is
+ * empty. It used to be the permanent upper bound, which quietly capped the
+ * filter below the price of the dearest products: touch the handle once and
+ * anything above it dropped out of the results with no way back short of
+ * resetting the filters.
+ */
+const PRICE_BOUND_MAX_FALLBACK = 10000;
 
 const BASE_CLASS = "products-page";
 
@@ -37,6 +44,7 @@ function pluralProducts(count: number): string {
 function ProductsPage() {
   const state = useCatalogFilters();
   const { data: categories = [] } = useCategories();
+  const { data: priceMax } = useCatalogPriceMax();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const total = state.meta?.total ?? 0;
@@ -104,7 +112,7 @@ function ProductsPage() {
             categories={categories}
             state={state}
             boundMin={PRICE_BOUND_MIN}
-            boundMax={PRICE_BOUND_MAX}
+            boundMax={priceMax ?? PRICE_BOUND_MAX_FALLBACK}
             open={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />

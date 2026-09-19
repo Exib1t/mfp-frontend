@@ -16,6 +16,15 @@ function ProductSpecs({ product }: ProductSpecsProps) {
 
   if (groups.length === 0) return null;
 
+  /*
+   * Attributes with no `group_name` come back as one unnamed group, always
+   * first. Left unlabelled it was the only table on the page without a heading
+   * while "Матеріали" and "Розміри" below it had one — so it gets the name it
+   * actually has. Only when there is something to tell it apart from: a lone
+   * unnamed group needs no heading at all.
+   */
+  const hasNamedGroups = groups.some((group) => group.name);
+
   return (
     <section className={BASE_CLASS}>
       <Typography variant="h4" as="h2" className={`${BASE_CLASS}_title`}>
@@ -24,9 +33,9 @@ function ProductSpecs({ product }: ProductSpecsProps) {
 
       {groups.map((group) => (
         <div key={group.name} className={`${BASE_CLASS}_group`}>
-          {group.name && (
+          {(group.name || hasNamedGroups) && (
             <Typography variant="overline" color="muted">
-              {group.name}
+              {group.name || "Загальні"}
             </Typography>
           )}
           <dl className={`${BASE_CLASS}_list`}>

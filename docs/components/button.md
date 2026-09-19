@@ -22,9 +22,9 @@ All native HTML attributes of rendered element also accepted.
 |---|---|
 | `primary` | Main CTA — "Додати в кошик", "Оформити замовлення" |
 | `secondary` | Secondary action — "Продовжити покупки" |
-| `ghost` | Tertiary, low emphasis — filters, icon buttons |
+| `ghost` | Tertiary, low emphasis — filters, icon buttons. Inherits `currentColor`, so it works on a dark band as well as a white card |
 | `link` | Looks like a text link, no background |
-| `outline` | Transparent bg + `currentColor` border — adapts to any background context |
+| `outline` | Transparent bg + `currentColor` border and ink — adapts to any background context. Hover/press tints are mixed from `currentColor`, so they darken a light ground and lighten a dark one |
 
 ## Sizes
 
@@ -36,8 +36,12 @@ All native HTML attributes of rendered element also accepted.
 
 ## Boolean modifiers (CSS)
 
-- `-loading` — spinner replaces or overlays text, pointer-events none
-- `-disabled` — reduced opacity, pointer-events none (in addition to native disabled)
+- `-loading` — spinner overlays the (hidden) label, pointer-events none. The
+  fill stays at **full strength**: busy is not disabled, and the spinner already
+  says so. Applied on `loading`.
+- `-disabled` — reduced opacity, pointer-events none (in addition to native
+  disabled). Applied on `disabled` **only** — never on `loading`, or a working
+  button would be dimmed to half strength with its spinner along with it.
 - `-full-width` — 100% width
 
 ## DOM output
@@ -75,13 +79,13 @@ All native HTML attributes of rendered element also accepted.
 ```tsx
 const BASE_CLASS = "button"; // defined before component function
 
-className={cn(BASE_CLASS, className, { "-loading": loading, "-disabled": isDisabled, "-full-width": fullWidth })}
+className={cn(BASE_CLASS, className, { "-loading": loading, "-disabled": disabled, "-full-width": fullWidth })}
 ```
 
 `BASE_CLASS` constant placed directly before the component function. All `cn()` calls use `BASE_CLASS` as first argument — never a raw string literal.
 
 ## Notes
 
-- `loading` автоматично додає `disabled` атрибут
+- `loading` автоматично додає `disabled` атрибут (але не клас `-disabled`)
 - Spinner — CSS анімація, без зовнішньої бібліотеки
 - `as="a"` + `href` = семантично правильне посилання зі стилем кнопки

@@ -1,29 +1,29 @@
 .product-page {
-  /* Layout blocks stack inside their column; the grid itself is unchanged. */
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: calc(var(--header-height) + var(--space-10)) var(--page-padding-x) var(--space-20);
+
   /* One cell per layout block; `--block-span` is its width in grid columns. */
   &_cell {
     grid-column: span var(--block-span, 12);
     min-width: 0;
   }
 
+  /* Layout blocks stack inside their column; the grid itself is unchanged. */
   &_block {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-top: 32px;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
   }
-
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: calc(var(--header-height) + 40px) 2rem 80px;
 
   /* ─── Breadcrumb ─────────────────────────────────── */
 
   &_breadcrumb {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 40px;
+    gap: var(--space-2);
+    margin-bottom: var(--space-10);
   }
 
   &_breadcrumb-link {
@@ -31,7 +31,7 @@
     transition: color 150ms ease;
 
     &:hover span {
-      color: var(--primary);
+      color: var(--primary-text);
     }
   }
 
@@ -44,8 +44,8 @@
   &_grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 64px;
-    row-gap: 48px;
+    column-gap: var(--space-16);
+    row-gap: var(--space-12);
     align-items: start;
   }
 
@@ -55,7 +55,10 @@
     position: relative;
     aspect-ratio: 4 / 5;
     overflow: hidden;
-    border: 2px solid var(--foreground);
+
+    background: var(--bgd-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
   &_image {
@@ -63,14 +66,15 @@
   }
 
   &_placeholder {
-    width: 100%;
-    height: 100%;
-    background: var(--background-variant);
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
+
     font-size: var(--font-size-4xl);
-    color: var(--color-muted);
+    color: var(--border-default);
+    background: var(--bgd-variant);
   }
 
   /* ─── Info column ────────────────────────────────── */
@@ -78,18 +82,18 @@
   &_info {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    padding-top: 8px;
+    gap: var(--space-6);
+    padding-top: var(--space-2);
   }
 
   &_name {
-    margin-top: 6px;
+    margin-top: var(--space-2);
   }
 
   &_badges {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
   /* ─── Price ──────────────────────────────────────── */
@@ -97,37 +101,35 @@
   &_price-row {
     display: flex;
     align-items: baseline;
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   &_price {
-    font-family: var(--font-inter), serif;
+    font-family: var(--font-family-onest);
     font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--foreground);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
 
     &[data-sale="true"] {
-      color: var(--color-error);
+      color: var(--danger-text);
     }
   }
 
   &_price-original {
-    font-family: var(--font-inter), serif;
+    font-family: var(--font-family-onest);
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-regular);
-    color: var(--color-muted);
+    color: var(--text-muted);
     text-decoration: line-through;
   }
-
-  /* ─── Description ────────────────────────────────── */
 
   /* ─── Actions ────────────────────────────────────── */
 
   &_actions {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 8px;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
 
   /* ─── Variants ───────────────────────────────────── */
@@ -135,31 +137,50 @@
   &_variants {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-3);
   }
 
   &_variant-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
+  /*
+   * A pickable chip, sized off the control scale so a row of them lines up
+   * with the quantity stepper and the buy button below.
+   */
   &_variant {
-    padding: 8px 14px;
-    border: 2px solid var(--foreground);
-    background: var(--background);
-    font-family: var(--font-inter), sans-serif;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--foreground);
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-height-md);
+    padding: 0 var(--control-padding-x-md);
     cursor: pointer;
+
+    font: var(--typo-label-sm);
+    color: var(--text-default);
+    background: var(--srf-default);
+    border: 1px solid var(--border-default);
+    border-radius: var(--control-radius-md);
     transition:
-      background 150ms ease,
+      background-color 150ms ease,
+      border-color 150ms ease,
       color 150ms ease;
 
+    &:hover:not(.-active) {
+      background: var(--srf-hover);
+      border-color: var(--border-strong);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
     &.-active {
-      background: var(--foreground);
-      color: var(--background);
+      color: var(--primary-text);
+      background: var(--primary-surface);
+      border-color: var(--primary-default);
     }
 
     /* Sold out on this axis — still sellable, the status decides that, so
@@ -174,33 +195,43 @@
   &_options {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-4);
   }
 
   &_option {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-3);
   }
 
   &_option-values {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
+  /* The ring sits outside the swatch with a surface gap, so the selection
+     never darkens the colour it is marking. */
   &_swatch {
-    width: 32px;
-    height: 32px;
+    width: var(--control-height-sm);
+    height: var(--control-height-sm);
     padding: 0;
-    border: 2px solid var(--foreground);
-    border-radius: 50%;
     cursor: pointer;
+
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-pill);
     transition: box-shadow 150ms ease;
 
     &.-active {
-      box-shadow: 0 0 0 3px var(--background), 0 0 0 5px var(--foreground);
+      box-shadow:
+        0 0 0 2px var(--srf-default),
+        0 0 0 4px var(--primary-default);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
 
     &.-depleted:not(.-active) {
@@ -213,37 +244,38 @@
   &_qty {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-3);
   }
 
   &_qty-control {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3);
   }
 
   /* ─── Loading skeletons ───────────────────────────── */
 
   &_image-skeleton {
     aspect-ratio: 4 / 5;
-    border: 2px solid var(--foreground);
+    border-radius: var(--radius-xl);
   }
 
   &_info-skeleton {
     min-height: 320px;
+    border-radius: var(--radius-xl);
   }
 
   /* ─── Responsive ─────────────────────────────────── */
 
   @media (max-width: 768px) {
-    padding: calc(var(--header-height) + 24px) 1rem 60px;
+    padding: calc(var(--header-height) + var(--space-6)) var(--space-4) var(--space-16);
 
     &_breadcrumb {
-      margin-bottom: 24px;
+      margin-bottom: var(--space-6);
     }
 
     &_grid {
-      gap: 32px;
+      gap: var(--space-8);
     }
 
     /* Narrow screens collapse every block to the full width. */

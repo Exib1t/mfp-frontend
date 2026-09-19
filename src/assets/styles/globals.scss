@@ -12,12 +12,14 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+
+  /* The page ground is the tinted neutral, not white — cards, the header and
+     the product grid all sit on it as surfaces, exactly as in the admin. */
+  font: var(--typo-body-md);
+  color: var(--text-default);
+  background: var(--bgd-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
 }
 
 main {
@@ -30,16 +32,32 @@ main {
   margin: 0;
 }
 
+fieldset,
+input,
+button,
+textarea,
+select {
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
 /* ─── Scrollbar ──────────────────────────────────────── */
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -47,17 +65,17 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(23, 23, 23, 0.2);
-  border-radius: 0;
+  background: var(--border-default);
+  border-radius: var(--radius-pill);
 
   &:hover {
-    background: rgba(23, 23, 23, 0.4);
+    background: var(--border-strong);
   }
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(23, 23, 23, 0.2) transparent;
+  scrollbar-color: var(--border-default) transparent;
 }
 
 /* ─── View Transitions ───────────────────────────────── */

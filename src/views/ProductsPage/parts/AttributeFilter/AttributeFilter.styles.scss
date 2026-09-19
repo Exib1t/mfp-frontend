@@ -1,16 +1,48 @@
 .attribute-filter {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
+
+  /* The whole facet is a native <details>; the summary is its own row so the
+     marker can be a chevron instead of the browser's triangle. */
+  &_summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--focus-ring);
+    }
+  }
 
   &_title {
     display: block;
   }
 
+  &_chevron {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 200ms ease;
+  }
+
+  &[open] &_chevron {
+    transform: rotate(180deg);
+  }
+
   &_options {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-1);
     max-height: 220px;
     overflow-y: auto;
   }
@@ -18,41 +50,68 @@
   &_check {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: var(--font-size-sm);
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
     cursor: pointer;
 
+    font: var(--typo-body-sm);
+    color: var(--text-variant);
+    border-radius: var(--radius-sm);
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+
+    &:hover {
+      color: var(--text-default);
+      background: var(--srf-hover);
+    }
+
     & > input {
-      accent-color: var(--primary);
+      accent-color: var(--primary-default);
       cursor: pointer;
+    }
+
+    &:focus-within {
+      box-shadow: var(--focus-ring);
     }
   }
 
   &_swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--space-2);
   }
 
+  /* The ring sits outside the swatch, so picking a colour never tints it. */
   &_swatch {
-    width: 26px;
-    height: 26px;
-    border: 2px solid var(--background-variant);
+    width: var(--space-6);
+    height: var(--space-6);
     cursor: pointer;
 
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-pill);
+    transition: box-shadow 150ms ease;
+
     &:hover {
-      transform: scale(1.08);
+      box-shadow: 0 0 0 2px var(--srf-default), 0 0 0 3px var(--border-strong);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
 
     &.-active {
-      border-color: var(--foreground);
+      box-shadow:
+        0 0 0 2px var(--srf-default),
+        0 0 0 4px var(--primary-default);
     }
   }
 
   &_range {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2);
 
     & > .input {
       min-width: 0;

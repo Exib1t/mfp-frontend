@@ -1,48 +1,78 @@
+/*
+ * A square off the shared control-height scale, so an IconButton sits flush
+ * beside a Button or an Input of the same size. Copied from the admin, minus
+ * the colour axis the storefront has no use for.
+ */
+
 .icon-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  width: var(--icon-button-box);
+  height: var(--icon-button-box);
   cursor: pointer;
-  color: var(--foreground);
-  background: transparent;
-  border: none;
-  border-radius: 0;
+
+  color: var(--icon-button-color, var(--text-variant));
+  background: var(--icon-button-background, transparent);
+  border: 1px solid var(--icon-button-border, transparent);
+  border-radius: var(--icon-button-radius);
   transition:
     background-color 150ms ease,
+    border-color 150ms ease,
     color 150ms ease;
+
+  &:hover:not(:disabled) {
+    color: var(--text-default);
+    background: var(--icon-button-background-hover);
+    border-color: var(--icon-button-border-hover, var(--icon-button-border, transparent));
+  }
+
+  &:active:not(:disabled) {
+    background: var(--icon-button-background-active);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
 
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 
+  svg {
+    width: var(--icon-button-icon);
+    height: var(--icon-button-icon);
+  }
+
   /* ─── Sizes ─────────────────────────────────────── */
 
   &[data-size="sm"] {
-    width: 28px;
-    height: 28px;
+    --icon-button-box: var(--control-height-sm);
+    --icon-button-icon: var(--control-icon-sm);
+    --icon-button-radius: var(--control-radius-sm);
   }
 
   &[data-size="md"] {
-    width: 36px;
-    height: 36px;
+    --icon-button-box: var(--control-height-md);
+    --icon-button-icon: var(--control-icon-md);
+    --icon-button-radius: var(--control-radius-md);
   }
 
   /* ─── Variants ───────────────────────────────────── */
 
   &[data-variant="ghost"] {
-    &:hover:not(:disabled) {
-      background: var(--background-variant);
-    }
+    --icon-button-background-hover: var(--bgd-hover);
+    --icon-button-background-active: var(--bgd-active);
   }
 
   &[data-variant="outline"] {
-    border: 2px solid var(--foreground);
-    background: var(--background);
-
-    &:hover:not(:disabled) {
-      background: var(--background-variant);
-    }
+    --icon-button-background: var(--srf-default);
+    --icon-button-background-hover: var(--srf-hover);
+    --icon-button-background-active: var(--srf-active);
+    --icon-button-border: var(--border-default);
+    --icon-button-border-hover: var(--border-strong);
   }
 }

@@ -38,4 +38,4 @@ Single navigation link. Highlights active route. Optionally renders a Lucide ico
 | Element / Modifier | Description |
 |---|---|
 | `&_icon` | Icon element — `opacity: 0.7`, `1` on hover/active |
-| `&.-active` | Active link — `color: var(--primary)`, underline visible |
+| `&.-active` | Active link — `color: var(--primary-text)` on a `--primary-surface` pill |

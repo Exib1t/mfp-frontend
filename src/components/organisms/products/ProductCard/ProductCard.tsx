@@ -100,6 +100,13 @@ function ProductCard({ product, className }: ProductCardProps) {
                   Під замовлення
                 </Badge>
               )}
+              {/* Same treatment every other status gets, instead of the slab
+                  of text that used to cover the whole photo. */}
+              {status === "out_of_stock" && (
+                <Badge variant="default" size="sm">
+                  Немає в наявності
+                </Badge>
+              )}
             </div>
           </div>
         </ViewTransition>

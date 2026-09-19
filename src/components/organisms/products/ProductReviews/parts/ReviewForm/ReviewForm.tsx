@@ -18,7 +18,7 @@ const reviewFormSchema = z.object({
     z.string().trim().email("Некоректний email"),
     z.literal(""),
   ]),
-  rating: z.number().min(1).max(5),
+  rating: z.number().min(1, "Поставте оцінку").max(5),
   body: z.string().trim().min(1, "Введіть текст відгуку"),
 });
 
@@ -27,7 +27,9 @@ type ReviewFormValues = z.infer<typeof reviewFormSchema>;
 const DEFAULT_VALUES: ReviewFormValues = {
   authorName: "",
   authorEmail: "",
-  rating: 5,
+  // No stars picked: a form that opens on five biases every rating it
+  // collects, and reads as though the buyer had already scored the product.
+  rating: 0,
   body: "",
 };
 
@@ -65,7 +67,9 @@ function ReviewForm({ productId }: ReviewFormProps) {
       },
       {
         onSuccess: () => {
-          reset(DEFAULT_VALUES);
+          // Bare reset(): passing values skips react-hook-form's native
+          // form.reset(), so the uncontrolled inputs keep their text.
+          reset();
           toast("Дякуємо! Відгук надіслано на модерацію.", "success");
         },
         onError: () => {

@@ -3,18 +3,28 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding: 4px;
-  color: var(--color-muted);
-  background: none;
-  border: none;
+  width: var(--control-height-xs);
+  height: var(--control-height-xs);
   cursor: pointer;
-  transition: color 0.15s ease;
+
+  color: var(--text-muted);
+  background: none;
+  border-radius: var(--control-radius-xs);
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
 
   &:hover {
-    color: var(--foreground);
+    color: var(--text-default);
+    background: var(--bgd-hover);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
   }
 
   &.-copied {
-    color: var(--color-success, var(--primary));
+    color: var(--success-text);
   }
 }

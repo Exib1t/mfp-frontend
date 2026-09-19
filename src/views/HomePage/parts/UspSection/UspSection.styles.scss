@@ -1,78 +1,66 @@
+/*
+ * Four cards on the page ground, not four cells of a ruled table. The old
+ * section drew 2px dividers between them; a card each carries its own edge
+ * and needs none.
+ */
+
 .usp-section {
-  background: var(--background-variant);
-  border-top: 2px solid var(--foreground);
-  border-bottom: 2px solid var(--foreground);
+  background: var(--srf-default);
 
   &_inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 2rem;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: var(--space-12);
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: var(--space-20) var(--page-padding-x);
   }
 
   &_header {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   &_grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0;
+    gap: var(--space-4);
   }
 
   &_item {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 32px;
-    border-left: 2px solid var(--foreground);
+    gap: var(--space-3);
+    padding: var(--space-6);
 
-    &:first-child {
-      border-left: none;
-    }
+    background: var(--srf-variant);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
   }
 
   &_icon {
-    width: 48px;
-    height: 48px;
-    border: 2px solid var(--foreground);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary);
+    width: var(--control-height-lg);
+    height: var(--control-height-lg);
+
+    color: var(--primary-text);
+    background: var(--primary-surface);
+    border: 1px solid var(--primary-border);
+    border-radius: var(--radius-lg);
   }
 
   @media (max-width: 900px) {
     &_grid {
       grid-template-columns: repeat(2, 1fr);
     }
-
-    &_item:nth-child(odd) {
-      border-left: none;
-    }
-
-    &_item:nth-child(3),
-    &_item:nth-child(4) {
-      border-top: 2px solid var(--foreground);
-    }
   }
 
   @media (max-width: 560px) {
     &_grid {
       grid-template-columns: 1fr;
-    }
-
-    &_item {
-      border-left: none;
-      border-top: 2px solid var(--foreground);
-
-      &:first-child {
-        border-top: none;
-      }
     }
   }
 }

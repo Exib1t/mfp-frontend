@@ -1,11 +1,11 @@
 .delivery-page {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: var(--space-10);
 
   &_section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
   }
 }

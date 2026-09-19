@@ -1,51 +1,42 @@
+/*
+ * A nav item is a ghost control: a tinted pill on hover, a primary tint when
+ * it is the current page. The underline the storefront used to draw belonged
+ * to the old look and has no counterpart in the admin's navigation.
+ */
+
 .nav-link {
-  font-family: var(--font-inter), sans-serif;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--letter-spacing-wide);
-  color: var(--foreground);
-  text-decoration: none;
-  position: relative;
-  padding-bottom: 3px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--control-gap-sm);
+  min-height: var(--control-height-sm);
+  padding: 0 var(--control-padding-x-sm);
+
+  font: var(--typo-label-sm);
+  text-decoration: none;
+  color: var(--text-variant);
+  border-radius: var(--control-radius-sm);
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
 
   &_icon {
     flex-shrink: 0;
-    opacity: 0.7;
-    transition: opacity 220ms ease;
-  }
-
-  &:hover &_icon,
-  &.-active &_icon {
-    opacity: 1;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1.5px;
-    background: var(--primary);
-    transition: width 220ms ease;
+    width: var(--control-icon-sm);
+    height: var(--control-icon-sm);
   }
 
   &:hover {
-    color: var(--foreground);
+    color: var(--text-default);
+    background: var(--bgd-hover);
+  }
 
-    &::after {
-      width: 100%;
-    }
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
   }
 
   &.-active {
-    color: var(--primary);
-
-    &::after {
-      width: 100%;
-    }
+    color: var(--primary-text);
+    background: var(--primary-surface);
   }
 }

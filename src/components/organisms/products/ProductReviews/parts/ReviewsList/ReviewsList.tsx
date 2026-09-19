@@ -11,6 +11,14 @@ interface ReviewsListProps {
 
 const BASE_CLASS = "product-reviews";
 
+// What a parent can tell the next parent — the column would otherwise hold a
+// single grey line while the form sits beside it.
+const PROMPTS = [
+  "Який розмір обрали й у яку кімнату він став",
+  "Яка тканина на дотик і як тримає колір після прання",
+  "Як дитина грається всередині",
+];
+
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("uk-UA", {
     day: "numeric",
@@ -30,9 +38,24 @@ function ReviewsList({ reviews, isLoading }: ReviewsListProps) {
 
   if (reviews.length === 0) {
     return (
-      <Typography variant="body2" color="muted">
-        Ще немає відгуків. Будьте першим!
-      </Typography>
+      <div className={`${BASE_CLASS}_empty`}>
+        <Typography variant="subtitle1" as="h3">
+          Відгуків ще немає
+        </Typography>
+        <Typography variant="body2" color="muted">
+          Цей вігвам уже вдома? Розкажіть, як його прийняла дитина — ваш відгук
+          буде першим, який побачать інші батьки.
+        </Typography>
+        <ul className={`${BASE_CLASS}_prompts`}>
+          {PROMPTS.map((prompt) => (
+            <li key={prompt}>
+              <Typography variant="body2" color="muted">
+                {prompt}
+              </Typography>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   }
 

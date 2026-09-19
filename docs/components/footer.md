@@ -64,4 +64,4 @@ None — fully static component. Content hardcoded or from config.
 - Uses `NavLink` component for nav links
 - Social icons — SVG inline або icon component (обговорити)
 - No dynamic data needed
-- Background: `--background-variant` або окремий dark варіант — вирішити при реалізації
+- Background: `--srf-default` — підвал це поверхня над `--bgd-default`, відділена `--border-subtle`

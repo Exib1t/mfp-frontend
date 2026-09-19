@@ -1,5 +1,6 @@
 "use client";
 
+import { Play } from "lucide-react";
 import Image from "next/image";
 import { useState, ViewTransition } from "react";
 import { isVideoUrl } from "@/entities/products/helpers";
@@ -94,18 +95,30 @@ function ProductGallery({ images, name, slug }: ProductGalleryProps) {
               aria-current={idx === activeIndex}
             >
               {isVideoUrl(img) ? (
-                // Metadata only — the thumbnail needs a poster frame, not the
-                // file. Muted and uncontrolled: this button selects, it does
-                // not play.
-                <video
-                  src={img}
-                  muted
-                  preload="metadata"
-                  className={cn(
-                    `${BASE_CLASS}_thumb-image`,
-                    `${BASE_CLASS}_fill`,
-                  )}
-                />
+                <>
+                  {/*
+                   * `#t=0.1` is a media fragment: it seeks a tenth of a second
+                   * in, which makes the browser paint that frame. Without it
+                   * `preload="metadata"` loads the dimensions and draws
+                   * nothing — the thumbnail was a blank white tile. Muted and
+                   * uncontrolled: this button selects, it does not play.
+                   */}
+                  <video
+                    src={`${img}#t=0.1`}
+                    muted
+                    preload="metadata"
+                    className={cn(
+                      `${BASE_CLASS}_thumb-image`,
+                      `${BASE_CLASS}_fill`,
+                    )}
+                  />
+                  <span
+                    className={`${BASE_CLASS}_thumb-play`}
+                    aria-hidden="true"
+                  >
+                    <Play size={12} strokeWidth={2.5} />
+                  </span>
+                </>
               ) : (
                 <Image
                   src={img}

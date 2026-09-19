@@ -20,33 +20,42 @@ All native HTML attributes of the rendered element are also accepted and typed c
 
 ## Variants
 
-| `variant` | Default tag | Size | Weight | Line-height |
-|---|---|---|---|---|
-| `h1` | `<h1>` | 5xl (60px) | bold | tight |
-| `h2` | `<h2>` | 4xl (48px) | bold | tight |
-| `h3` | `<h3>` | 3xl (36px) | semibold | snug |
-| `h4` | `<h4>` | 2xl (30px) | semibold | snug |
-| `h5` | `<h5>` | xl (24px) | semibold | snug |
-| `h6` | `<h6>` | lg (20px) | semibold | snug |
-| `subtitle1` | `<p>` | md (18px) | medium | normal |
-| `subtitle2` | `<p>` | base (16px) | medium | normal |
-| `body1` | `<p>` | base (16px) | regular | relaxed |
-| `body2` | `<p>` | sm (14px) | regular | relaxed |
-| `caption` | `<span>` | xs (12px) | regular | normal |
-| `overline` | `<span>` | xs (12px) | semibold | normal + UPPERCASE + wide spacing |
-| `label` | `<label>` | sm (14px) | medium | normal |
+| `variant` | Default tag | Token | Size / line-height |
+|---|---|---|---|
+| `h1` | `<h1>` | `--typo-display-lg` | 36→56 fluid, 700, tight tracking |
+| `h2` | `<h2>` | `--typo-display-md` | 32→44 fluid, 700, tight tracking |
+| `h3` | `<h3>` | `--typo-display-sm` | 28→36 fluid, 600 |
+| `h4` | `<h4>` | `--typo-title-lg` | 30/38, 600 |
+| `h5` | `<h5>` | `--typo-title-md` | 24/32, 600 |
+| `h6` | `<h6>` | `--typo-title-sm` | 18/24, 600 |
+| `subtitle1` | `<p>` | `--typo-body-lg` | 18/28, 400 |
+| `subtitle2` | `<p>` | `--typo-label-md` | 16/20, 600 |
+| `body1` | `<p>` | `--typo-body-md` | 16/24, 400 |
+| `body2` | `<p>` | `--typo-body-sm` | 14/20, 400 |
+| `caption` | `<span>` | `--typo-caption` | 12/16, 400 |
+| `overline` | `<span>` | `--typo-caption` | 12/16, 600 + UPPERCASE + wider tracking |
+| `label` | `<label>` | `--typo-label-sm` | 14/18, 600 |
+
+Every variant resolves to one `--typo-*` shorthand, so size, weight and
+line-height are never picked apart and cannot drift out of step. `h1`–`h3` use
+the storefront-only display steps; everything from `h4` down is shared verbatim
+with the admin panel.
+
+The `data-weight` override rules are declared **after** the variants on purpose:
+the `font:` shorthand resets weight, so a rule placed before it would be
+overwritten rather than applied.
 
 ## Colors
 
 ```ts
 type TypographyColor =
-  | "foreground"   // var(--foreground)
-  | "primary"      // var(--primary)
-  | "muted"        // var(--color-muted)
-  | "error"        // var(--color-error)
-  | "success"      // var(--color-success)
-  | "warning"      // var(--color-warning)
-  | "background";  // var(--background) — for inverted text
+  | "foreground"   // var(--text-default)
+  | "primary"      // var(--primary-text)
+  | "muted"        // var(--text-muted)
+  | "error"        // var(--danger-text)
+  | "success"      // var(--success-text)
+  | "warning"      // var(--warning-text)
+  | "background";  // var(--text-white) — for inverted text
 ```
 
 No `color` prop = inherits from parent.

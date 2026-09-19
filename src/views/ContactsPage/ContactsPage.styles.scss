@@ -1,19 +1,31 @@
 .contacts-page {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 
   &_link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-3);
     width: fit-content;
-    color: var(--foreground);
+    padding: var(--space-2) var(--space-3);
+    margin-left: calc(var(--space-3) * -1);
+
     text-decoration: none;
-    transition: color 150ms ease;
+    color: var(--text-default);
+    border-radius: var(--radius-md);
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
 
     &:hover {
-      color: var(--primary);
+      color: var(--primary-text);
+      background: var(--primary-surface);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
     }
   }
 }

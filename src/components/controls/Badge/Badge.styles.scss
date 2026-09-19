@@ -1,52 +1,68 @@
+/*
+ * A pill with a tinted fill and matching text, straight from the admin. The
+ * storefront's variant names differ (`default`/`error` where the admin says
+ * `neutral`/`danger`) but each lands on the same token pair.
+ */
+
 .badge {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-inter), serif;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-wider);
-  text-transform: uppercase;
-  border: none;
-  border-radius: 0;
+  gap: var(--space-1);
+  max-width: 100%;
+
+  color: var(--badge-color);
+  background: var(--badge-background);
+  border: 1px solid var(--badge-border);
+  border-radius: var(--radius-pill);
   white-space: nowrap;
-  line-height: 1;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+
+  & > svg {
+    flex: 0 0 auto;
+    width: var(--control-icon-xs);
+    height: var(--control-icon-xs);
+  }
 
   /* ─── Sizes ─────────────────────────────────────── */
 
   &[data-size="sm"] {
-    padding: 3px 7px;
-    font-size: var(--font-size-xs);
+    padding: 1px var(--space-2);
+    font: var(--typo-caption);
   }
 
   &[data-size="md"] {
-    padding: 5px 10px;
-    font-size: var(--font-size-xs);
+    padding: var(--space-1) var(--space-3);
+    font: var(--typo-label-sm);
   }
 
   /* ─── Variants ───────────────────────────────────── */
 
   &[data-variant="default"] {
-    color: var(--background);
-    background: var(--foreground);
+    --badge-color: var(--text-variant);
+    --badge-background: var(--bgd-variant);
+    --badge-border: var(--border-subtle);
   }
 
   &[data-variant="primary"] {
-    color: var(--background);
-    background: var(--primary);
+    --badge-color: var(--primary-text);
+    --badge-background: var(--primary-surface);
+    --badge-border: var(--primary-border);
   }
 
   &[data-variant="success"] {
-    color: var(--background);
-    background: var(--color-success);
+    --badge-color: var(--success-text);
+    --badge-background: var(--success-subtle);
+    --badge-border: transparent;
   }
 
   &[data-variant="warning"] {
-    color: var(--background);
-    background: var(--color-warning);
+    --badge-color: var(--warning-text);
+    --badge-background: var(--warning-subtle);
+    --badge-border: transparent;
   }
 
   &[data-variant="error"] {
-    color: var(--background);
-    background: var(--color-error);
+    --badge-color: var(--danger-text);
+    --badge-background: var(--danger-subtle);
+    --badge-border: transparent;
   }
 }

@@ -1,165 +1,140 @@
+/*
+ * Every size resolves the same six local vars, so a variant only ever picks
+ * colours and a size only ever picks geometry — the same split the admin's
+ * Button makes. A Button, an Input and a Select of one size are one height.
+ */
+
 .button {
-  font-family: var(--font-inter), serif;
-  font-weight: var(--font-weight-semibold);
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--button-gap);
+  min-height: var(--button-height);
+  padding: 0 var(--button-padding-x);
   cursor: pointer;
   user-select: none;
-  transition:
-    transform 100ms ease,
-    box-shadow 100ms ease,
-    background-color 150ms ease;
+
+  font: var(--button-font);
+  /* A label is one line: wrapping it turns a button into a paragraph. */
   white-space: nowrap;
   text-decoration: none;
-  letter-spacing: var(--letter-spacing-wide);
-  border: 2px solid transparent;
-  border-radius: 0;
-  gap: 8px;
+  color: var(--button-color, currentColor);
+  background: var(--button-background);
+  border: 1px solid var(--button-border, transparent);
+  border-radius: var(--button-radius);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+
+  &:hover:not(.-disabled, .-loading, .-active) {
+    color: var(--button-color-hover, var(--button-color, currentColor));
+    background: var(--button-background-hover);
+    border-color: var(--button-border-hover, var(--button-border, transparent));
+  }
+
+  &:active:not(.-disabled, .-loading),
+  &.-active {
+    color: var(--button-color-active, var(--button-color-hover, var(--button-color, currentColor)));
+    background: var(--button-background-active);
+    border-color: var(--button-border-hover, var(--button-border, transparent));
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  svg {
+    flex-shrink: 0;
+    width: var(--button-icon);
+    height: var(--button-icon);
+  }
 
   /* ─── Sizes ─────────────────────────────────────── */
 
   &[data-size="sm"] {
-    font-size: var(--font-size-sm);
-    height: 32px;
-    padding: 0 12px;
+    --button-height: var(--control-height-sm);
+    --button-padding-x: var(--button-padding-x-sm);
+    --button-gap: var(--control-gap-sm);
+    --button-radius: var(--control-radius-sm);
+    --button-font: var(--control-label-font-sm);
+    --button-icon: var(--control-icon-sm);
   }
 
   &[data-size="md"] {
-    font-size: var(--font-size-base);
-    height: 44px;
-    padding: 0 20px;
+    --button-height: var(--control-height-md);
+    --button-padding-x: var(--button-padding-x-md);
+    --button-gap: var(--control-gap-md);
+    --button-radius: var(--control-radius-md);
+    --button-font: var(--control-label-font-md);
+    --button-icon: var(--control-icon-md);
   }
 
   &[data-size="lg"] {
-    font-size: var(--font-size-md);
-    height: 56px;
-    padding: 0 32px;
+    --button-height: var(--control-height-lg);
+    --button-padding-x: var(--button-padding-x-lg);
+    --button-gap: var(--control-gap-lg);
+    --button-radius: var(--control-radius-lg);
+    --button-font: var(--control-label-font-lg);
+    --button-icon: var(--control-icon-lg);
   }
 
-  /* ─── Shadow scale by size ───────────────────────── */
-  /* unitless numbers, used in calc(var() * 1px)       */
-  /* sm: 2  md/lg: 4                                   */
-
-  --_s: 4;   /* shadow base */
-  --_sh: 6;  /* shadow hover */
-  --_sf: 4;  /* shift on active */
-  --_ho: -2; /* hover offset */
-
-  &[data-size="sm"] {
-    --_s: 2;
-    --_sh: 3;
-    --_sf: 2;
-    --_ho: -1;
-  }
-
-  /* ─── Primary ────────────────────────────────────── */
+  /* ─── Variants ───────────────────────────────────── */
 
   &[data-variant="primary"] {
-    color: #fff;
-    border-color: var(--foreground);
-    background: var(--primary);
-    box-shadow: calc(var(--_s) * 1px) calc(var(--_s) * 1px) 0 0 var(--foreground);
-
-    &:hover:not(.-disabled, .-loading, .-active) {
-      transform: translate(calc(var(--_ho) * 1px), calc(var(--_ho) * 1px));
-      box-shadow: calc(var(--_sh) * 1px) calc(var(--_sh) * 1px) 0 0 var(--foreground);
-    }
-
-    &:active:not(.-disabled, .-loading),
-    &.-active {
-      transition-duration: 60ms;
-      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
-      box-shadow: 0 0 0 0 var(--foreground);
-    }
+    --button-background: var(--primary-default);
+    --button-background-hover: var(--primary-hover);
+    --button-background-active: var(--primary-active);
+    --button-color: var(--on-primary);
   }
-
-  /* ─── Secondary ──────────────────────────────────── */
 
   &[data-variant="secondary"] {
-    color: var(--foreground);
-    border-color: var(--foreground);
-    background: var(--background);
-    box-shadow: calc(var(--_s) * 1px) calc(var(--_s) * 1px) 0 0 var(--foreground);
-
-    &:hover:not(.-disabled, .-loading, .-active) {
-      transform: translate(calc(var(--_ho) * 1px), calc(var(--_ho) * 1px));
-      box-shadow: calc(var(--_sh) * 1px) calc(var(--_sh) * 1px) 0 0 var(--foreground);
-    }
-
-    &:active:not(.-disabled, .-loading),
-    &.-active {
-      transition-duration: 60ms;
-      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
-      box-shadow: 0 0 0 0 var(--foreground);
-    }
+    --button-background: var(--secondary-default);
+    --button-background-hover: var(--secondary-hover);
+    --button-background-active: var(--secondary-active);
+    --button-color: var(--on-secondary);
   }
 
-  /* ─── Outline ────────────────────────────────────── */
-
+  /*
+   * outline and ghost take their ink from whatever they sit on — `currentColor`
+   * rather than a hardcoded `--text-default`. Both live on section tints, on
+   * photography and inside the dark CTA band, and a fixed dark ink turned them
+   * invisible on the last of those. The tints are mixed from the same inherited
+   * colour, so they darken a light ground and lighten a dark one on their own.
+   */
   &[data-variant="outline"] {
-    color: currentColor;
-    border-color: currentColor;
-    background: transparent;
-    box-shadow: calc(var(--_s) * 1px) calc(var(--_s) * 1px) 0 0 currentColor;
-
-    &:hover:not(.-disabled, .-loading, .-active) {
-      transform: translate(calc(var(--_ho) * 1px), calc(var(--_ho) * 1px));
-      box-shadow: calc(var(--_sh) * 1px) calc(var(--_sh) * 1px) 0 0 currentColor;
-    }
-
-    &:active:not(.-disabled, .-loading) {
-      transition-duration: 60ms;
-      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
-      box-shadow: 0 0 0 0 currentColor;
-    }
-
-    &.-active {
-      transform: translate(calc(var(--_sf) * 1px), calc(var(--_sf) * 1px));
-      color: var(--background);
-      border-color: var(--foreground);
-      background: var(--foreground);
-      box-shadow: 0 0 0 0 var(--foreground);
-    }
+    --button-background: transparent;
+    --button-background-hover: color-mix(in oklab, currentColor 8%, transparent);
+    --button-background-active: color-mix(in oklab, currentColor 14%, transparent);
+    --button-border: color-mix(in oklab, currentColor 35%, transparent);
+    --button-border-hover: currentColor;
   }
 
-  /* ─── Ghost ──────────────────────────────────────── */
-
+  /* Transparent until touched — for actions that must not compete with the
+     primary button beside them. */
   &[data-variant="ghost"] {
-    color: var(--foreground);
-    border-color: transparent;
-    background: transparent;
-
-    &:hover:not(.-disabled, .-loading, .-active) {
-      background: var(--background-variant);
-    }
-
-    &:active:not(.-disabled, .-loading),
-    &.-active {
-      transition-duration: 60ms;
-      transform: scale(0.97);
-      background: var(--background-variant);
-    }
+    --button-background: transparent;
+    --button-background-hover: color-mix(in oklab, currentColor 10%, transparent);
+    --button-background-active: color-mix(in oklab, currentColor 16%, transparent);
   }
 
-  /* ─── Link ───────────────────────────────────────── */
-
+  /* Reads as text, so it takes no control height and no horizontal padding. */
   &[data-variant="link"] {
-    height: auto;
+    --button-background: transparent;
+    --button-background-hover: transparent;
+    --button-background-active: transparent;
+    --button-color: var(--primary-text);
+    --button-color-hover: var(--primary-active);
+
+    min-height: 0;
+    padding: 0;
     text-decoration: underline;
-    color: var(--primary);
-    border-color: transparent;
-    background: transparent;
-    padding-inline: 0;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
 
-    &:hover:not(.-disabled, .-active) {
-      text-decoration-thickness: 2px;
-    }
-
-    &.-active {
+    &:hover:not(.-disabled) {
       text-decoration-thickness: 2px;
     }
   }
@@ -173,9 +148,14 @@
   &.-disabled {
     cursor: not-allowed;
     pointer-events: none;
-    opacity: 0.45;
+    opacity: 0.5;
   }
 
+  /*
+   * Busy, not disabled. The spinner already says the button is working, so the
+   * fill stays at full strength — stacking the disabled 50% on top of a hidden
+   * label washed the whole control out and took the spinner with it.
+   */
   &.-loading {
     cursor: wait;
     pointer-events: none;
@@ -186,12 +166,14 @@
   &_label {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: inherit;
     transition: opacity 150ms ease;
   }
 
+  /* The label keeps its box while loading — only its opacity drops — so the
+     button does not resize under the absolutely centred spinner. */
   &.-loading &_label {
-    opacity: 0.35;
+    opacity: 0;
   }
 
   &_spinner {
@@ -204,7 +186,7 @@
     pointer-events: none;
     border: 2px solid currentColor;
     border-top-color: transparent;
-    border-radius: 50%;
+    border-radius: var(--radius-pill);
     translate: -50% -50%;
   }
 }
