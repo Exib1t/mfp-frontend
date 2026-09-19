@@ -7,6 +7,7 @@ import EmptyState from "@/components/controls/EmptyState/EmptyState";
 import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import { useCart } from "@/entities/cart/CartContext";
+import { useCartDrawer } from "@/entities/cart/CartDrawerContext";
 import { useProduct } from "@/entities/products/api";
 import {
   DEFAULT_PRODUCT_LAYOUT,
@@ -60,6 +61,7 @@ function ProductPage({ slug }: ProductPageProps) {
 
 function ProductPageContent({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const { open: openCart } = useCartDrawer();
   const { toast } = useToast();
   const purchase = useProductPurchase(product);
 
@@ -67,6 +69,9 @@ function ProductPageContent({ product }: { product: Product }) {
     if (!purchase.canBuy) return;
     addItem(product, purchase.selectedVariant, purchase.quantity);
     toast(`«${product.name}» додано в кошик`, "success");
+    // The toast lasts 3.5s and the header badge is off-screen on a phone, so
+    // opening the drawer is the only confirmation that also shows the way on.
+    openCart();
   };
 
   const blocks = visibleBlocks(DEFAULT_PRODUCT_LAYOUT);

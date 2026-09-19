@@ -1,6 +1,7 @@
 "use client";
 
 import { ShoppingBag } from "lucide-react";
+import MobileMenu from "@/components/common/Header/parts/MobileMenu/MobileMenu";
 import { useCart } from "@/entities/cart/CartContext";
 import { useCartDrawer } from "@/entities/cart/CartDrawerContext";
 import { cn } from "@/lib/utils/cn";
@@ -15,6 +16,8 @@ const HeaderRight = () => {
 
   return (
     <div className={BASE_CLASS}>
+      <MobileMenu />
+
       <button
         type="button"
         className={cn(`${BASE_CLASS}_cart`, { "-active": isOpen })}

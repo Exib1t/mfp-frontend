@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode, Ref } from "react";
 import { cn } from "@/lib/utils/cn";
 
 import "./IconButton.styles.scss";
@@ -13,6 +13,7 @@ interface IconButtonProps
   "aria-label": string;
   className?: string;
   children?: ReactNode;
+  ref?: Ref<HTMLButtonElement>;
 }
 
 const BASE_CLASS = "icon-button";

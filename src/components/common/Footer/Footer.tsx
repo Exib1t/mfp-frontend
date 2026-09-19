@@ -5,6 +5,7 @@ import {
 } from "@/components/common/icons/BrandIcons";
 import Logo from "@/components/common/Logo/Logo";
 import NavLink from "@/components/controls/NavLink/NavLink";
+import { CONTACTS } from "@/config/contacts.config";
 import { FOOTER_NAV_ITEMS } from "@/config/navigation.config";
 
 import "./Footer.styles.scss";
@@ -29,19 +30,16 @@ function Footer() {
 
         <div className="footer_contacts">
           <p className="footer_contacts_title">Контакти</p>
-          <a className="footer_contacts_link" href="tel:+380000000000">
-            +38 (000) 000-00-00
+          <a className="footer_contacts_link" href={CONTACTS.phone.href}>
+            {CONTACTS.phone.label}
           </a>
-          <a
-            className="footer_contacts_link"
-            href="mailto:hello@myfairyplace.com"
-          >
-            hello@myfairyplace.com
+          <a className="footer_contacts_link" href={CONTACTS.email.href}>
+            {CONTACTS.email.label}
           </a>
           <div className="footer_socials">
             <a
               className="footer_social_icon"
-              href="https://instagram.com"
+              href={CONTACTS.instagram.href}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -50,7 +48,7 @@ function Footer() {
             </a>
             <a
               className="footer_social_icon"
-              href="https://t.me"
+              href={CONTACTS.telegram.href}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram"

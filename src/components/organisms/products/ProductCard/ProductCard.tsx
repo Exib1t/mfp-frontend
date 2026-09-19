@@ -10,6 +10,7 @@ import Price from "@/components/controls/Price/Price";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
+import { useCartDrawer } from "@/entities/cart/CartDrawerContext";
 import { MAX_CARD_SWATCHES } from "@/entities/products/constants";
 import {
   getColourSwatches,
@@ -34,6 +35,7 @@ const BASE_CLASS = "product-card";
 
 function ProductCard({ product, className }: ProductCardProps) {
   const { addItem } = useCart();
+  const { open: openCart } = useCartDrawer();
   const { toast } = useToast();
   const { slug, name, category, status, short_description } = product;
 
@@ -53,6 +55,7 @@ function ProductCard({ product, className }: ProductCardProps) {
     if (!canBuy) return;
     addItem(product, getInitialVariant(product));
     toast(`«${name}» додано в кошик`, "success");
+    openCart();
   };
 
   return (

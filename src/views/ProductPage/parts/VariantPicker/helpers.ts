@@ -65,12 +65,23 @@ export function findVariantFor(
   });
 }
 
-/** True when at least one variant carrying this value has stock left. */
+/**
+ * True when at least one variant carrying this value has stock left.
+ *
+ * A made-to-order product carries `stock: 0` on every variant — the shop does
+ * not count stock for it, which is why `getMaxQuantity` sells it up to
+ * `MAX_ORDER_QUANTITY` anyway. Reading that as "sold out" greyed out the whole
+ * picker next to an enabled buy button, so stock only dims a value on products
+ * where the shop tracks it at all.
+ */
 export function isValueInStock(
   variants: ProductVariant[],
   optionId: number,
   valueId: number,
 ): boolean {
+  const tracksStock = variants.some((variant) => variant.stock > 0);
+  if (!tracksStock) return true;
+
   return variants.some(
     (variant) => hasValue(variant, optionId, valueId) && variant.stock > 0,
   );

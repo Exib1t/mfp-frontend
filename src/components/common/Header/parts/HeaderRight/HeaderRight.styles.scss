@@ -2,6 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  /*
+   * Same `flex: 1` as `.header-left`: a zero basis with equal growth makes both
+   * sides exactly half the leftover, which is what centres the nav bar between
+   * them. The cart can no longer be pushed off a phone — `.nav-bar` is
+   * `display: none` below 768px.
+   */
   flex: 1;
   gap: var(--space-2);
 
