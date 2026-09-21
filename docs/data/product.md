@@ -2,14 +2,14 @@
 
 Types are **generated from the backend OpenAPI schema** — never hand-write them.
 
-- Generated types: `src/lib/api/v1.d.ts` (`npm run generate`, or point
-  `openapi-typescript` at the deployed API when the backend is not running locally)
+- Generated types: `src/lib/api/v1.d.ts` (`npm run generate` against a local
+  backend — production does not serve the OpenAPI document)
 - Domain aliases: `src/entities/products/types.ts`
 - Helpers: `src/entities/products/helpers.ts`
 - Labels and limits: `src/entities/products/constants.ts`
 - Query hooks: `src/entities/products/api.ts`
 
-## Shape (from `ProductDto`)
+## Shape (from `PublicProductDto`)
 
 ```ts
 type ProductStatus = "in_stock" | "made_to_order" | "out_of_stock";
@@ -23,7 +23,6 @@ interface Product {
   description: string | null;
   status: ProductStatus;
   is_featured: boolean;          // "Хіт" badge, and the home page row
-  is_published: boolean;         // public endpoints only ever return `true`
   price: number;                 // listed price
   sale_price: number | null;
   sale_active: boolean;          // a sale that is actually running now
@@ -32,14 +31,16 @@ interface Product {
   stock: number;                 // advisory — see below
   category: { id; name; slug; deleted_at: string | null };
   options: ProductOption[];      // variation axes, derived from `is_variant` attributes
-  variants: ProductVariant[];    // one per option combination
+  variants: ProductVariant[];    // one per option combination; disabled ones are never served
   attributes: ProductAttribute[];// characteristics, typed values, grouped
   images: ProductImage[];        // `variant_id` set on variant-specific shots
   meta_title / meta_description: string | null;
   created_at / updated_at: string;
-  deleted_at: string | null;     // archive only — never set on public reads
 }
 ```
+
+Public reads carry no `is_published` / `deleted_at` — unpublished and archived
+products are simply not returned. The admin-only `ProductDto` still has them.
 
 `ProductOption` is a variation axis (id = the attribute's id) with its picked
 `values` (`label`, `value`, `color_hex`, `image_url`). `ProductVariant` carries
@@ -59,7 +60,7 @@ sold — blocking on the counter would hide live goods.
 | Rule | Helper |
 |---|---|
 | Buyable ⇔ `status !== "out_of_stock"` | `isProductAvailableToBuy` |
-| Order cap = counter when > 0, else `MAX_ORDER_QUANTITY` (99) | `getMaxQuantity` |
+| Order cap = counter when > 0, else `MAX_ORDER_QUANTITY` (100, the API's per-line limit), never above it | `getMaxQuantity` |
 | "Залишилось N" when `0 < stock ≤ LOW_STOCK_THRESHOLD` (5) | `getLowStockCount` |
 
 Variant stock follows the same rule: a depleted variant stays selectable and
@@ -90,6 +91,10 @@ catalogue has no variants yet.
   `status`, `search`, `min_price`, `max_price`, `is_featured`, `in_stock`,
   `sort`, `attributes[code]=a,b` (or `80..120` for a numeric range).
   Returns `{ items, meta }` inside the `{ data, timestamp }` envelope.
+  At most `MAX_ATTRIBUTE_FACETS` (20) attribute facets and a
+  `MAX_SEARCH_LENGTH` (100) character search term per request.
 - `GET /api/v1/products/{slug}` — one product.
 - Orders reference `variant_id` **or** `product_id`:
-  `POST /api/v1/orders { items: [{ variant_id?, product_id?, quantity }] }`.
+  `POST /api/v1/orders { items: [{ variant_id?, product_id?, quantity }] }` —
+  at most `MAX_ORDER_LINES` (50) lines, each `quantity ≤ 100`. A line that is
+  no longer sellable or lacks stock fails the whole order with `400`.

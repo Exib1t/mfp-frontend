@@ -8,7 +8,10 @@ import {
   useMemo,
   useState,
 } from "react";
-import { DEFAULT_VARIANT_LABEL } from "@/entities/products/constants";
+import {
+  DEFAULT_VARIANT_LABEL,
+  MAX_ORDER_QUANTITY,
+} from "@/entities/products/constants";
 import {
   getBasePrice,
   getEffectivePrice,
@@ -53,7 +56,21 @@ const CartProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(JSON.parse(raw) as CartItem[]);
+      if (raw) {
+        // Carts saved before the API capped a line at MAX_ORDER_QUANTITY
+        // may hold more than it now accepts.
+        const saved = JSON.parse(raw) as CartItem[];
+        setItems(
+          saved.map((item) => {
+            const maxStock = Math.min(item.maxStock, MAX_ORDER_QUANTITY);
+            return {
+              ...item,
+              maxStock,
+              quantity: clampQuantity(item.quantity, maxStock),
+            };
+          }),
+        );
+      }
     } catch {
       // ignore malformed storage
     }

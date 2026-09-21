@@ -9,17 +9,26 @@ import RatingStars from "@/components/controls/RatingStars/RatingStars";
 import { useToast } from "@/components/controls/Toast/ToastProvider";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCreateReview } from "@/entities/reviews/api";
+import { isRateLimited } from "@/services/api/apiError";
 
 import "../../ProductReviews.styles.scss";
 
 const reviewFormSchema = z.object({
-  authorName: z.string().trim().min(1, "Введіть ім'я"),
+  authorName: z
+    .string()
+    .trim()
+    .min(1, "Введіть ім'я")
+    .max(100, "Не більше 100 символів"),
   authorEmail: z.union([
     z.string().trim().email("Некоректний email"),
     z.literal(""),
   ]),
   rating: z.number().min(1, "Поставте оцінку").max(5),
-  body: z.string().trim().min(1, "Введіть текст відгуку"),
+  body: z
+    .string()
+    .trim()
+    .min(1, "Введіть текст відгуку")
+    .max(5000, "Не більше 5000 символів"),
 });
 
 type ReviewFormValues = z.infer<typeof reviewFormSchema>;
@@ -72,8 +81,13 @@ function ReviewForm({ productId }: ReviewFormProps) {
           reset();
           toast("Дякуємо! Відгук надіслано на модерацію.", "success");
         },
-        onError: () => {
-          toast("Не вдалося надіслати відгук. Спробуйте ще раз.", "error");
+        onError: (error) => {
+          toast(
+            isRateLimited(error)
+              ? "Забагато відгуків за короткий час. Зачекайте хвилину та спробуйте знову."
+              : "Не вдалося надіслати відгук. Спробуйте ще раз.",
+            "error",
+          );
         },
       },
     );

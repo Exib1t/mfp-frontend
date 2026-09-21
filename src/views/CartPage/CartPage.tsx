@@ -10,6 +10,9 @@ import Typography from "@/components/controls/Typography/Typography";
 import { useCart } from "@/entities/cart/CartContext";
 import { getCartItemKey } from "@/entities/cart/types";
 import { useCreateOrder } from "@/entities/orders/api";
+import { saveConfirmedOrder } from "@/entities/orders/storage";
+import { MAX_ORDER_LINES } from "@/entities/products/constants";
+import { getApiErrorStatus } from "@/services/api/apiError";
 import CartItemRow from "./parts/CartItemRow/CartItemRow";
 import CheckoutForm, {
   type CheckoutFormValues,
@@ -24,6 +27,17 @@ function pluralItems(count: number): string {
   if (count === 1) return "товар";
   if (count < 5) return "товари";
   return "товарів";
+}
+
+function getCheckoutErrorMessage(error: unknown): string {
+  switch (getApiErrorStatus(error)) {
+    case 429:
+      return "Забагато спроб оформити замовлення. Зачекайте хвилину та спробуйте знову.";
+    case 400:
+      return "Деякі товари вже недоступні або їх недостатньо на складі. Оновіть кошик та спробуйте ще раз.";
+    default:
+      return "Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.";
+  }
 }
 
 function CartPage() {
@@ -46,6 +60,13 @@ function CartPage() {
 
   const handleCheckoutSubmit = (values: CheckoutFormValues) => {
     if (!hasAnyItems) return;
+    if (items.length > MAX_ORDER_LINES) {
+      toast(
+        `В одному замовленні може бути не більше ${MAX_ORDER_LINES} позицій.`,
+        "error",
+      );
+      return;
+    }
 
     createOrder.mutate(
       {
@@ -65,14 +86,12 @@ function CartPage() {
       },
       {
         onSuccess: (res) => {
+          saveConfirmedOrder(res.data);
           clear();
           router.push(`/orders/${res.data.id}`);
         },
-        onError: () => {
-          toast(
-            "Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.",
-            "error",
-          );
+        onError: (error) => {
+          toast(getCheckoutErrorMessage(error), "error");
         },
       },
     );

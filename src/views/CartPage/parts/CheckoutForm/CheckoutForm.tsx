@@ -12,12 +12,31 @@ import Typography from "@/components/controls/Typography/Typography";
 import "../../CartPage.styles.scss";
 
 export const checkoutFormSchema = z.object({
-  guest_name: z.string().trim().min(1, "Введіть ім'я та прізвище"),
-  guest_email: z.string().trim().email("Некоректний email"),
-  guest_phone: z.string().trim().min(10, "Некоректний номер телефону"),
-  address: z.string().trim().min(1, "Введіть адресу доставки"),
+  guest_name: z
+    .string()
+    .trim()
+    .min(1, "Введіть ім'я та прізвище")
+    .max(200, "Не більше 200 символів"),
+  guest_email: z
+    .string()
+    .trim()
+    .email("Некоректний email")
+    .max(254, "Некоректний email"),
+  // Mirrors the API: 10–20 characters of digits, a leading +, spaces,
+  // brackets and dashes.
+  guest_phone: z
+    .string()
+    .trim()
+    .min(10, "Некоректний номер телефону")
+    .max(20, "Некоректний номер телефону")
+    .regex(/^\+?[0-9\s()-]+$/, "Некоректний номер телефону"),
+  address: z
+    .string()
+    .trim()
+    .min(1, "Введіть адресу доставки")
+    .max(500, "Не більше 500 символів"),
   payment_method: z.enum(["cash_on_delivery", "online"]),
-  notes: z.string().trim(),
+  notes: z.string().trim().max(2000, "Не більше 2000 символів"),
 });
 
 export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
@@ -126,6 +145,11 @@ function CheckoutForm({ onSubmit, isPending }: CheckoutFormProps) {
         rows={2}
         {...register("notes")}
       />
+      {errors.notes && (
+        <Typography variant="caption" color="error">
+          {errors.notes.message}
+        </Typography>
+      )}
 
       <Button type="submit" size="lg" fullWidth loading={isPending}>
         <CreditCard size={18} strokeWidth={2} />

@@ -2,10 +2,12 @@
 
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Button from "@/components/controls/Button/Button";
 import Skeleton from "@/components/controls/Skeleton/Skeleton";
 import Typography from "@/components/controls/Typography/Typography";
-import { useOrder } from "@/entities/orders/api";
+import { readConfirmedOrder } from "@/entities/orders/storage";
+import type { Order } from "@/entities/orders/types";
 import { DEFAULT_VARIANT_LABEL } from "@/entities/products/constants";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
@@ -23,9 +25,14 @@ const PAYMENT_LABELS: Record<string, string> = {
 const BASE_CLASS = "order-page";
 
 function OrderPage({ orderId }: OrderPageProps) {
-  const { data: order, isLoading, isError } = useOrder(orderId);
+  // undefined until mounted: session storage is not there during SSR.
+  const [order, setOrder] = useState<Order | null>();
 
-  if (isLoading) {
+  useEffect(() => {
+    setOrder(readConfirmedOrder(orderId));
+  }, [orderId]);
+
+  if (order === undefined) {
     return (
       <div className={BASE_CLASS}>
         <Skeleton className={`${BASE_CLASS}_skeleton`} />
@@ -33,7 +40,8 @@ function OrderPage({ orderId }: OrderPageProps) {
     );
   }
 
-  if (isError || !order) {
+  // Only the tab that placed the order has it — there is no public read.
+  if (!order) {
     return (
       <div className={BASE_CLASS}>
         <div className={`${BASE_CLASS}_state`}>

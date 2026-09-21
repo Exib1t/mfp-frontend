@@ -44,14 +44,23 @@ Collect contact info + delivery details + place order. No registration required.
 
 ## Validation
 
-- Phone: Ukrainian format (+380...)
-- Email: standard format
+Mirrors the API (`CreateOrderDto`):
+
+- Phone: 10–20 characters — digits, a leading `+`, spaces, brackets, dashes
+- Email: standard format, ≤ 254
+- Name ≤ 200, address ≤ 500, notes ≤ 2000
+- At most 50 lines per order, quantity ≤ 100 each
 - All required fields before proceeding to next step
+
+## Errors
+
+- `400` — a line is no longer available or lacks stock
+- `429` — more than 5 orders a minute from one client
 
 ## After submit
 
-- `POST /orders` returns `{ orderId }`
-- Redirect to `/orders/[id]`
+- `POST /orders` returns the full order — the only time the storefront can read it
+- Order saved to session storage, redirect to `/orders/[id]`
 - Cart cleared from localStorage
 - Confirmation email sent to provided email
 
