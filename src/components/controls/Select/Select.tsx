@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils/cn";
 
 import "./Select.styles.scss";
@@ -30,6 +30,8 @@ function Select<T extends string>({
 }: SelectProps<T>) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listboxId = useId();
   const selectedLabel = options.find((o) => o.value === value)?.label ?? value;
 
   useEffect(() => {
@@ -42,31 +44,59 @@ function Select<T extends string>({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") setOpen(false);
-    if (e.key === "Enter" || e.key === " ") {
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const focusOption = (index: number) => {
+    const count = options.length;
+    optionRefs.current[(index + count) % count]?.focus();
+  };
+
+  // Opening moves focus onto the picked option, so arrows and Enter work
+  // from there; closing hands it back to the trigger.
+  const handleTriggerKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
-      setOpen((v) => !v);
+      setOpen(true);
     }
   };
 
+  const handleOptionKey = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      focusOption(index + 1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      focusOption(index - 1);
+    } else if (e.key === "Escape" || e.key === "Tab") {
+      setOpen(false);
+      if (e.key === "Escape") triggerRef.current?.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const selected = options.findIndex((o) => o.value === value);
+    optionRefs.current[Math.max(selected, 0)]?.focus();
+  }, [open, options, value]);
+
+  const pick = (next: T) => {
+    onChange(next);
+    setOpen(false);
+    triggerRef.current?.focus();
+  };
+
   return (
-    <div
-      ref={ref}
-      className={cn(BASE_CLASS, className, { "-open": open })}
-      role="combobox"
-      aria-expanded={open}
-      aria-label={ariaLabel}
-      aria-haspopup="listbox"
-      tabIndex={0}
-      onKeyDown={handleKey}
-    >
+    <div ref={ref} className={cn(BASE_CLASS, className, { "-open": open })}>
       <button
+        ref={triggerRef}
         type="button"
         className={`${BASE_CLASS}_trigger`}
         onClick={() => setOpen((v) => !v)}
+        onKeyDown={handleTriggerKey}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
+        aria-label={ariaLabel}
       >
         <span>{selectedLabel}</span>
         <ChevronDown
@@ -77,23 +107,26 @@ function Select<T extends string>({
       </button>
 
       {open && (
-        <ul
+        <div
+          id={listboxId}
           className={`${BASE_CLASS}_dropdown`}
           role="listbox"
           aria-label={ariaLabel}
         >
-          {options.map((opt) => (
-            <li
+          {options.map((opt, index) => (
+            <button
               key={opt.value}
+              ref={(node) => {
+                optionRefs.current[index] = node;
+              }}
+              type="button"
               role="option"
               aria-selected={opt.value === value}
               className={cn(`${BASE_CLASS}_option`, {
                 "-selected": opt.value === value,
               })}
-              onClick={() => {
-                onChange(opt.value);
-                setOpen(false);
-              }}
+              onClick={() => pick(opt.value)}
+              onKeyDown={(e) => handleOptionKey(e, index)}
             >
               {opt.label}
               {opt.value === value && (
@@ -104,9 +137,9 @@ function Select<T extends string>({
                   ✓
                 </span>
               )}
-            </li>
+            </button>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

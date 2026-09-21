@@ -9,7 +9,10 @@ import Select from "@/components/controls/Select/Select";
 import Typography from "@/components/controls/Typography/Typography";
 import { useCategories } from "@/entities/categories/api";
 import { useCatalogPriceMax } from "@/entities/products/api";
-import { PRODUCT_SORT_LABELS } from "@/entities/products/constants";
+import {
+  MAX_SEARCH_LENGTH,
+  PRODUCT_SORT_LABELS,
+} from "@/entities/products/constants";
 import type { ProductSort } from "@/entities/products/types";
 import FilterSidebar from "./parts/FilterSidebar/FilterSidebar";
 import ProductGrid from "./parts/ProductGrid/ProductGrid";
@@ -69,6 +72,7 @@ function ProductsPage() {
               value={state.search}
               placeholder="Пошук товарів"
               aria-label="Пошук товарів"
+              maxLength={MAX_SEARCH_LENGTH}
               onChange={(event) => state.setSearch(event.target.value)}
             />
             {state.search && (

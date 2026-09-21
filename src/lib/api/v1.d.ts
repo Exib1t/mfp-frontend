@@ -293,7 +293,7 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Delete several categorys in one call
+     * Delete several categories in one call
      * @description All or nothing: an id that is already gone fails the whole request, so a stale selection never deletes half of itself.
      */
     post: operations["CategoriesAdminController_removeMany_v1"];
@@ -750,23 +750,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/v1/orders/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get order by id */
-    get: operations["OrdersController_findOne_v1"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/api/v1/admin/orders": {
     parameters: {
       query?: never;
@@ -923,6 +906,23 @@ export interface paths {
     patch: operations["ReviewsAdminController_updateStatus_v1"];
     trace?: never;
   };
+  "/api/v1/health": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Liveness check (process up, database reachable) */
+    get: operations["HealthController_check_v1"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -958,6 +958,7 @@ export interface components {
     RefreshResponseDto: {
       access_token: string;
       access_expires_at: string;
+      refresh_token: string;
     };
     ApiResponseOfRefreshResponseDto: {
       data: components["schemas"]["RefreshResponseDto"];
@@ -1078,8 +1079,7 @@ export interface components {
       image_url?: string | null;
       meta_title?: string | null;
       meta_description?: string | null;
-      /** @default 0 */
-      sort_order: number;
+      sort_order?: number;
     };
     AttributeDto: {
       id: number;
@@ -1180,6 +1180,142 @@ export interface components {
         is_required?: boolean;
         sort_order?: number;
       }[];
+    };
+    PublicProductDto: {
+      id: number;
+      name: string;
+      slug: string;
+      sku: string | null;
+      short_description: string | null;
+      description: string | null;
+      /** @enum {string} */
+      status: "in_stock" | "made_to_order" | "out_of_stock";
+      is_featured: boolean;
+      price: number;
+      sale_price: number | null;
+      sale_active: boolean;
+      effective_price: number;
+      price_range: {
+        min: number;
+        max: number;
+      };
+      stock: number;
+      category: {
+        id: number;
+        name: string;
+        slug: string;
+        /** Format: date-time */
+        deleted_at: string | null;
+      };
+      options: {
+        id: number;
+        name: string;
+        sort_order: number;
+        values: {
+          id: number;
+          label: string;
+          value: string;
+          color_hex: string | null;
+          image_url: string | null;
+          sort_order: number;
+        }[];
+      }[];
+      variants: {
+        id: number;
+        sku: string | null;
+        label: string;
+        stock: number;
+        is_active: boolean;
+        is_default: boolean;
+        sort_order: number;
+        price: number;
+        price_override: number | null;
+        effective_price: number;
+        sale_active: boolean;
+        option_values: {
+          option_id: number;
+          option_name: string;
+          value_id: number;
+          label: string;
+          value: string;
+          color_hex: string | null;
+          image_url: string | null;
+        }[];
+        image_ids: number[];
+      }[];
+      attributes: {
+        id: number;
+        code: string;
+        name: string;
+        /** @enum {string} */
+        type:
+          | "text"
+          | "number"
+          | "boolean"
+          | "select"
+          | "multiselect"
+          | "color";
+        unit: string | null;
+        group_name: string | null;
+        is_filterable: boolean;
+        is_variant: boolean;
+        sort_order: number;
+        value:
+          | (
+              | string
+              | number
+              | boolean
+              | {
+                  id: number;
+                  label: string;
+                  value: string;
+                  color_hex: string | null;
+                  image_url: string | null;
+                }
+              | {
+                  id: number;
+                  label: string;
+                  value: string;
+                  color_hex: string | null;
+                  image_url: string | null;
+                }[]
+            )
+          | null;
+      }[];
+      images: {
+        id: number;
+        url: string;
+        mimetype: string | null;
+        alt: string | null;
+        variant_id: number | null;
+        sort_order: number;
+      }[];
+      meta_title: string | null;
+      meta_description: string | null;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    PaginationMeta: {
+      total: number;
+      page: number;
+      limit: number;
+      pages: number;
+    };
+    PaginatedPublicProductDto: {
+      items: components["schemas"]["PublicProductDto"][];
+      meta: components["schemas"]["PaginationMeta"];
+    };
+    ApiPaginatedResponseOfPublicProductDto: {
+      data: components["schemas"]["PaginatedPublicProductDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    ApiResponseOfPublicProductDto: {
+      data: components["schemas"]["PublicProductDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
     };
     ProductDto: {
       id: number;
@@ -1286,6 +1422,7 @@ export interface components {
       images: {
         id: number;
         url: string;
+        mimetype: string | null;
         alt: string | null;
         variant_id: number | null;
         sort_order: number;
@@ -1298,12 +1435,6 @@ export interface components {
       updated_at: string;
       /** Format: date-time */
       deleted_at: string | null;
-    };
-    PaginationMeta: {
-      total: number;
-      page: number;
-      limit: number;
-      pages: number;
     };
     PaginatedProductDto: {
       items: components["schemas"]["ProductDto"][];
@@ -1517,6 +1648,42 @@ export interface components {
       nova_poshta_ref?: string | null;
       notes?: string | null;
     };
+    PublicReviewDto: {
+      id: number;
+      product_id: number;
+      product: {
+        id: number;
+        name: string;
+        slug: string;
+      } | null;
+      author_name: string;
+      rating: number;
+      body: string;
+      /** @enum {string} */
+      status: "pending" | "approved" | "rejected";
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    ApiArrayResponseOfPublicReviewDto: {
+      data: components["schemas"]["PublicReviewDto"][];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
+    CreateReviewDto: {
+      product_id: number;
+      author_name: string;
+      /** Format: email */
+      author_email?: string;
+      rating: number;
+      body: string;
+    };
+    ApiResponseOfPublicReviewDto: {
+      data: components["schemas"]["PublicReviewDto"];
+      /** @example 2024-01-01T00:00:00.000Z */
+      timestamp: string;
+    };
     ReviewDto: {
       id: number;
       product_id: number;
@@ -1536,18 +1703,14 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
     };
-    ApiArrayResponseOfReviewDto: {
-      data: components["schemas"]["ReviewDto"][];
+    PaginatedReviewDto: {
+      items: components["schemas"]["ReviewDto"][];
+      meta: components["schemas"]["PaginationMeta"];
+    };
+    ApiPaginatedResponseOfReviewDto: {
+      data: components["schemas"]["PaginatedReviewDto"];
       /** @example 2024-01-01T00:00:00.000Z */
       timestamp: string;
-    };
-    CreateReviewDto: {
-      product_id: number;
-      author_name: string;
-      /** Format: email */
-      author_email?: string;
-      rating: number;
-      body: string;
     };
     ApiResponseOfReviewDto: {
       data: components["schemas"]["ReviewDto"];
@@ -2176,7 +2339,7 @@ export interface operations {
     parameters: {
       query?: {
         category_id?: number;
-        is_filterable?: boolean;
+        is_filterable?: boolean | ("0" | "1" | "true" | "false");
       };
       header?: never;
       path?: never;
@@ -2198,7 +2361,7 @@ export interface operations {
     parameters: {
       query?: {
         category_id?: number;
-        is_filterable?: boolean;
+        is_filterable?: boolean | ("0" | "1" | "true" | "false");
         deleted?: "none" | "only";
       };
       header?: never;
@@ -2560,7 +2723,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ApiPaginatedResponseOfProductDto"];
+          "application/json": components["schemas"]["ApiPaginatedResponseOfPublicProductDto"];
         };
       };
     };
@@ -2581,7 +2744,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ApiResponseOfProductDto"];
+          "application/json": components["schemas"]["ApiResponseOfPublicProductDto"];
         };
       };
       /** @description Product not found */
@@ -3029,34 +3192,6 @@ export interface operations {
       };
     };
   };
-  OrdersController_findOne_v1: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: number;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["ApiResponseOfOrderDto"];
-        };
-      };
-      /** @description Order not found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
   OrdersAdminController_findAll_v1: {
     parameters: {
       query?: {
@@ -3219,7 +3354,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ApiArrayResponseOfReviewDto"];
+          "application/json": components["schemas"]["ApiArrayResponseOfPublicReviewDto"];
         };
       };
     };
@@ -3242,8 +3377,15 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ApiResponseOfReviewDto"];
+          "application/json": components["schemas"]["ApiResponseOfPublicReviewDto"];
         };
+      };
+      /** @description Product not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
@@ -3254,6 +3396,9 @@ export interface operations {
         limit?: number;
         product_id?: number;
         status?: "pending" | "approved" | "rejected";
+        search?: string;
+        min_rating?: number;
+        max_rating?: number;
       };
       header?: never;
       path?: never;
@@ -3266,7 +3411,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ApiArrayResponseOfReviewDto"];
+          "application/json": components["schemas"]["ApiPaginatedResponseOfReviewDto"];
         };
       };
     };
@@ -3341,6 +3486,23 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["ApiResponseOfReviewDto"];
         };
+      };
+    };
+  };
+  HealthController_check_v1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };

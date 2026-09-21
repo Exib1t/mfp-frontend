@@ -24,7 +24,7 @@ function makeVariant(seed: VariantSeed, fallbackPrice: number): ProductVariant {
 type ProductSeed = Pick<Product, "id" | "name" | "slug" | "price"> &
   Partial<Product> & { variantSeeds?: VariantSeed[] };
 
-/** Fills the long tail of `ProductDto` so showcase samples stay readable. */
+/** Fills the long tail of `PublicProductDto` so showcase samples stay readable. */
 function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
   const effectivePrice = seed.effective_price ?? seed.sale_price ?? seed.price;
 
@@ -34,7 +34,6 @@ function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
     description: null,
     status: "in_stock",
     is_featured: false,
-    is_published: true,
     sale_price: null,
     sale_active: false,
     effective_price: effectivePrice,
@@ -48,7 +47,6 @@ function makeProduct({ variantSeeds = [], ...seed }: ProductSeed): Product {
     meta_description: null,
     created_at: NOW,
     updated_at: NOW,
-    deleted_at: null,
     ...seed,
     variants: variantSeeds.map((variant) =>
       makeVariant(variant, effectivePrice),

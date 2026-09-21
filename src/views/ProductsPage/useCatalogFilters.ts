@@ -9,10 +9,19 @@ import {
   facetsToQuery,
 } from "@/entities/attributes/types";
 import { useProducts } from "@/entities/products/api";
+import {
+  MAX_ATTRIBUTE_FACETS,
+  MAX_SEARCH_LENGTH,
+} from "@/entities/products/constants";
 import type { ProductStatus, ProductsQuery } from "@/entities/products/types";
 import { useDebouncedValue } from "@/lib/utils/useDebouncedValue";
 
 const PAGE_SIZE = 24;
+
+function canAddFacet(facets: AttributeFacets): boolean {
+  const active = Object.values(facets).filter((values) => values.length > 0);
+  return active.length < MAX_ATTRIBUTE_FACETS;
+}
 
 /**
  * Catalogue state. Filtering runs on the server — attribute facets need
@@ -45,7 +54,9 @@ export function useCatalogFilters() {
   });
 
   // The box updates on every keystroke; the query trails it.
-  const debouncedSearch = useDebouncedValue(search.trim());
+  const debouncedSearch = useDebouncedValue(
+    search.trim().slice(0, MAX_SEARCH_LENGTH),
+  );
 
   const query: ProductsQuery = {
     page,
@@ -74,6 +85,9 @@ export function useCatalogFilters() {
     setPage(1);
     setFacets((current) => {
       const picked = current[code] ?? [];
+      // The API refuses a request combining more facets than this.
+      if (picked.length === 0 && !canAddFacet(current)) return current;
+
       const next = picked.includes(value)
         ? picked.filter((entry) => entry !== value)
         : [...picked, value];
@@ -84,7 +98,12 @@ export function useCatalogFilters() {
 
   const setRangeFacet = (code: string, range: string | null) => {
     setPage(1);
-    setFacets((current) => ({ ...current, [code]: range ? [range] : [] }));
+    setFacets((current) => {
+      const isNew = !current[code]?.length;
+      if (range && isNew && !canAddFacet(current)) return current;
+
+      return { ...current, [code]: range ? [range] : [] };
+    });
   };
 
   const activeCount =

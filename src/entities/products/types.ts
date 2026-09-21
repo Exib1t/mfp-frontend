@@ -1,6 +1,6 @@
 import type { components, operations } from "@/lib/api/v1";
 
-export type Product = components["schemas"]["ProductDto"];
+export type Product = components["schemas"]["PublicProductDto"];
 export type ProductVariant = Product["variants"][number];
 export type ProductImage = Product["images"][number];
 export type ProductOption = Product["options"][number];
@@ -18,4 +18,4 @@ export type ProductsQuery = NonNullable<
 export type ProductSort = NonNullable<ProductsQuery["sort"]>;
 
 export type ProductsPage =
-  components["schemas"]["ApiPaginatedResponseOfProductDto"]["data"];
+  components["schemas"]["ApiPaginatedResponseOfPublicProductDto"]["data"];

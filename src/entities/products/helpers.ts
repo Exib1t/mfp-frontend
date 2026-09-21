@@ -146,7 +146,7 @@ export function getMaxQuantity(
   variant: ProductVariant | null = null,
 ): number {
   const stock = getAvailableStock(product, variant);
-  return stock > 0 ? stock : MAX_ORDER_QUANTITY;
+  return stock > 0 ? Math.min(stock, MAX_ORDER_QUANTITY) : MAX_ORDER_QUANTITY;
 }
 
 /** Remaining count worth warning about, or null when there is nothing to say. */
