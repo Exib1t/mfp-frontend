@@ -3,7 +3,7 @@
 import { ArrowRight, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Button from "@/components/controls/Button/Button";
 import EmptyState from "@/components/controls/EmptyState/EmptyState";
 import IconButton from "@/components/controls/IconButton/IconButton";
@@ -33,12 +33,15 @@ const CartDrawer = () => {
   const hasAnyItems = items.length > 0;
   const totalItemCount = totalCount;
 
-  // Close on route change (e.g. navigating to the full cart page).
+  // Close on route change (e.g. navigating to the full cart page). `close`
+  // changes identity whenever the drawer toggles, so the effect also runs on
+  // open — the ref keeps that run from closing it straight away.
+  const lastPathname = useRef(pathname);
   useEffect(() => {
+    if (lastPathname.current === pathname) return;
+    lastPathname.current = pathname;
     close();
-    // Only react to pathname — close identity is stable per render.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, close]);
 
   // Escape to close + lock body scroll while open.
   useEffect(() => {
