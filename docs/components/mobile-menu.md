@@ -13,7 +13,8 @@ this burger takes over.
 
 ## Props
 
-None. Renders its own trigger plus the panel; mounted inside `HeaderRight`.
+None. Renders its own trigger plus the panel; mounted inside `HeaderLeft`,
+before the logo — the trigger sits on the same side the panel slides in from.
 
 ## Content
 
